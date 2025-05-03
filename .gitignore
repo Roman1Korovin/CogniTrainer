@@ -1,0 +1,43 @@
+# Qt Creator
+*.pro.user*
+*.qbs.user*
+*.qmlproject.user*
+*.autosave
+*.creator.*
+.qmake.stash
+CMakeLists.txt.user
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake-build-*/
+Makefile
+Makefile.*
+build/
+compile_commands.json
+install_manifest.txt
+
+# ОС
+.DS_Store
+Thumbs.db
+
+# Компилятор
+*.o
+*.obj
+*.so
+*.dll
+*.exe
+*.a
+*.lib
+
+# Логи
+*.log
+
+# Qt moc, rcc, uic
+moc_*
+qrc_*
+ui_*
+
+# Системные IDE папки
+.idea/
+.vscode/
