@@ -18,6 +18,7 @@ qt_add_qml_module(appCogniTrainer
     QML_FILES
         Main.qml
         SOURCES interfaces/ModuleInterface.h
+        SOURCES core/ModuleLoader.h core/ModuleLoader.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
