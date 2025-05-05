@@ -21,15 +21,19 @@ int main(int argc, char *argv[])
     ModuleLoader loader(QCoreApplication::applicationDirPath() + "/modules");
     QVector<ModuleInterface*> modules = loader.loadModules();
 
-    QStringList moduleNames;
+
+    QVariantList moduleList;
 
     for(auto* m : modules)
     {
-        moduleNames.append(m->name());
+        QVariantMap item;
+        item["name"] = m->name();
+        item["url"] = m->qmlComponentUrl().toString();
+        moduleList.append(item);
     }
 
     //Пробрасываем  список имен в QML-контекст
-    engine.rootContext()->setContextProperty("moduleNames",moduleNames);
+    engine.rootContext()->setContextProperty("moduleList",moduleList);
 
     //загружаем коневой qml файл
     engine.loadFromModule("CogniTrainer", "Main");

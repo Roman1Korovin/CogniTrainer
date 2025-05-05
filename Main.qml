@@ -14,30 +14,24 @@ ApplicationWindow {
         ListView {
             id: listView
             width: 200
-            model: moduleNames
+            model: moduleList
             delegate: ItemDelegate {
                 width: parent.width
-                text: modelData
+                text: modelData.name
                 onClicked: {
                     // Здесь пока просто логируем
-                    console.log("Выбрали модуль:", modelData)
+                    loader.source = modelData.url
                 }
             }
         }
 
         // Правый блок для показа модуля (Loader пока пуст)
-        Rectangle {
-            id: contentArea
+        Loader {
+            id: loader
             anchors.fill: parent
             anchors.leftMargin: listView.width
-            color: "#f0f0f0"
 
-            // Пока заглушка
-            Text {
-                anchors.centerIn: parent
-                text: "Выберите модуль слева"
-                color: "#888"
-            }
         }
     }
 }
+
