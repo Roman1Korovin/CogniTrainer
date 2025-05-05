@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ReactionTrainer.qml</file>
+    </qresource>
+</RCC>

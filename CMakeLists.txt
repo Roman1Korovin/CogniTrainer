@@ -42,3 +42,5 @@ install(TARGETS appCogniTrainer
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+
+add_subdirectory(plugins/ReactionTrainer)
