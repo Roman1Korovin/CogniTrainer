@@ -25,8 +25,8 @@ target_link_libraries(ReactionTrainer
 )
 
 set_target_properties(ReactionTrainer PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/modules"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/modules"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/modules"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/modules"
 )
 
 target_compile_definitions(ReactionTrainer PRIVATE REACTIONTRAINER_LIBRARY)

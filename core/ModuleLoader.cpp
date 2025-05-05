@@ -26,8 +26,8 @@ QVector<ModuleInterface*> ModuleLoader::loadModules()
     for(const QString& fileName : dir.entryList(filter, QDir::Files))
     {
         QString filePath = dir.absoluteFilePath(fileName);
-        QPluginLoader* loader = new QPluginLoader(filePath);
-        QObject* plugin = loader->instance();
+        QPluginLoader* loader = new QPluginLoader(filePath);        //создается обект-загрузчик
+        QObject* plugin = loader->instance();                       //instance создает объект, который реализует интерфейс плагина
 
         //проверяем, удалось ли создать объект
         if(plugin)
