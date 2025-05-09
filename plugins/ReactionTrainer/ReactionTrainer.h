@@ -20,5 +20,8 @@ public:
     QUrl qmlComponentUrl() const override {
         return QUrl("qrc:/ReactionTrainer.qml");
     }
+    QString category() const override {
+        return QStringLiteral("Реакция");
+    }
 };
 #endif // REACTIONTRAINER_H

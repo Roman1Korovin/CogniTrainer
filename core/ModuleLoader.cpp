@@ -1,4 +1,5 @@
 #include "ModuleLoader.h"
+#include "CategoryManager.h"
 #include <QDir>
 #include <qDebug>
 
@@ -34,22 +35,30 @@ QVector<ModuleInterface*> ModuleLoader::loadModules()
         {
             auto* module = qobject_cast<ModuleInterface*>(plugin);  //приводим объект к интерфейсу ModuleInterface
 
-
             if(module)
             {
+                // Проверяем правильность категории модуля,
+                if (!CategoryManager::isValidCategory(module->category())) {
+                    qCritical() << "Несуществующая категория в модуле"<<module->name()<< ":" << module->category()
+                                << ". Если вы хотите доабвить новую категорию, сделайте это в классе CategoryManager.";
+                    delete module;
+                    module = nullptr;
+                    delete loader;
+                    continue;
+                }
                 modules.append(module);                             //добавляем модуль в вектор
                 m_pluginLoaders.append(loader);                     //добавляем загрузчик в список, чтобы модуль не выгрузился автоматически
                 qDebug() << "Модуль загружен:" << module->name();
             }
             else
             {
-                qDebug() << "Ошибка: не реализует ModuleInterface:" <<fileName;
+                qCritical() << "Ошибка: не реализует ModuleInterface:" <<fileName;
                 delete loader;
             }
         }
         else
         {
-            qDebug() << "Ошибка загрузки" <<loader->errorString();
+            qCritical() << "Ошибка загрузки" <<loader->errorString();
             delete loader;
         }
     }

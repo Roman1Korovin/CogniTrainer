@@ -19,18 +19,15 @@ ApplicationWindow {
                 width: parent.width
                 text: modelData.name
                 onClicked: {
-                    // Здесь пока просто логируем
                     loader.source = modelData.url
                 }
             }
         }
-
-        // Правый блок для показа модуля (Loader пока пуст)
+        // Правый блок для показа модуля
         Loader {
             id: loader
             anchors.fill: parent
             anchors.leftMargin: listView.width
-
         }
     }
 }
