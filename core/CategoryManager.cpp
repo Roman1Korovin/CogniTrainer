@@ -1,14 +1,14 @@
 #include "CategoryManager.h"
 
 
-const QList<Category> CategoryManager::categories = {
-    Category("Реакция", ":/icons/education.png"),
-    Category("Логика", ":/icons/games.png"),
-    Category("Память", ":/icons/music.png")
+const QList<Category> CategoryManager::s_categories = {
+    Category("Реакция", ":/icons/reaction.png"),
+    Category("Логика", ":/icons/logic.png"),
+    Category("Память", ":/icons/memory.png")
 };
 
 const QList<Category>& CategoryManager::getAvailableCategories() {
-    return categories;
+    return s_categories;
 }
 
 bool CategoryManager::isValidCategory(const QString& name)

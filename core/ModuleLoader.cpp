@@ -7,6 +7,15 @@
 ModuleLoader::ModuleLoader(const QString& modulePath)
     : m_modulesPath(modulePath) {}
 
+ModuleLoader::~ModuleLoader()
+{
+    for(QPluginLoader* loader : m_pluginLoaders)
+    {
+        loader->unload();
+        delete loader ;
+    }
+    m_pluginLoaders.clear();
+}
 QVector<ModuleInterface*> ModuleLoader::loadModules()
 {
     QVector<ModuleInterface*> modules;
@@ -41,8 +50,8 @@ QVector<ModuleInterface*> ModuleLoader::loadModules()
                 if (!CategoryManager::isValidCategory(module->category())) {
                     qCritical() << "Несуществующая категория в модуле"<<module->name()<< ":" << module->category()
                                 << ". Если вы хотите доабвить новую категорию, сделайте это в классе CategoryManager.";
-                    delete module;
-                    module = nullptr;
+
+                    loader->unload();
                     delete loader;
                     continue;
                 }
@@ -53,12 +62,14 @@ QVector<ModuleInterface*> ModuleLoader::loadModules()
             else
             {
                 qCritical() << "Ошибка: не реализует ModuleInterface:" <<fileName;
+                loader->unload();
                 delete loader;
             }
         }
         else
         {
             qCritical() << "Ошибка загрузки" <<loader->errorString();
+            loader->unload();
             delete loader;
         }
     }

@@ -6,7 +6,7 @@
 
 class CategoryManager {
 private:
-     static const QList<Category> categories;
+     static const QList<Category> s_categories;
 public:
     static const QList<Category>& getAvailableCategories();
     static bool isValidCategory(const QString& name);

@@ -9,7 +9,8 @@
 class ModuleLoader
 {
 public:
-    ModuleLoader(const QString& modulePath);        //конструктор принимающий путь к модулям
+    explicit ModuleLoader(const QString& modulePath);        //конструктор принимающий путь к модулям
+    ~ModuleLoader();
     QVector<ModuleInterface*> loadModules();        //метод дял поиска и загрузки всех модулей
 private:
     QString m_modulesPath;                          //путь до модулей
