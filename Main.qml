@@ -1,5 +1,6 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
+
 
 Window {
     id: window
@@ -8,6 +9,8 @@ Window {
     minimumWidth: 800
     visible: true
     title: "Cognitive Trainer"
+
+
 
     Rectangle {
         id: header
@@ -19,8 +22,7 @@ Window {
             id: headerRow
             anchors.fill: parent
             anchors.leftMargin: 20
-            spacing: 0
-
+            spacing:20
 
             // Название приложения
             Text {
@@ -34,23 +36,21 @@ Window {
             // Растяжка, чтобы кнопки были справа
             Item {
                 id: spacer
-                width: 70
+                width: 60
                 height: 1
 
             }
-
             MouseArea {
                 id: trainingButtonArea
-                width: 120
+                width: trainingsText.width+10
                 height: 40
                 anchors.verticalCenter: parent.verticalCenter
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
 
 
-
-
                 Text {
+                    id:trainingsText
                     text: qsTr("Тренировки")
                     anchors.centerIn: parent
                     color: "white"
@@ -63,7 +63,7 @@ Window {
 
             MouseArea {
                 id: testsButtonArea
-                width: 120
+                width: testsText.width+10
                 height: 40
                 anchors.verticalCenter: parent.verticalCenter
                 hoverEnabled: true
@@ -71,6 +71,7 @@ Window {
 
 
                 Text {
+                    id:testsText
                     text: qsTr("Тесты")
                     color: "white"
                     font.pixelSize: 20
@@ -80,13 +81,14 @@ Window {
 
             MouseArea {
                 id: settingsButtonArea
-                width: 120
+                width: settingsText.width+10
                 height: 40
                 anchors.verticalCenter: parent.verticalCenter
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
 
                 Text {
+                    id:settingsText
                     text: qsTr("Настройки")
                     color: "white"
                     font.pixelSize: 20
@@ -97,135 +99,134 @@ Window {
         }
     }
 
+    // Контейнер для нижней части экрана
+    Row {
+        anchors{
+            top: header.bottom
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+
+        // Левый столбец с категориями
+        ListView {
+            id: categoryListView
+            width: parent.width * 0.25
+            height: parent.height
+
+            model:categoryManager.categories
+
+            clip:true
+
+            spacing: 20
+            topMargin:30
 
 
+            delegate: Rectangle {
 
-        // Контейнер для нижней части экрана
-        Row {
-            anchors.top: header.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
+                width: parent.width - 60
+                height: 120
+                radius: 30
 
-            // Левый столбец с категориями
-            Flickable {
-                id: categoriesListFlickable
-                width: parent.width * 0.25
-                height: parent.height
-                clip:true
-                contentWidth: width
-                contentHeight: categoryColumn.height
+                anchors.horizontalCenter: parent.horizontalCenter
 
-                Column {
-                    id: categoryColumn
-                    width: parent.width
+                color: "#ffffff"
+                border.color: "#cccccc"
+                border.width: 1
 
-                    spacing: 15
-                    padding: 30
 
-                    Repeater {
-
-                        model: 5  // Пример количества категорий
-
-                        delegate: Rectangle {
-                            width: parent.width - 60
-                            height: 120
-                            radius: 30
-                            color: "#ffffff"
-
-                            border.color: "#cccccc"
-                            border.width: 1
-
-                            Row {
-                                anchors.fill: parent
-                                anchors.margins: 8
-                                spacing: 8
-
-                                Image {
-
-                                }
-
-                                Text {
-                                    text: "Category " + (index + 1)
-                                    anchors.centerIn: parent
-                                    font.pixelSize: 18
-                                    wrapMode: Text.Wrap
-
-                                }
-                            }
-                        }
+                    Image {
+                        width: 50
+                        height: 50
+                        source: model.imagePath
+                        fillMode: Image.PreserveAspectCrop
                     }
-                }
-                ScrollBar.vertical: ScrollBar {
-                    policy: ScrollBar.OnDemand
-                    anchors.right: parent.right
-                }
+
+
+
+
+                    Text {
+                        text: model.name
+                        anchors.centerIn: parent
+                        font.pixelSize: 18
+                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                        font.bold: true
+                    }
+
             }
 
-            // Граница между левой и правой частью
-                Rectangle {
-                    width: 2
-                    height: parent.height
-                    color: "#cccccc"  // Цвет границы
-                }
 
-            // Правая часть с тренировками категории
-            Flickable {
-                id: trainingListFlickable
-                width: parent.width * 0.75
-                height: parent.height
-                contentWidth: flowContent.width
-                contentHeight: flowContent.height
-                clip: true
-
-                Flow {
-                    id: flowContent
-                    width: trainingListFlickable.width
-                    spacing: 16
-                    padding: 30
-
-                    Repeater {
-                        model: 20  // Примерное количество тренировок
-
-                        delegate: Rectangle {
-                            width: 260
-                            height: 120
-                            radius: 12
-                            color: "#ffffff"
-                            border.color: "#cccccc"
-                            border.width: 1
-
-                            Column {
-                                anchors.fill: parent
-                                anchors.margins: 12
-                                spacing: 8
-
-                                Text {
-                                    text: "Тренировка " + (index + 1)
-                                    font.pixelSize: 18
-                                    font.bold: true
-                                    color: "#333"
-                                    wrapMode: Text.Wrap
-                                }
-
-                                Text {
-                                    text: "Краткое описание текущей тренировки ..."
-                                    font.pixelSize: 14
-                                    color: "#666"
-                                    wrapMode: Text.Wrap
-                                    width: parent.width
-                                }
-                            }
-                        }
-                    }
-                }
-
-                ScrollBar.vertical: ScrollBar {
-                    policy: ScrollBar.OnDemand
-                    anchors.right: parent.right
-                    width: 20
-                }
+            ScrollBar.vertical: ScrollBar {
+                policy: ScrollBar.OnDemand
+                anchors.right: parent.right
             }
         }
+
+
+        // Граница между левой и правой частью
+        Rectangle {
+            width: 2
+            height: parent.height
+            color: "#cccccc"
+        }
+
+        // Правая часть с тренировками категории
+        GridView {
+            id: trainingGrid
+            width: parent.width * 0.75
+            height: parent.height
+            cellWidth: 260 + 16 // ширина карточки + отступ
+            cellHeight: 120 + 16 // высота карточки + отступ
+
+            topMargin: 30
+            leftMargin: 30
+            rightMargin: 10
+
+
+
+            model: moduleList
+
+            clip: true
+
+
+            delegate: Rectangle {
+                width: 260
+                height: 120
+                radius: 12
+                color: "#ffffff"
+                border.color: "#cccccc"
+                border.width: 1
+
+                Column {
+                    anchors.fill: parent
+                    anchors.margins: 12
+                    spacing: 8
+
+                    Text {
+                        text: modelData.name
+                        font.pixelSize: 18
+                        font.bold: true
+                        color: "#333"
+                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                    }
+
+                    Text {
+                        text: modelData.description
+                        font.pixelSize: 14
+                        color: "#666"
+                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                        width: parent.width
+                    }
+                }
+            }
+
+            ScrollBar.vertical: ScrollBar {
+                policy: ScrollBar.OnDemand
+                anchors.right: parent.right
+                width: 20
+            }
+        }
+    }
 }
+
 

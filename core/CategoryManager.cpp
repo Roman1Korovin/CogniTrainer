@@ -1,30 +1,26 @@
 #include "CategoryManager.h"
+#include "Category.h"
 
+CategoryManager::CategoryManager(QObject* parent) : QObject(parent) {
 
-const QList<Category> CategoryManager::s_categories = {
-    Category("Реакция", ":/icons/reaction.png"),
-    Category("Логика", ":/icons/logic.png"),
-    Category("Память", ":/icons/memory.png")
-};
+    m_categories.append(new Category("Реакция", "assets/backgrounds//ReactionTrainer.png", this));
+    m_categories.append(new Category("Логика", ":/icons/logic.png", this));
+    m_categories.append(new Category("Память", ":/icons/memory.png", this));
 
-const QList<Category>& CategoryManager::getAvailableCategories() {
-    return s_categories;
 }
+
+QList<QObject *> CategoryManager::categories() const
+{
+    return m_categories;
+}
+
 
 bool CategoryManager::isValidCategory(const QString& name)
 {
-    // Удаляем лишние пробелы в начале и в конце строки
-    const QString trimmedName = name.trimmed();
-
-    // Получаем список всех доступных категорий
-    const auto& categories = getAvailableCategories();
-
-    // Проверяем, есть ли категория с таким именем
-    for (const Category& category : categories) {
-        if (category.name.trimmed().compare(trimmedName, Qt::CaseInsensitive) == 0) {
+    for (auto obj : m_categories) {
+        auto category = qobject_cast<Category*>(obj);
+        if (category && category->name().compare(name, Qt::CaseInsensitive) == 0)
             return true;
-        }
     }
-
     return false;
 }

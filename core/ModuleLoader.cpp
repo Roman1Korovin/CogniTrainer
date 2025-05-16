@@ -46,8 +46,9 @@ QVector<ModuleInterface*> ModuleLoader::loadModules()
 
             if(module)
             {
+                CategoryManager catMan;
                 // Проверяем правильность категории модуля,
-                if (!CategoryManager::isValidCategory(module->category())) {
+                if (!catMan.isValidCategory(module->category())) {
                     qCritical() << "Несуществующая категория в модуле"<<module->name()<< ":" << module->category()
                                 << ". Если вы хотите доабвить новую категорию, сделайте это в классе CategoryManager.";
 
@@ -56,6 +57,7 @@ QVector<ModuleInterface*> ModuleLoader::loadModules()
                     continue;
                 }
                 modules.append(module);                             //добавляем модуль в вектор
+
                 m_pluginLoaders.append(loader);                     //добавляем загрузчик в список, чтобы модуль не выгрузился автоматически
                 qDebug() << "Модуль загружен:" << module->name();
             }

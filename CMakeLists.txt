@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.16)
 
 project(CogniTrainer VERSION 0.1 LANGUAGES CXX)
 
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick)
@@ -21,8 +25,10 @@ qt_add_qml_module(appCogniTrainer
         interfaces/ModuleInterface.h
         core/ModuleLoader.h
         core/ModuleLoader.cpp
-        SOURCES core/Category.h
-        SOURCES core/CategoryManager.h core/CategoryManager.cpp
+        core/Category.h
+        core/CategoryManager.h core/CategoryManager.cpp
+    RESOURCES
+        assets/backgrounds/ReactionTrainer.png
 )
 
 set_target_properties(appCogniTrainer PROPERTIES

@@ -1,7 +1,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <qqml.h>
 #include "core/ModuleLoader.h"
+#include "core/CategoryManager.h"
 
 
 int main(int argc, char *argv[])
@@ -17,23 +19,28 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
 
+
     //загружаем плагины
     ModuleLoader loader(QCoreApplication::applicationDirPath() + "/modules");
     QVector<ModuleInterface*> modules = loader.loadModules();
 
 
+    //Преобразуем в QVariantList
     QVariantList moduleList;
-
-    for(auto* m : modules)
-    {
-        QVariantMap item;
-        item["name"] = m->name();
-        item["url"] = m->qmlComponentUrl().toString();
-        moduleList.append(item);
+    for (ModuleInterface* m : modules) {
+        QObject* obj = dynamic_cast<QObject*>(m);
+        if (obj) {
+            moduleList << QVariant::fromValue(obj);
+        }
     }
 
     //Пробрасываем  список имен в QML-контекст
-    engine.rootContext()->setContextProperty("moduleList",moduleList);
+    engine.rootContext()->setContextProperty("moduleList", moduleList);
+
+
+    CategoryManager categoryManager;
+    engine.rootContext()->setContextProperty("categoryManager", &categoryManager);
+
 
     //загружаем коневой qml файл
     engine.loadFromModule("CogniTrainer", "Main");

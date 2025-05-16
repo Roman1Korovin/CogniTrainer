@@ -1,15 +1,25 @@
 #ifndef CATEGORYMANAGER_H
 #define CATEGORYMANAGER_H
 
-#include "Category.h"
-#include <QList>
 
-class CategoryManager {
-private:
-     static const QList<Category> s_categories;
+#include <QList>
+#include <QObject>
+
+class CategoryManager : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(QList<QObject*> categories READ categories NOTIFY categoriesChanged)
+
 public:
-    static const QList<Category>& getAvailableCategories();
-    static bool isValidCategory(const QString& name);
+    explicit CategoryManager(QObject* parent = nullptr);
+
+    QList<QObject*> categories() const;
+
+    bool isValidCategory(const QString& name) ;
+
+signals:
+    void categoriesChanged();
+private:
+    QList<QObject*> m_categories;
 };
 
 #endif // CATEGORYMANAGER_H
