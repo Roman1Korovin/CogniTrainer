@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 REQUIRED COMPONENTS Core Qml Quick)
 
 add_library(ReactionTrainer MODULE
+    ../../core/BaseModule.h
     ReactionTrainer_global.h
     ReactionTrainer.cpp
     ReactionTrainer.h

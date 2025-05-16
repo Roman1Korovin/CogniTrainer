@@ -2,7 +2,8 @@
 #define MODULEINTERFACE_H
 
 #include <QString>
-#include <QtQml/qqmlengine.h>
+#include <QUrl>
+#include <QtPlugin>
 
 // Абстрактный клас для реализации модулей
 class ModuleInterface {

@@ -23,6 +23,7 @@ qt_add_qml_module(appCogniTrainer
         Main.qml
     SOURCES
         interfaces/ModuleInterface.h
+        core/BaseModule.h
         core/ModuleLoader.h
         core/ModuleLoader.cpp
         core/Category.h
