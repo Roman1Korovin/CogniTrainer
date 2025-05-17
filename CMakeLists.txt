@@ -21,6 +21,12 @@ qt_add_qml_module(appCogniTrainer
     VERSION 1.0
     QML_FILES
         Main.qml
+        CategoryItem.qml
+        TrainingCardItem.qml
+        AppHeader.qml
+        TrainingPage.qml
+        TestsPage.qml
+        SettingsPage.qml
     SOURCES
         interfaces/ModuleInterface.h
         core/BaseModule.h
@@ -30,6 +36,8 @@ qt_add_qml_module(appCogniTrainer
         core/CategoryManager.h core/CategoryManager.cpp
     RESOURCES
         assets/backgrounds/ReactionTrainer.png
+
+
 )
 
 set_target_properties(appCogniTrainer PROPERTIES
