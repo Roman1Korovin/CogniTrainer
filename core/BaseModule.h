@@ -3,7 +3,8 @@
 #define BASEMODULE_H
 
 #include <QObject>
-#include "../interfaces/ModuleInterface.h"
+
+#include "ModuleInterface.h"
 
 class BaseModule : public QObject, public ModuleInterface
 {

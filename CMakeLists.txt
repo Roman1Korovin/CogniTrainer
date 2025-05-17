@@ -20,24 +20,21 @@ qt_add_qml_module(appCogniTrainer
     URI CogniTrainer
     VERSION 1.0
     QML_FILES
-        Main.qml
-        CategoryItem.qml
-        TrainingCardItem.qml
-        AppHeader.qml
-        TrainingPage.qml
-        TestsPage.qml
-        SettingsPage.qml
+        qml/Main.qml
+        qml/components/CategoryItem.qml
+        qml/components/TrainingCardItem.qml
+        qml/components/AppHeader.qml
+        qml/pages/TrainingPage.qml
+        qml/pages/TestsPage.qml
+        qml/pages/SettingsPage.qml
     SOURCES
-        interfaces/ModuleInterface.h
+        core/ModuleInterface.h
         core/BaseModule.h
-        core/ModuleLoader.h
-        core/ModuleLoader.cpp
+        core/ModuleLoader.h core/ModuleLoader.cpp
         core/Category.h
         core/CategoryManager.h core/CategoryManager.cpp
     RESOURCES
         assets/backgrounds/ReactionTrainer.png
-
-
 )
 
 set_target_properties(appCogniTrainer PROPERTIES

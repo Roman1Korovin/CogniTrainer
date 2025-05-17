@@ -5,7 +5,9 @@
 #include <QVector>
 #include <QString>
 #include <QPluginLoader>
-#include "../interfaces/ModuleInterface.h"
+
+#include "ModuleInterface.h"
+
 class ModuleLoader
 {
 public:

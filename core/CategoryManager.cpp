@@ -1,4 +1,5 @@
 #include "CategoryManager.h"
+
 #include "Category.h"
 
 CategoryManager::CategoryManager(QObject* parent) : QObject(parent) {

@@ -1,7 +1,10 @@
 #include "ModuleLoader.h"
-#include "CategoryManager.h"
+
 #include <QDir>
 #include <qDebug>
+
+#include "CategoryManager.h"
+#include "ModuleInterface.h"
 
 // Класс сканирует указанную директорию на наличие плагинов(модулей) и загружает их
 ModuleLoader::ModuleLoader(const QString& modulePath)
@@ -56,7 +59,10 @@ QVector<ModuleInterface*> ModuleLoader::loadModules()
                     delete loader;
                     continue;
                 }
-                modules.append(module);                             //добавляем модуль в вектор
+                for (int var = 0; var < 2; ++var) {
+                    modules.append(module);
+                }
+                                           //добавляем модуль в вектор
 
                 m_pluginLoaders.append(loader);                     //добавляем загрузчик в список, чтобы модуль не выгрузился автоматически
                 qDebug() << "Модуль загружен:" << module->name();
