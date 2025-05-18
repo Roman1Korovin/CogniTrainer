@@ -24,7 +24,7 @@ qt_add_qml_module(appCogniTrainer
         qml/components/CategoryItem.qml
         qml/components/TrainingCardItem.qml
         qml/components/AppHeader.qml
-        qml/pages/TrainingPage.qml
+        qml/pages/TrainingsPage.qml
         qml/pages/TestsPage.qml
         qml/pages/SettingsPage.qml
     SOURCES
@@ -56,3 +56,4 @@ install(TARGETS appCogniTrainer
 )
 
 add_subdirectory(plugins/ReactionTrainer)
+add_subdirectory(plugins/CircleGame)

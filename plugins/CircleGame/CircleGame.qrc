@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>CircleGame.qml</file>
+        <file>CircleGameIcon.png</file>
+        <file>CircleGameSettings.qml</file>
+    </qresource>
+</RCC>

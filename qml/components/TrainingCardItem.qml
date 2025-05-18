@@ -12,25 +12,33 @@ Rectangle {
     border.color: "#cccccc"
     border.width: 1
 
-    Column{
+    MouseArea{
         anchors.fill: parent
-        anchors.margins: 12
-        spacing: 8
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
+        onClicked: root.clicked(root.name)
 
-        Text {
-            text: modelData.name
-            font.pixelSize: 18
-            font.bold: true
-            color: "#333"
-            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-        }
+        Column{
+            anchors.fill: parent
+            anchors.margins: 12
+            spacing: 8
 
-        Text {
-            text: modelData.description
-            font.pixelSize: 14
-            color: "#666"
-            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-            width: parent.width
+
+            Text {
+                text: modelData.name
+                font.pixelSize: 18
+                font.bold: true
+                color: "#333"
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+            }
+
+            Text {
+                text: modelData.description
+                font.pixelSize: 14
+                color: "#666"
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                width: parent.width
+            }
         }
     }
 }

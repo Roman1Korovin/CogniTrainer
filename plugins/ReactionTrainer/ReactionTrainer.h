@@ -1,7 +1,7 @@
 #ifndef REACTIONTRAINER_H
 #define REACTIONTRAINER_H
 
-#include <QObject>
+
 #include "../../core/BaseModule.h"
 
 class ReactionTrainer : public BaseModule
@@ -21,11 +21,20 @@ public:
     QString description() const override {
         return QStringLiteral("Упражнение на проверку скорости реакции");
     }
+    QString manual() const override{
+        return QString("");
+    }
     QUrl qmlComponentUrl() const override {
         return QUrl("qrc:/ReactionTrainer.qml");
     }
     QString category() const override {
         return QStringLiteral("Реакция");
+    }
+    QUrl qmlSettingsUrl() const override {
+        return QUrl("");
+    }
+    QUrl iconUrl() const override {
+        return QUrl("");
     }
 };
 #endif // REACTIONTRAINER_H

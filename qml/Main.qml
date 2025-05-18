@@ -50,7 +50,7 @@ Window {
     // Компоненты (обёртки вокруг отдельных QML файлов)
     Component {
         id: trainingComponent
-        TrainingPage {
+        TrainingsPage {
             width: parent.width
             height: parent.height
         }
