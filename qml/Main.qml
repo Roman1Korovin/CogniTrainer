@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
-
+import "pages"
+import "components"
 
 Window {
     id: mainWindow
@@ -17,9 +18,32 @@ Window {
         width: parent.width
         currentTab: mainWindow.currentTab
 
-        onTrainingsClicked: mainWindow.currentTab = "trainings"
-        onTestsClicked: mainWindow.currentTab = "tests"
-        onSettingsClicked: mainWindow.currentTab = "settings"
+        onTrainingsClicked: {
+            if (mainWindow.currentTab === "trainings") {
+                mainWindow.currentTab = ""
+                Qt.callLater(() => mainWindow.currentTab = "trainings")
+            } else {
+                mainWindow.currentTab = "trainings"
+            }
+        }
+
+        onTestsClicked: {
+            if (mainWindow.currentTab === "tests") {
+                mainWindow.currentTab = ""
+                Qt.callLater(() => mainWindow.currentTab = "tests")
+            } else {
+                mainWindow.currentTab = "tests"
+            }
+        }
+
+        onSettingsClicked: {
+            if (mainWindow.currentTab === "settings") {
+                mainWindow.currentTab = ""
+                Qt.callLater(() => mainWindow.currentTab = "settings")
+            } else {
+                mainWindow.currentTab = "settings"
+            }
+        }
     }
 
     // Контейнер для основной части экрана

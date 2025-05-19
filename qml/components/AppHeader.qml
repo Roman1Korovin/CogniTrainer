@@ -84,17 +84,17 @@ Rectangle {
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
             onClicked: {
-                            currentTab = "settings"
-                            header.settingsClicked()
-                        }
+                currentTab = "settings"
+                header.settingsClicked()
+            }
 
             Text {
                 id: settingsText
                 text: qsTr("Настройки")
                 anchors.centerIn: parent
                 color: currentTab === "settings" ? "#ffcc00" : "white"
-                                font.pixelSize: 20
-                                font.bold: currentTab === "settings"
+                font.pixelSize: 20
+                font.bold: currentTab === "settings"
             }
         }
     }
