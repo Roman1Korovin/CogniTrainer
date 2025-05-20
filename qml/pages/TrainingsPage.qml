@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import "../components"
 
-Row {
+Rectangle {
    id:  root
    width: parent.width
    height: parent.height
@@ -15,7 +15,6 @@ Row {
       if (filteredModules.length > 0) {
          selectedCategoryName = categoryManager.categories[0].name
          selectedTrainingUrl = filteredModules[0].qmlComponentUrl;
-         console.log("zzz" + selectedCategoryName + selectedTrainingUrl)
       }
 
    }
@@ -38,33 +37,38 @@ Row {
    Component {
       id: moduleSelectionPage
 
+
+
       Row {
          width: parent.width
          height: parent.height
 
+
          //Список категорий в левой части
          ListView {
-            width: parent.width * 0.25
-            height: parent.height
-            model: categoryManager.categories
-            spacing: 20
-            topMargin: 30
-            clip: true
+             id: categoryList
+             width: parent.width * 0.25
+             height: parent.height
+             model: categoryManager ? categoryManager.categories : []
+             spacing: 20
+             topMargin: 30
+             clip: true
 
-            delegate: CategoryItem {
-               name: model.name
-               imagePath: model.imagePath
-               isSelected: model.name === selectedCategoryName
-               onClicked: {
-                  selectedCategoryName = name
-                  selectedTrainingUrl = null
-               }
-            }
+             delegate: CategoryItem {
+                 name: model.name
+                 imagePath: model.imagePath
+                 isSelected: model.name === selectedCategoryName
+                 onClicked: {
+                     selectedCategoryName = name
+                     selectedTrainingUrl = null
+                 }
+             }
 
-            ScrollBar.vertical: ScrollBar {
-               policy: ScrollBar.OnDemand
-               anchors.right: parent.right
-            }
+             ScrollBar.vertical: ScrollBar {
+                anchors.right: parent.right
+                width: 12
+             }
+
          }
 
          // разделитель
@@ -91,10 +95,10 @@ Row {
                name: modelData.name
                description: modelData.description
 
-               onHeightReported: {
-                  if (h > maxCardHeight) {
-                     maxCardHeight = h
-                  }
+               onHeightReported: function(h) {
+                   if (h > maxCardHeight) {
+                       maxCardHeight = h;
+                   }
                }
 
                sharedMaxHeight: maxCardHeight
@@ -110,9 +114,8 @@ Row {
 
 
             ScrollBar.vertical: ScrollBar {
-               policy: ScrollBar.OnDemand
                anchors.right: parent.right
-               width: 20
+               width: 12
             }
          }
       }

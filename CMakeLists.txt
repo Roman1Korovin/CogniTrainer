@@ -8,12 +8,19 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 COMPONENTS Quick QuickControls2 REQUIRED)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(appCogniTrainer
     main.cpp
+)
+
+qt_add_resources(appCogniTrainer "app_images"
+    PREFIX "/"
+    FILES
+        assets/backgrounds
+        assets/icons
 )
 
 qt_add_qml_module(appCogniTrainer
@@ -33,8 +40,6 @@ qt_add_qml_module(appCogniTrainer
         core/ModuleLoader.h core/ModuleLoader.cpp
         core/Category.h
         core/CategoryManager.h core/CategoryManager.cpp
-    RESOURCES
-        assets/backgrounds/ReactionTrainer.png
 )
 
 set_target_properties(appCogniTrainer PROPERTIES
@@ -46,6 +51,7 @@ set_target_properties(appCogniTrainer PROPERTIES
 
 target_link_libraries(appCogniTrainer
     PRIVATE Qt6::Quick
+    Qt6::QuickControls2
 )
 
 include(GNUInstallDirs)
@@ -56,4 +62,4 @@ install(TARGETS appCogniTrainer
 )
 
 add_subdirectory(plugins/ReactionTrainer)
-add_subdirectory(plugins/CircleGame)
+add_subdirectory(plugins/CircleClickGame)

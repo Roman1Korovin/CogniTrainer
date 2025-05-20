@@ -4,7 +4,7 @@
 
 CategoryManager::CategoryManager(QObject* parent) : QObject(parent) {
 
-    m_categories.append(new Category("Реакция", "assets/backgrounds//ReactionTrainer.png", this));
+    m_categories.append(new Category("Реакция", "qrc:/assets/backgrounds//ReactionTrainer.png", this));
     m_categories.append(new Category("Логика", ":/icons/logic.png", this));
     m_categories.append(new Category("Память", ":/icons/memory.png", this));
 

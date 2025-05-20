@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <qqml.h>
+#include <QQuickStyle>
 #include "core/ModuleLoader.h"
 #include "core/CategoryManager.h"
 
@@ -10,6 +11,8 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
+    QQuickStyle::setStyle("Material");
+
 
     //защита от неудачной загрузки qml
     QObject::connect(

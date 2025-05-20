@@ -5,9 +5,12 @@ import "components"
 
 Window {
     id: mainWindow
-    width: 1536; height: 864
-    minimumHeight: 495
-    minimumWidth: 800
+    Component.onCompleted: {
+           width = Screen.width * 0.8
+           height = Screen.height * 0.8
+       }
+    minimumHeight: 702
+    minimumWidth: 1248
     visible: true
     title: "Cognitive Trainer"
 

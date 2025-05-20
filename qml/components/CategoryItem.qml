@@ -15,7 +15,7 @@ Rectangle {
     border.color: "#cccccc"
     border.width: 1
 
-    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
 
     //цвет в зависимости от того выюран ли элемент
     property color baseColor: isSelected ? "#A0522D" : "#ffe066"
@@ -24,11 +24,13 @@ Rectangle {
     color: {
         if (isSelected)
             return baseColor;
-        if (buttonMouseArea.containsPress)
+        else if (buttonMouseArea.containsPress)
             return Qt.lighter(baseColor, 1.2);
-        if (buttonMouseArea.containsMouse)
+        else if(buttonMouseArea.containsMouse)
             return Qt.darker(baseColor, 1.1);
+        else{
         return baseColor;
+        }
     }
 
 
