@@ -8,6 +8,8 @@ Window {
     Component.onCompleted: {
            width = Screen.width * 0.8
            height = Screen.height * 0.8
+           x = (Screen.width - width) / 2
+           y = (Screen.height - height) / 2
        }
     minimumHeight: 702
     minimumWidth: 1248
@@ -99,6 +101,3 @@ Window {
         }
     }
 }
-
-
-

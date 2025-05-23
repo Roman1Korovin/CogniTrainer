@@ -46,28 +46,28 @@ Rectangle {
 
          //Список категорий в левой части
          ListView {
-             id: categoryList
-             width: parent.width * 0.25
-             height: parent.height
-             model: categoryManager ? categoryManager.categories : []
-             spacing: 20
-             topMargin: 30
-             clip: true
+            id: categoryList
+            width: parent.width * 0.25
+            height: parent.height
+            model: categoryManager ? categoryManager.categories : []
+            spacing: 20
+            topMargin: 30
+            clip: true
 
-             delegate: CategoryItem {
-                 name: model.name
-                 imagePath: model.imagePath
-                 isSelected: model.name === selectedCategoryName
-                 onClicked: {
-                     selectedCategoryName = name
-                     selectedTrainingUrl = null
-                 }
-             }
+            delegate: CategoryItem {
+               name: model.name
+               imagePath: model.imagePath
+               isSelected: model.name === selectedCategoryName
+               onClicked: {
+                  selectedCategoryName = name
+                  selectedTrainingUrl = null
+               }
+            }
 
-             ScrollBar.vertical: ScrollBar {
-                anchors.right: parent.right
-                width: 12
-             }
+            ScrollBar.vertical: ScrollBar {
+               anchors.right: parent.right
+               width: 12
+            }
 
          }
 
@@ -96,9 +96,9 @@ Rectangle {
                description: modelData.description
 
                onHeightReported: function(h) {
-                   if (h > maxCardHeight) {
-                       maxCardHeight = h;
-                   }
+                  if (h > maxCardHeight) {
+                     maxCardHeight = h;
+                  }
                }
 
                sharedMaxHeight: maxCardHeight
