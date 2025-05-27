@@ -44,6 +44,7 @@ Rectangle {
             font.bold: true
             color: "#333"
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+            width: parent.width
         }
 
         Text {

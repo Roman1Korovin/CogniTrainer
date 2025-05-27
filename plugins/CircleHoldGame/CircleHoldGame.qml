@@ -40,9 +40,6 @@ Item {
     Component.onCompleted: {
         circle.setRandomPosition()
         circle.setRandomTargetAngle()
-        trainingTimer.start()
-        moveLoop.start()
-        directionTimer.start()
     }
 
     Rectangle {
@@ -161,7 +158,7 @@ Item {
                 id: cursorCheckTimer
                 interval: 30  // Проверка ~30 раз в секунду
                 repeat: true
-                running: true
+                running: false
                 onTriggered: {
                     const dx = tracker.mouseX - (circle.x + circleRadius)
                     const dy = tracker.mouseY - (circle.y + circleRadius)
@@ -224,7 +221,7 @@ Item {
                 Timer {
                     id: moveLoop
                     interval: 8
-                    running: true
+                    running: false
                     repeat: true
                     onTriggered: {
                         // Плавный поворот в сторону targetAngle
@@ -262,7 +259,7 @@ Item {
                 Timer {
                     id: directionTimer
                     interval: 3000
-                    running: true
+                    running: false
                     repeat: true
                     onTriggered: circle.setRandomTargetAngle()
                 }
@@ -298,7 +295,7 @@ Item {
                     font.pixelSize: 26
                     color: "black"
                     horizontalAlignment: Text.AlignHCenter
-                    wrapMode: Text.Wrap
+                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
 
@@ -324,6 +321,47 @@ Item {
                         directionTimer.restart()
                     }
                 }
+            }
+        }
+    }
+    Item {
+        id: countdownOverlay
+        anchors.fill: parent
+        visible: true
+        z: 999
+        property int countdownValue: 3
+
+        Rectangle {
+            width: 150
+            height: 150
+            radius: width / 2
+            color: Qt.rgba(0, 0, 0, 0.6)
+            anchors.centerIn: parent
+
+            Text {
+                text: countdownOverlay.countdownValue > 0 ? countdownOverlay.countdownValue : "Старт!"
+                anchors.centerIn: parent
+                font.pixelSize: 50
+                color: "white"
+                horizontalAlignment: Text.AlignHCenter
+            }
+        }
+
+        Timer {
+            id: countdownTimer
+            interval: 1000
+            repeat: true
+            running: true
+            onTriggered: {
+                countdownOverlay.countdownValue--;
+                if (countdownOverlay.countdownValue < 0) {
+                    countdownTimer.stop();
+                    countdownOverlay.visible = false;
+                    trainingTimer.start()
+                    moveLoop.start()
+                    directionTimer.start()
+                }
+
             }
         }
     }

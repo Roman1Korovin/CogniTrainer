@@ -7,12 +7,15 @@ Item {
     visible: true
     anchors.fill: parent
 
+    property var moduleData
+    property var stackViewRef
+
     property int clickCount: 0
     property int roundCount: 0
     property int totalRounds: 50
     property bool answeredThisRound: false
     property bool processingRound: false
-    property var moduleData
+
     property int difficultyValue: moduleData ? moduleData.difficulty : 5
 
     function createMarker(color) {
@@ -247,7 +250,7 @@ Item {
                         font.pixelSize: 26
                         color: "black"
                         horizontalAlignment: Text.AlignHCenter
-                        wrapMode: Text.Wrap
+                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 

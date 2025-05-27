@@ -1,9 +1,9 @@
-#ifndef CIRCLECLICKGAMEMODULE_H
-#define CIRCLECLICKGAMEMODULE_H
+#ifndef CIRCLECLICKGAME_H
+#define CIRCLECLICKGAME_H
 
 #include "../../core/BaseModule.h"
 
-class CircleClickGameModule : public BaseModule
+class CircleClickGame : public BaseModule
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID ModuleInterface_iid)
@@ -12,7 +12,7 @@ class CircleClickGameModule : public BaseModule
     Q_PROPERTY(int difficulty READ difficulty WRITE setDifficulty NOTIFY difficultyChanged)
     Q_PROPERTY(QUrl iconArrowPath READ iconArrowPath CONSTANT)
 public:
-    explicit CircleClickGameModule(QObject *parent = nullptr);
+    explicit CircleClickGame(QObject *parent = nullptr);
 
     QString name() const override;
     QString description() const override;
@@ -36,4 +36,4 @@ private:
     int m_difficulty;
 };
 
-#endif // CIRCLECLICKGAMEMODULE_H
+#endif // CIRCLECLICKGAME_H

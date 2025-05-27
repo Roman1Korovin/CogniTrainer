@@ -111,7 +111,7 @@ Item {
                 text: moduleData && moduleData.manual ? moduleData.manual : ""
 
                 font.pixelSize: 22
-                wrapMode: Text.WordWrap
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             }
 
             Item {

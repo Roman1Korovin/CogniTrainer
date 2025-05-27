@@ -1,19 +1,20 @@
-#ifndef CIRCLEHOLDGAME_H
-#define CIRCLEHOLDGAME_H
+#ifndef TYPINGSPEEDGAME_H
+#define TYPINGSPEEDGAME_H
 
 #include "../../core/BaseModule.h"
 
-class CircleHoldGame : public BaseModule
+class TypingSpeedGame : public BaseModule
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID ModuleInterface_iid)
     Q_INTERFACES(ModuleInterface)
 
-    Q_PROPERTY(int difficulty READ difficulty WRITE setDifficulty NOTIFY difficultyChanged)
     Q_PROPERTY(QUrl iconArrowPath READ iconArrowPath CONSTANT)
+    Q_PROPERTY(QStringList sentences READ sentences NOTIFY sentencesChanged)
+
 
 public:
-    explicit CircleHoldGame(QObject *parent = nullptr);
+    explicit TypingSpeedGame(QObject *parent = nullptr);
 
     QString name() const override;
     QString description() const override;
@@ -23,18 +24,13 @@ public:
     QString category() const override;
     QUrl iconUrl() const override;
     QUrl iconArrowPath() const;
-
-    Q_INVOKABLE int difficulty() const;
-
-public slots:
-    void setDifficulty(int value);
-
+    QStringList sentences() const;
 signals:
-    void difficultyChanged();
+    void sentencesChanged();
 
 private:
-    int m_difficulty;
+    QStringList m_sentences;
 
 };
 
-#endif // CIRCLEHOLDGAME_H
+#endif // TYPINGSPEEDGAME_H

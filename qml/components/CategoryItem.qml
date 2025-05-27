@@ -11,7 +11,8 @@ Rectangle {
 
     width: 200
     height: 120
-    radius: 30
+    topRightRadius: 30
+
     border.color: "#cccccc"
     border.width: 1
 
@@ -56,9 +57,15 @@ Rectangle {
 
         Text {
             text: root.name
-            anchors.centerIn: parent
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+
+
             font.pixelSize: 18
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+            width: parent.width
             font.bold: true
         }
     }

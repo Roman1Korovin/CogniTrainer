@@ -1,23 +1,23 @@
 #include "CircleClickGame.h"
 
 // Конструктор
-CircleClickGameModule::CircleClickGameModule(QObject *parent)
+CircleClickGame::CircleClickGame(QObject *parent)
     : BaseModule(parent), m_difficulty(5)  // Явный вызов конструктора базового класса
 {
 }
 
 // Переопределяем метод name
-QString CircleClickGameModule::name() const {
+QString CircleClickGame::name() const {
     return "Попади вовремя";
 }
 
 // Переопределяем метод description
-QString CircleClickGameModule::description() const {
+QString CircleClickGame::description() const {
     return "Успей нажать на появляющиеся круги до их исчезновения. "
            "50 попыток — улучши свою точность и реакцию!";
 }
 
-QString CircleClickGameModule::manual() const {
+QString CircleClickGame::manual() const {
     return "- На экране будут случайно появляться круги.\n"
            "- Твоя задача — кликнуть по ним как можно быстрее.\n"
            "- Если ты успел — круг станет зелёным, если нет — появится красный круг.\n"
@@ -26,33 +26,33 @@ QString CircleClickGameModule::manual() const {
 }
 
 // Переопределяем метод для ссылки на QML компонент
-QUrl CircleClickGameModule::qmlComponentUrl() const {
+QUrl CircleClickGame::qmlComponentUrl() const {
     return QUrl("qrc:/CircleClickGame.qml");
 }
 
-QUrl CircleClickGameModule::qmlSettingsUrl() const {
+QUrl CircleClickGame::qmlSettingsUrl() const {
     return QUrl("qrc:/CircleClickGameSettings.qml");
 }
 // Переопределяем метод category
-QString CircleClickGameModule::category() const {
+QString CircleClickGame::category() const {
     return "Реакция";
 }
 
 // Переопределяем метод для иконки
-QUrl CircleClickGameModule::iconUrl() const {
+QUrl CircleClickGame::iconUrl() const {
     return QUrl("qrc:/assets/CircleClickGameIcon.png");
 }
 
-QUrl CircleClickGameModule::iconArrowPath() const{
+QUrl CircleClickGame::iconArrowPath() const{
     return QUrl("qrc:/assets/lefttArrow.png");
 }
 
-int CircleClickGameModule::difficulty() const
+int CircleClickGame::difficulty() const
 {
     return m_difficulty;
 }
 
-void CircleClickGameModule::setDifficulty(int value)
+void CircleClickGame::setDifficulty(int value)
 {
     if (m_difficulty != value) {
         m_difficulty = value;

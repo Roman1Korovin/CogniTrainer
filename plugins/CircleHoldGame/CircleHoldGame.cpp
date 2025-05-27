@@ -1,24 +1,24 @@
 #include "CircleHoldGame.h"
 
 // Конструктор
-CircleHoldGameModule::CircleHoldGameModule(QObject *parent)
+CircleHoldGame::CircleHoldGame(QObject *parent)
     : BaseModule(parent), m_difficulty(5)  // Начальный уровень сложности
 {
 }
 
 // Название тренировки
-QString CircleHoldGameModule::name() const {
+QString CircleHoldGame::name() const {
     return "Удержи круг";
 }
 
 // Описание для отображения в общем списке
-QString CircleHoldGameModule::description() const {
+QString CircleHoldGame::description() const {
     return "Наведи курсор на круг и удерживай его внутри пока он двигается. "
            "Тренировка на стабильность реакции и точность.";
 }
 
 // Подробная инструкция
-QString CircleHoldGameModule::manual() const {
+QString CircleHoldGame::manual() const {
     return "- На экране будет перемещаться круг.\n"
            "- Ваша задача — навести курсор внутрь круга и удерживать его внутри как можно дольше.\n"
            "- Время удержания зависит от выбранной сложности.\n"
@@ -27,37 +27,37 @@ QString CircleHoldGameModule::manual() const {
 }
 
 // Путь к основному QML-компоненту тренировки
-QUrl CircleHoldGameModule::qmlComponentUrl() const {
+QUrl CircleHoldGame::qmlComponentUrl() const {
     return QUrl("qrc:/CircleHoldGame.qml");
 }
 
 // Путь к QML-настройкам
-QUrl CircleHoldGameModule::qmlSettingsUrl() const {
+QUrl CircleHoldGame::qmlSettingsUrl() const {
     return QUrl("qrc:/CircleHoldGameSettings.qml");
 }
 
 // Категория тренировки
-QString CircleHoldGameModule::category() const {
+QString CircleHoldGame::category() const {
     return "Реакция";
 }
 
 // Иконка тренировки
-QUrl CircleHoldGameModule::iconUrl() const {
+QUrl CircleHoldGame::iconUrl() const {
     return QUrl("qrc:/assets/CircleHoldGameIcon.png");
 }
 
 // Путь к иконке стрелки "назад"
-QUrl CircleHoldGameModule::iconArrowPath() const {
+QUrl CircleHoldGame::iconArrowPath() const {
     return QUrl("qrc:/assets/lefttArrow.png");
 }
 
 // Геттер сложности
-int CircleHoldGameModule::difficulty() const {
+int CircleHoldGame::difficulty() const {
     return m_difficulty;
 }
 
 // Сеттер сложности
-void CircleHoldGameModule::setDifficulty(int value) {
+void CircleHoldGame::setDifficulty(int value) {
     if (m_difficulty != value) {
         m_difficulty = value;
         emit difficultyChanged();

@@ -64,3 +64,4 @@ install(TARGETS appCogniTrainer
 add_subdirectory(plugins/ReactionTrainer)
 add_subdirectory(plugins/CircleClickGame)
 add_subdirectory(plugins/CircleHoldGame)
+add_subdirectory(plugins/TypingSpeedGame)

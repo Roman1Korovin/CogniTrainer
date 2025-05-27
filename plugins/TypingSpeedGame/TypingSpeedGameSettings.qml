@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Shapes 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Shapes
 
 Item {
     id: root
@@ -11,8 +11,6 @@ Item {
     property var moduleData
     property var stackViewRef
 
-    // Выбранная сложность
-    property int difficulty: (moduleData && typeof moduleData.difficulty === "number") ? moduleData.difficulty : 5
 
     // Верхняя панель
     Rectangle {
@@ -120,88 +118,6 @@ Item {
             }
 
 
-            Label {
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: "Выберите уровень сложности"
-                font.weight: Font.DemiBold
-                font.pixelSize: 22
-            }
-
-            Item {
-                width: 1
-                height: Math.max(root.height * 0.03, 5)
-            }
-
-            //набор кнопок для выбора сложности
-            RowLayout {
-                anchors.horizontalCenter: parent.horizontalCenter
-
-
-                // Надпись "Легко"
-                Text {
-                    text: "Легко"
-                    font.pixelSize: 22
-                    Layout.alignment: Qt.AlignTop
-                    rightPadding: 15
-                }
-
-                //набор radioButton
-                RowLayout {
-
-                    Repeater {
-                        model: 10
-
-                        ColumnLayout {
-                            spacing: -20
-
-                            RadioButton {
-                                id: radioBtn
-                                checked: index + 1 === difficulty
-                                onClicked: difficulty = index + 1
-
-                                indicator: Rectangle {
-                                    implicitWidth: 32
-                                    implicitHeight: 32
-                                    radius: width / 2
-                                    border.width: 2
-                                    border.color: radioBtn.checked ? "blue" : "gray"
-                                    color: radioBtn.checked ? "blue" : "transparent"
-
-                                    Rectangle {
-                                        anchors.centerIn: parent
-                                        width: parent.width * 0.5
-                                        height: parent.height * 0.5
-                                        radius: width / 2
-                                        color: "white"
-                                        visible: radioBtn.checked
-                                    }
-                                }
-                            }
-
-                            Label {
-                                text: "  "+(index + 1).toString()
-                                font.pixelSize: 20
-                                horizontalAlignment: Text.AlignHCenter
-                            }
-                        }
-                    }
-                }
-
-                // Надпись "Сложно"
-                Text {
-                    leftPadding: -10
-                    text: "Сложно"
-                    font.pixelSize: 22
-                    Layout.alignment: Qt.AlignTop
-
-                }
-            }
-
-            Item {
-                width: 1
-                height: Math.max(root.height * 0.07, 5)
-
-            }
 
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -212,14 +128,13 @@ Item {
 
                 Layout.alignment: Qt.AlignHCenter
                 onClicked: {
-                    if (moduleData && typeof moduleData.setDifficulty === "function") {
-                        moduleData.setDifficulty(difficulty)
+                    if (moduleData) {
                         stackViewRef.push(moduleData.qmlComponentUrl, {
                                               moduleData: moduleData,
                                               stackViewRef: stackViewRef
                                           })
                     } else {
-                        console.warn("Ошибка: moduleData или setDifficulty не определены")
+                        console.warn("Ошибка: moduleDataне определены")
                     }
                 }
             }
