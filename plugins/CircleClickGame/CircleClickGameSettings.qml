@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Shapes 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Shapes
 
 Item {
     id: root
@@ -13,6 +13,7 @@ Item {
 
     // Выбранная сложность
     property int difficulty: (moduleData && typeof moduleData.difficulty === "number") ? moduleData.difficulty : 5
+    property bool endlessMode: (moduleData && typeof moduleData.endlessMode === "boolean") ? moduleData.endlessMode : false
 
     // Верхняя панель
     Rectangle {
@@ -196,10 +197,26 @@ Item {
 
                 }
             }
+            Item {
+                width: 1
+                height: Math.max(root.height * 0.015, 5)
+
+            }
+            CheckBox {
+                id: endlessCheckBox
+                text: "Бесконечный режим"
+                font.pixelSize: 22
+                checked: endlessMode
+
+                Layout.alignment: Qt.AlignHCenter
+                onCheckedChanged: {
+                    endlessMode = checked
+                }
+            }
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.07, 5)
+                height: Math.max(root.height * 0.05, 5)
 
             }
 
@@ -214,6 +231,7 @@ Item {
                 onClicked: {
                     if (moduleData && typeof moduleData.setDifficulty === "function") {
                         moduleData.setDifficulty(difficulty)
+                        moduleData.endlessMode = endlessMode
                         stackViewRef.push(moduleData.qmlComponentUrl, {
                                               moduleData: moduleData,
                                               stackViewRef: stackViewRef
@@ -228,8 +246,6 @@ Item {
                 width: 1
                 height: Math.max(root.height * 0.1, 5)
             }
-
         }
     }
-
 }

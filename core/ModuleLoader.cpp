@@ -27,13 +27,13 @@ QVector<ModuleInterface*> ModuleLoader::loadModules()
 
     //фильтруем по расширения для Win и Linux/mac
     QStringList filter =
-    {
+        {
 #ifdef Q_OS_WIN
-        "*.dll"
+            "*.dll"
 #else
-        "*.so"
+            "*.so"
 #endif
-    };
+        };
 
     //перебираем все подходящие файлы, загружаем плагин по fulePath и создаем объект(модуль) из плагина
     for(const QString& fileName : dir.entryList(filter, QDir::Files))
@@ -53,7 +53,7 @@ QVector<ModuleInterface*> ModuleLoader::loadModules()
                 // Проверяем правильность категории модуля,
                 if (!catMan.isValidCategory(module->category())) {
                     qCritical() << "Несуществующая категория в модуле"<<module->name()<< ":" << module->category()
-                                << ". Если вы хотите доабвить новую категорию, сделайте это в классе CategoryManager.";
+                       << ". Если вы хотите доабвить новую категорию, сделайте это в классе CategoryManager.";
 
                     loader->unload();
                     delete loader;
@@ -62,7 +62,7 @@ QVector<ModuleInterface*> ModuleLoader::loadModules()
                 for (int var = 0; var < 2; ++var) {
                     modules.append(module);
                 }
-                                           //добавляем модуль в вектор
+                //добавляем модуль в вектор
 
                 m_pluginLoaders.append(loader);                     //добавляем загрузчик в список, чтобы модуль не выгрузился автоматически
                 qDebug() << "Модуль загружен:" << module->name();

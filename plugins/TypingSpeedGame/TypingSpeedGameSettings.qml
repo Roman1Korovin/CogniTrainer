@@ -143,8 +143,6 @@ Item {
                 width: 1
                 height: Math.max(root.height * 0.1, 5)
             }
-
         }
     }
-
 }

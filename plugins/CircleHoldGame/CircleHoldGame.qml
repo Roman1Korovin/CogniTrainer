@@ -11,33 +11,58 @@ Item {
     property var stackViewRef
 
     // Параметры круга
-    property int circleRadius: 60
-    property bool cursorInside: false
-    property int trainingTime: 30
-    property int remainingTime: trainingTime
-    property real heldDuration: 0  // <- нужно, иначе будет ошибка при старте
 
+    property bool cursorInside: false
+    property real trainingTime: 10
+    property real remainingTime: trainingTime
+    property real lastUpdateTime: 0
+
+    property real heldDuration: 0          //время в круге
+    property real accuracy: 0              // Точность в процентах
+    property real startTime: 0             // Время начала тренировки
+    property real elapsedTime: 0           // Прошедшее время
+
+    property bool paused: false
 
     property int difficultyValue: moduleData ? moduleData.difficulty : 5
+    property bool endlessMode: moduleData && moduleData.endlessMode === true
 
     property real difficultyFactor: {
         switch (difficultyValue) {
-            case 1: return 0.2
-            case 2: return 0.4
-            case 3: return 0.6
-            case 4: return 0.8
-            case 5: return 1.0
-            case 6: return 1.2
-            case 7: return 1.4
-            case 8: return 1.7
-            case 9: return 2.3
-            case 10: return 3.0
+        case 1: return 0.25
+        case 2: return 0.4
+        case 3: return 0.6
+        case 4: return 0.8
+        case 5: return 1.0
+        case 6: return 1.2
+        case 7: return 1.4
+        case 8: return 1.7
+        case 9: return 2.2
+        case 10: return 2.7
 
-            default: return 1.0
+        default: return 1.0
+        }
+    }
+
+    property int circleRadius: {
+        switch (difficultyValue) {
+        case 1: return 250
+        case 2: return 200
+        case 3: return 160
+        case 4: return 120
+        case 5: return 100
+        case 6: return 80
+        case 7: return 70
+        case 8: return 70
+        case 9: return 70
+        case 10: return 70
+
+        default: return 1.0
         }
     }
 
     Component.onCompleted: {
+        countdownTimer.start()
         circle.setRandomPosition()
         circle.setRandomTargetAngle()
     }
@@ -46,24 +71,6 @@ Item {
         anchors.fill: parent
         color: "#ffffff"
 
-
-        Timer {
-            id: trainingTimer
-            interval: 1000
-            running: false
-            repeat: true
-            onTriggered: {
-                remainingTime--
-                if (cursorInside)
-                    heldDuration += 1
-                if (remainingTime <= 0) {
-                    trainingTimer.stop()
-                    moveLoop.stop()
-                    directionTimer.stop()
-                    gameOverOverlay.visible = true
-                }
-            }
-        }
 
         Rectangle {
             id: topBar
@@ -117,15 +124,105 @@ Item {
                     }
                 }
             }
-            Text {
-                id: timeText
-                text: "Осталось: " + remainingTime + " сек"
-                color: "#333"
-                font.pixelSize: 22
+
+            Row{
+
+
                 anchors.right: parent.right
                 anchors.rightMargin: 20
                 anchors.top: parent.top
                 anchors.topMargin: 20
+                spacing: 50
+
+                Text {
+                    text: !endlessMode
+                          ? "Осталось: " + Math.max(0, (trainingTime - elapsedTime)).toFixed(0) + " сек"
+                          : ""
+                    color: "#333"
+                    font.pixelSize: 26
+                }
+                Text {
+                    text: "Точность: " + accuracy.toFixed(1) + "%"
+                    font.pixelSize: 26
+                    color: "#333"
+
+                }
+            }
+
+
+
+            RowLayout{
+                anchors.centerIn: parent
+                Item {
+                    width: 60
+                    height: 60
+                    visible: endlessMode && !gameOverOverlay.visible && !countdownOverlay.visible
+
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: width / 2
+                        color: "#666666"
+                    }
+
+                    // Левая палочка
+                    Rectangle {
+                        width: 5
+                        height: 16
+                        radius: 2
+                        color: "white"
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.horizontalCenter
+                        anchors.rightMargin: 2
+                    }
+
+                    // Правая палочка
+                    Rectangle {
+                        width: 5
+                        height: 16
+                        radius: 2
+                        color: "white"
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.horizontalCenter
+                        anchors.leftMargin: 2
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: root.togglePause()
+                        cursorShape: Qt.PointingHandCursor
+                    }
+
+                    Layout.alignment: Qt.AlignVCenter
+                }
+
+
+                Item {
+                    width: 60
+                    height: 60
+                    visible: endlessMode && !gameOverOverlay.visible && !countdownOverlay.visible
+
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: width / 2
+                        color: "#666666"
+                    }
+
+                    Rectangle {
+                        width: 14
+                        height: 14
+                        color: "white"
+                        radius: 3
+                        anchors.centerIn: parent
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: root.endGame()
+                        cursorShape: Qt.PointingHandCursor
+                    }
+
+                    Layout.alignment: Qt.AlignVCenter
+                }
             }
         }
 
@@ -193,7 +290,6 @@ Item {
                 // Корректируем позицию круга при изменении размеров поля
                 onXChanged: clampPosition()
                 onYChanged: clampPosition()
-
 
 
                 function normalizeAngle(a) {
@@ -277,48 +373,66 @@ Item {
         z: 1000
 
         Rectangle {
-            width: parent.width * 0.5
-            height: parent.height * 0.35
+            width: 800
+            height: 300
             radius: 12
             anchors.centerIn: parent
             color: "#ffffff"
             border.color: "#cccccc"
             border.width: 1
 
-            Column {
+            ColumnLayout {
                 anchors.centerIn: parent
                 spacing: 16
-                width: parent.width
+                anchors.margins: 16
 
                 Text {
                     text: "Тренировка\nзавершена!"
                     font.pixelSize: 26
                     color: "black"
-                    horizontalAlignment: Text.AlignHCenter
-                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
                 }
-
+                Item {
+                    Layout.fillHeight: true // занимает все свободное пространство, сдвигая остальные элементы
+                }
                 Text {
                     text: "Время в круге: " + heldDuration.toFixed(1) + " сек"
                     font.pixelSize: 20
                     color: "black"
-                    horizontalAlignment: Text.AlignHCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 }
-
-                Button {
-                    text: "Сыграть снова"
+                Text {
+                    text: "Процент времени в круге: " + accuracy.toFixed(1)
+                    font.pixelSize: 20
+                    color: "black"
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                }
+                Item {
+                    Layout.fillHeight: true
+                }
+                Row{
                     anchors.horizontalCenter: parent.horizontalCenter
-                    onClicked: {
-                        heldDuration = 0
-                        remainingTime = trainingTime
-                        circle.setRandomPosition()
-                        circle.setRandomTargetAngle()
-                        gameOverOverlay.visible = false
-                        trainingTimer.restart()
-                        moveLoop.restart()
-                        directionTimer.restart()
+                    spacing:50
+                    Button {
+                        text: "Сыграть снова"
+                        onClicked: {
+                            heldDuration = 0
+                            accuracy = 0
+                            startTime = 0
+                            elapsedTime = 0
+                            circle.setRandomPosition()
+                            circle.setRandomTargetAngle()
+                            gameOverOverlay.visible = false
+                            countdownTimer.start()
+                            countdownOverlay.countdownValue = 3
+                            countdownOverlay.visible = true
+                        }
+                    }
+                    Button {
+                        text: "Выйти к настройкам"
+                        onClicked: {
+                            stackViewRef.pop()
+                        }
                     }
                 }
             }
@@ -332,8 +446,8 @@ Item {
         property int countdownValue: 3
 
         Rectangle {
-            width: 150
-            height: 150
+            width: 200
+            height: 200
             radius: width / 2
             color: Qt.rgba(0, 0, 0, 0.6)
             anchors.centerIn: parent
@@ -346,23 +460,137 @@ Item {
                 horizontalAlignment: Text.AlignHCenter
             }
         }
+    }
 
-        Timer {
-            id: countdownTimer
-            interval: 1000
-            repeat: true
-            running: true
-            onTriggered: {
-                countdownOverlay.countdownValue--;
-                if (countdownOverlay.countdownValue < 0) {
-                    countdownTimer.stop();
-                    countdownOverlay.visible = false;
-                    trainingTimer.start()
-                    moveLoop.start()
-                    directionTimer.start()
+    Item {
+        id: pauseOverlay
+        anchors.fill: parent
+        visible: false
+        z: 998
+
+        Rectangle {
+            width: 150
+            height: 150
+            radius: width / 2
+            color: Qt.rgba(0, 0, 0, 0.6)
+            anchors.centerIn: parent
+
+            Text {
+                text: "Пауза"
+                anchors.centerIn: parent
+                font.pixelSize: 28
+                color: "white"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                // Синхронизируем состояние паузы при клике на оверлей
+                if (root.paused) {
+                    root.togglePause();
                 }
-
             }
         }
     }
+
+    Timer {
+        id: trainingTimer
+        interval: 20
+        running: false
+        repeat: true
+        onTriggered: {
+            var now = Date.now()
+            var dt = (now - lastUpdateTime) / 1000.0
+            lastUpdateTime = now
+
+
+            if (cursorInside)
+                heldDuration += dt
+
+            if(!endlessMode){
+                if ((now - startTime) / 1000.0 >= trainingTime) {
+                    trainingTimer.stop()
+                    moveLoop.stop()
+                    directionTimer.stop()
+                    cursorCheckTimer.stop()
+                    gameOverOverlay.visible = true
+                    updateTimer.stop()
+                }
+            }
+        }
+    }
+
+    Timer {
+        id: countdownTimer
+        interval: 1000
+        repeat: true
+        running: false
+        onTriggered: {
+            countdownOverlay.countdownValue--;
+            if (countdownOverlay.countdownValue < 0) {
+                countdownTimer.stop();
+                countdownOverlay.visible = false;
+
+                startTime = Date.now()
+                lastUpdateTime = startTime
+
+                trainingTimer.start()
+
+                moveLoop.start()
+                directionTimer.start()
+                cursorCheckTimer.start()
+                updateTimer.start()
+            }
+        }
+    }
+
+    Timer {
+        id: updateTimer
+        interval: 100  // 1 секунда
+        running: false
+        repeat: true
+        onTriggered: {
+            var now = Date.now()
+            elapsedTime = (now - startTime) / 1000.0
+            if (elapsedTime > 0) {
+                accuracy = (heldDuration / elapsedTime) * 100.0
+            }
+        }
+    }
+
+    function endGame() {
+        trainingTimer.stop()
+        moveLoop.stop()
+        directionTimer.stop()
+        cursorCheckTimer.stop()
+        gameOverOverlay.visible = true
+        updateTimer.stop()
+    }
+
+
+    function togglePause() {
+        if (paused) {
+            trainingTimer.start()
+            moveLoop.start()
+            directionTimer.start()
+            cursorCheckTimer.start()
+            updateTimer.start()
+            pauseOverlay.visible =false;
+        } else {
+            trainingTimer.stop()
+            moveLoop.stop()
+            directionTimer.stop()
+            cursorCheckTimer.stop()
+            updateTimer.stop()
+            pauseOverlay.visible = true;
+        }
+        paused = !paused;
+    }
+
 }
+
+
+

@@ -7,50 +7,25 @@ Item {
     visible: true
     anchors.fill: parent
 
+    property StackView stackViewRef
     property var moduleData
-    property var stackViewRef
+
+    property int difficultyValue: moduleData ? moduleData.difficulty : 5
+    property bool endlessMode: moduleData && moduleData.endlessMode === true
 
     property int clickCount: 0
     property int roundCount: 0
-    property int totalRounds: 50
+    property int totalRounds: 40
     property bool answeredThisRound: false
     property bool processingRound: false
 
-    property int difficultyValue: moduleData ? moduleData.difficulty : 5
+    property bool paused: false
 
-    function createMarker(color) {
-        var marker = Qt.createQmlObject(`
-                                        import QtQuick 2.15
-                                        Rectangle {
-                                        id: markerRect
-                                        width: ${circle.width}
-                                        height: ${circle.height}
-                                        radius: width / 2
-                                        color: "${color}"
-                                        opacity: 0.5
-                                        x: ${circle.x}
-                                        y: ${circle.y}
-                                        z: -1
-
-                                        SequentialAnimation {
-                                        running: true
-                                        PropertyAnimation {
-                                        target: markerRect
-                                        property: "opacity"
-                                        to: 0
-                                        duration: 800
-                                        }
-                                        ScriptAction {
-                                        script: markerRect.destroy()
-                                        }
-                                        }
-                                        }
-                                        `, hitMarkerLayer);
-    }
 
     Rectangle {
         anchors.fill: parent
         color: "#ffffff"
+
 
         // Верхняя панель
         Rectangle {
@@ -117,17 +92,98 @@ Item {
 
 
             }
+
             Text {
-                text: "Круг: " + (root.roundCount + 1) + " из " + root.totalRounds
+                text: "Попаданий: " + root.clickCount + " из " + root.roundCount + " (" +
+                      (root.roundCount > 0
+                       ? Math.round(root.clickCount / root.roundCount * 100) + " %"
+                       : "0%") + ")"
+                font.pixelSize: 26
                 color: "#333"
                 visible: !gameOverOverlay.visible
-                font.pixelSize: 22
+                Layout.alignment: Qt.AlignVCenter
                 anchors.right: parent.right
                 anchors.rightMargin: 20
                 anchors.top: parent.top
                 anchors.topMargin: 20
             }
+
+
+            RowLayout{
+                anchors.centerIn: parent
+                Item {
+                    width: 60
+                    height: 60
+                    visible: endlessMode && !gameOverOverlay.visible && !countdownOverlay.visible
+
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: width / 2
+                        color: "#666666"
+                    }
+
+                    // Левая палочка
+                    Rectangle {
+                        width: 5
+                        height: 16
+                        radius: 2
+                        color: "white"
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.right: parent.horizontalCenter
+                        anchors.rightMargin: 2
+                    }
+
+                    // Правая палочка
+                    Rectangle {
+                        width: 5
+                        height: 16
+                        radius: 2
+                        color: "white"
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.horizontalCenter
+                        anchors.leftMargin: 2
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: root.togglePause()
+                        cursorShape: Qt.PointingHandCursor
+                    }
+
+                    Layout.alignment: Qt.AlignVCenter
+                }
+
+
+                Item {
+                    width: 60
+                    height: 60
+                    visible: endlessMode && !gameOverOverlay.visible && !countdownOverlay.visible
+
+                    Rectangle {
+                        anchors.fill: parent
+                        radius: width / 2
+                        color: "#666666"
+                    }
+
+                    Rectangle {
+                        width: 14
+                        height: 14
+                        color: "white"
+                        radius: 3
+                        anchors.centerIn: parent
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: root.endGame()
+                        cursorShape: Qt.PointingHandCursor
+                    }
+
+                    Layout.alignment: Qt.AlignVCenter
+                }
+            }
         }
+
 
         Item {
             id: hitMarkerLayer
@@ -138,8 +194,8 @@ Item {
             id: circle
             visible: false
             radius: width / 2
-            property int maxSize: 80
-            property int minSize: 20
+            property int maxSize: 200
+            property int minSize: 60
 
             width: {
                 const clamped = Math.max(1, Math.min(10, root.difficultyValue));
@@ -167,62 +223,22 @@ Item {
                     root.roundCount++;
                     root.createMarker("#00ff00");
 
-                    if (root.roundCount >= root.totalRounds) {
+                    if (!endlessMode && root.roundCount >= root.totalRounds) {
                         root.endGame();
                     } else {
                         circle.visible = false;
-
                         Qt.callLater(() => {
-                                         root.answeredThisRound = false;  // ← сбрасываем для нового раунда
+                                         root.answeredThisRound = false;
                                          circle.moveToRandomPosition();
                                          circle.visible = true;
                                          circleMouseArea.enabled = true;
-                                         autoMoveTimer.stop();
-                                         autoMoveTimer.start();
+                                         autoMoveTimer.restart();
                                      });
                     }
                 }
-
-
-
             }
-
         }
 
-        Timer {
-            id: autoMoveTimer
-            interval: 2000 - (root.difficultyValue * 150)
-            repeat: true
-            running: false
-
-            onTriggered: {
-                if (root.answeredThisRound)
-                    return;
-
-                root.answeredThisRound = true;
-                root.roundCount++;
-                root.createMarker("#ff0000");
-
-                if (root.roundCount >= root.totalRounds) {
-                    root.endGame();
-                } else {
-                    circle.visible = false;
-
-                    Qt.callLater(() => {
-                                     root.answeredThisRound = false;  // ← сбрасываем для нового раунда
-                                     circle.moveToRandomPosition();
-                                     circle.visible = true;
-                                     circleMouseArea.enabled = true;
-                                     autoMoveTimer.stop();
-                                     autoMoveTimer.start();
-                                 });
-
-                }
-            }
-
-
-
-        }
 
         Rectangle {
             id: gameOverOverlay
@@ -232,52 +248,71 @@ Item {
             z: 1000
 
             Rectangle {
-                width: parent.width * 0.5
-                height: parent.height * 0.35
+                width: 800
+                height: 300
                 radius: 12
                 anchors.centerIn: parent
                 color: "#ffffff"
                 border.color: "#cccccc"
                 border.width: 1
 
-                Column {
+                ColumnLayout {
                     anchors.centerIn: parent
                     spacing: 16
-                    width: parent.width
+                    anchors.margins: 16
 
                     Text {
-                        text: "Тренировка\nокончена!"
+                        text: "Тренировка\nзавершена!"
                         font.pixelSize: 26
                         color: "black"
-                        horizontalAlignment: Text.AlignHCenter
-                        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
                     }
-
+                    Item {
+                        Layout.fillHeight: true // занимает все свободное пространство, сдвигая остальные элементы
+                    }
                     Text {
-                        text: "Точность: " + Math.round(root.clickCount / root.roundCount * 100) + " %"
+                        text: "Точность: " +
+                              (root.roundCount > 0
+                               ? Math.round(root.clickCount / root.roundCount * 100) + " %"
+                               : "0 %")
                         font.pixelSize: 20
                         color: "black"
-                        horizontalAlignment: Text.AlignHCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     }
 
-                    Button {
-                        text: "Сыграть снова"
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        onClicked: {
-                            root.clickCount = 0;
-                            root.roundCount = 0;
-                            root.answeredThisRound = false;
-                            root.processingRound = false;
-                            gameOverOverlay.visible = false;
-                            countdownOverlay.countdownValue = 3;
-                            countdownOverlay.visible = true;
-                            countdownTimer.start();
-                            autoMoveTimer.stop();
-                            circle.visible = false;
-                        }
+                    Item {
+                        Layout.fillHeight: true
                     }
+                    Row{
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        spacing:50
+
+                        Button {
+                            text: "Сыграть снова"
+
+                            onClicked: {
+                                root.clickCount = 0;
+                                root.roundCount = 0;
+                                root.answeredThisRound = false;
+                                root.processingRound = false;
+                                gameOverOverlay.visible = false;
+                                countdownOverlay.countdownValue = 3;
+                                countdownOverlay.visible = true;
+                                countdownTimer.start();
+                                autoMoveTimer.stop();
+                                circle.visible = false;
+                            }
+                        }
+                        Button {
+                            text: "Выйти к настройкам"
+
+                            onClicked: {
+                                stackViewRef.pop()
+                            }
+                        }
+
+                    }
+
                 }
             }
         }
@@ -290,8 +325,8 @@ Item {
             property int countdownValue: 3
 
             Rectangle {
-                width: 150
-                height: 150
+                width: 200
+                height: 200
                 radius: width / 2
                 color: Qt.rgba(0, 0, 0, 0.6)
                 anchors.centerIn: parent
@@ -305,28 +340,120 @@ Item {
                 }
             }
 
-            Timer {
-                id: countdownTimer
-                interval: 1000
-                repeat: true
-                running: true
-                onTriggered: {
-                    countdownOverlay.countdownValue--;
-                    if (countdownOverlay.countdownValue < 0) {
-                        countdownTimer.stop();
-                        countdownOverlay.visible = false;
-                        autoMoveTimer.start();
 
-                        circle.moveToRandomPosition();
-                        circle.visible = true;
-                        circleMouseArea.enabled = true;
+        }
+
+        Item {
+            id: pauseOverlay
+            anchors.fill: parent
+            visible: false
+            z: 998
+
+            Rectangle {
+                width: 150
+                height: 150
+                radius: width / 2
+                color: Qt.rgba(0, 0, 0, 0.6)
+                anchors.centerIn: parent
+
+                Text {
+                    text: "Пауза"
+                    anchors.centerIn: parent
+                    font.pixelSize: 28
+                    color: "white"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    // Синхронизируем состояние паузы при клике на оверлей
+                    if (root.paused) {
+                        root.togglePause();
                     }
-
                 }
             }
         }
+    }
 
+    Timer {
+        id: autoMoveTimer
+        interval: 3000 - (root.difficultyValue * 250)
+        repeat: true
+        running: false
 
+        onTriggered: {
+            if (root.answeredThisRound)
+                return;
+
+            root.answeredThisRound = true;
+            root.roundCount++;
+            root.createMarker("#ff0000");
+
+            if (!endlessMode && root.roundCount >= root.totalRounds) {
+                root.endGame();
+            } else {
+                circle.visible = false;
+                Qt.callLater(() => {
+                                 root.answeredThisRound = false;
+                                 circle.moveToRandomPosition();
+                                 circle.visible = true;
+                                 circleMouseArea.enabled = true;
+                                 autoMoveTimer.restart();
+                             });
+            }
+        }
+    }
+
+    Timer {
+        id: countdownTimer
+        interval: 1000
+        repeat: true
+        running: true
+        onTriggered: {
+            countdownOverlay.countdownValue--;
+            if (countdownOverlay.countdownValue < 0) {
+                countdownTimer.stop();
+                countdownOverlay.visible = false;
+                autoMoveTimer.start();
+
+                circle.moveToRandomPosition();
+                circle.visible = true;
+                circleMouseArea.enabled = true;
+            }
+        }
+    }
+
+    function createMarker(color) {
+        var marker = Qt.createQmlObject(`
+                                        import QtQuick 2.15
+                                        Rectangle {
+                                        id: markerRect
+                                        width: ${circle.width}
+                                        height: ${circle.height}
+                                        radius: width / 2
+                                        color: "${color}"
+                                        opacity: 0.5
+                                        x: ${circle.x}
+                                        y: ${circle.y}
+                                        z: -1
+
+                                        SequentialAnimation {
+                                        running: true
+                                        PropertyAnimation {
+                                        target: markerRect
+                                        property: "opacity"
+                                        to: 0
+                                        duration: 800
+                                        }
+                                        ScriptAction {
+                                        script: markerRect.destroy()
+                                        }
+                                        }
+                                        }
+                                        `, hitMarkerLayer);
     }
 
     function endGame() {
@@ -335,8 +462,20 @@ Item {
         circle.visible = false;
     }
 
-    function finishRound() {
-        root.processingRound = false;
-    }
 
+    function togglePause() {
+        paused = !paused;
+        if (paused) {
+            autoMoveTimer.stop();
+            circle.visible = false;
+            circleMouseArea.enabled = false;
+            pauseOverlay.visible = true;
+        } else {
+            pauseOverlay.visible = false;
+            circle.moveToRandomPosition();
+            circle.visible = true;
+            circleMouseArea.enabled = true;
+            autoMoveTimer.start();
+        }
+    }
 }

@@ -120,6 +120,9 @@ Rectangle {
          }
       }
    }
+
+   // Невидимый GridView, чтобы определить maxCardHeight заранее
+
 }
 
 

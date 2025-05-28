@@ -29,8 +29,7 @@ TypingSpeedGame::TypingSpeedGame(QObject *parent)
             m_sentences.append(val.toString());
         }
     }
-     emit sentencesChanged();
-    qDebug() << m_sentences;
+    emit sentencesChanged();
 }
 
 QString TypingSpeedGame::name() const

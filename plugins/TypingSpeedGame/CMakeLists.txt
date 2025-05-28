@@ -11,11 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 
-qt_add_resources(appCogniTrainer "app_files"
-    PREFIX "/"
-    FILES
-        data/
-)
+
 
 add_library(TypingSpeedGame SHARED
   ../../core/BaseModule.h
@@ -23,7 +19,6 @@ add_library(TypingSpeedGame SHARED
   TypingSpeedGame.cpp
   TypingSpeedGame.h
   TypingSpeedGame.qrc
-  data/sentences.json
 )
 
 target_link_libraries(TypingSpeedGame
@@ -38,3 +33,4 @@ set_target_properties(TypingSpeedGame PROPERTIES
 )
 
 target_compile_definitions(TypingSpeedGame PRIVATE TYPINGSPEEDGAME_LIBRARY)
+

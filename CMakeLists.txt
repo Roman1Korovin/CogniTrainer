@@ -61,7 +61,10 @@ install(TARGETS appCogniTrainer
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-add_subdirectory(plugins/ReactionTrainer)
+add_subdirectory(plugins/TypingSpeedGame)
 add_subdirectory(plugins/CircleClickGame)
 add_subdirectory(plugins/CircleHoldGame)
-add_subdirectory(plugins/TypingSpeedGame)
+
+
+
+

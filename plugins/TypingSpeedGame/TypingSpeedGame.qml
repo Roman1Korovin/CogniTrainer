@@ -10,6 +10,7 @@ Item {
 
     property string fullText: ""
     property var allSentences: moduleData.sentences
+    property int countSentences: 5
     property int currentIndex: 0
     property var stateList: []
 
@@ -23,25 +24,9 @@ Item {
 
 
     Component.onCompleted: {
-          console.log(allSentences)
-
-           generateFullText()
-           stateList = new Array(fullText.length).fill(0)
-           forceActiveFocus()
-    }
-
-    function generateFullText() {
-        if (allSentences && allSentences.length >= 5) {
-            var copy = allSentences.slice()
-            var selected = []
-            for (var i = 0; i < 5; i++) {
-                var index = Math.floor(Math.random() * copy.length)
-                selected.push(copy.splice(index, 1)[0])
-            }
-            fullText = selected.join(" ")  // Объединить в одну строку с пробелами
-        } else {
-            console.warn("Недостаточно предложений в allSentences")
-        }
+        generateFullText()
+        stateList = new Array(fullText.length).fill(0)
+        forceActiveFocus()
     }
 
     // Верхняя панель
@@ -127,7 +112,7 @@ Item {
 
             Text {
                 text: "Точность: " + accuracy.toFixed(1) + "%"
-                font.pixelSize:26
+                font.pixelSize: 26
                 color: "black"
 
             }
@@ -256,12 +241,24 @@ Item {
                     Layout.fillHeight: true
                 }
 
-                Button {
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
-                    text: "Сыграть снова"
-                    width: 150
-                    onClicked: {
-                       resetParams()
+                Row{
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing:50
+
+                    Button {
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+                        text: "Сыграть снова"
+                        width: 150
+                        onClicked: {
+                            resetParams()
+                        }
+                    }
+                    Button {
+                        text: "Выйти к настройкам"
+
+                        onClicked: {
+                            stackViewRef.pop()
+                        }
                     }
                 }
             }
@@ -285,6 +282,53 @@ Item {
         }
     }
 
+    Keys.onPressed: function(event) {
+
+        var inputChar = event.text
+        if (inputChar === "") return
+
+        if (!timerRunning) {
+            startTime = Date.now()
+            updateTimer.start()
+            timerRunning = true
+        }
+
+        totalTyped++
+
+        var expectedChar = fullText[currentIndex]
+        if (inputChar === expectedChar) {
+            stateList[currentIndex] = 1
+            stateList = stateList
+            currentIndex++
+            correctTyped++
+
+            if (currentIndex >= fullText.length) {
+                updateTimer.stop()
+                timerRunning = false
+                gameOverOverlay.visible = true
+            }
+
+        } else {
+            stateList[currentIndex] = 2
+            stateList = stateList         //заставляю сработать триггер на изменение текста
+        }
+        event.accepted = true
+    }
+
+    function generateFullText() {
+        if (allSentences && allSentences.length >= 5) {
+            var copy = allSentences.slice()
+            var selected = []
+            for (var i = 0; i < countSentences; i++) {
+                var index = Math.floor(Math.random() * copy.length)
+                selected.push(copy.splice(index, 1)[0])
+            }
+            fullText = selected.join(" ")  // Объединить в одну строку с пробелами
+        } else {
+            console.warn("Недостаточно предложений в allSentences")
+        }
+    }
+
     function resetParams()
     {
         fullText = ""
@@ -300,38 +344,5 @@ Item {
         updateTimer.stop()
         gameOverOverlay.visible = false
         root.forceActiveFocus()
-    }
-
-    Keys.onPressed: function(event) {
-
-        var inputChar = event.text
-        if (inputChar === "") return
-
-        if (!timerRunning) {
-                startTime = Date.now()
-                updateTimer.start()
-                timerRunning = true
-            }
-
-            totalTyped++
-
-        var expectedChar = fullText[currentIndex]
-        if (inputChar === expectedChar) {
-            stateList[currentIndex] = 1
-            stateList = stateList
-            currentIndex++
-            correctTyped++
-
-            if (currentIndex >= fullText.length) {
-                updateTimer.stop()
-                           timerRunning = false
-                           gameOverOverlay.visible = true
-                    }
-
-        } else {
-            stateList[currentIndex] = 2
-            stateList = stateList         //заставляю сработать триггер на изменение текста
-        }
-        event.accepted = true
     }
 }

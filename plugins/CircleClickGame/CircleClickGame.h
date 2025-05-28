@@ -10,6 +10,7 @@ class CircleClickGame : public BaseModule
     Q_INTERFACES(ModuleInterface)
 
     Q_PROPERTY(int difficulty READ difficulty WRITE setDifficulty NOTIFY difficultyChanged)
+    Q_PROPERTY(bool endlessMode READ endlessMode WRITE setEndlessMode NOTIFY endlessModeChanged)
     Q_PROPERTY(QUrl iconArrowPath READ iconArrowPath CONSTANT)
 public:
     explicit CircleClickGame(QObject *parent = nullptr);
@@ -24,16 +25,20 @@ public:
     QUrl iconArrowPath() const;
 
     Q_INVOKABLE int difficulty() const;
-
+    Q_INVOKABLE bool endlessMode() const;
 
 public slots:
     void setDifficulty(int value);
+    void setEndlessMode(bool value);
+
 
 signals:
     void difficultyChanged();
+    void endlessModeChanged();
 
 private:
     int m_difficulty;
+    bool m_endlessMode;
 };
 
 #endif // CIRCLECLICKGAME_H
