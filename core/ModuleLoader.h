@@ -11,11 +11,11 @@
 class ModuleLoader
 {
 public:
-    explicit ModuleLoader(const QString& modulePath);        //конструктор принимающий путь к модулям
+    explicit ModuleLoader(const QString& moduleUrl);        //конструктор принимающий путь к модулям
     ~ModuleLoader();
     QVector<ModuleInterface*> loadModules();        //метод дял поиска и загрузки всех модулей
 private:
-    QString m_modulesPath;                          //путь до модулей
+    QString m_modulesUrl;                          //путь до модулей
     QVector<QPluginLoader*> m_pluginLoaders;        //вектор указателей на загрузчики
 
 };

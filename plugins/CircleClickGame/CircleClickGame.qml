@@ -74,7 +74,7 @@ Item {
 
 
                     Image {
-                        source: moduleData.iconArrowPath
+                        source: moduleData.iconArrowUrl
                         width: 40
                         fillMode: Image.PreserveAspectFit
                         mipmap: true

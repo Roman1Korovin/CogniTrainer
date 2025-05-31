@@ -43,7 +43,7 @@ QUrl CircleClickGame::iconUrl() const {
     return QUrl("qrc:/assets/CircleClickGameIcon.png");
 }
 
-QUrl CircleClickGame::iconArrowPath() const{
+QUrl CircleClickGame::iconArrowUrl() const{
     return QUrl("qrc:/assets/lefttArrow.png");
 }
 

@@ -9,7 +9,7 @@ class TypingSpeedGame : public BaseModule
     Q_PLUGIN_METADATA(IID ModuleInterface_iid)
     Q_INTERFACES(ModuleInterface)
 
-    Q_PROPERTY(QUrl iconArrowPath READ iconArrowPath CONSTANT)
+    Q_PROPERTY(QUrl iconArrowUrl READ iconArrowUrl CONSTANT)
     Q_PROPERTY(QStringList sentences READ sentences NOTIFY sentencesChanged)
 
 
@@ -23,7 +23,7 @@ public:
     QUrl qmlSettingsUrl() const override;
     QString category() const override;
     QUrl iconUrl() const override;
-    QUrl iconArrowPath() const;
+    QUrl iconArrowUrl() const;
     QStringList sentences() const;
 signals:
     void sentencesChanged();

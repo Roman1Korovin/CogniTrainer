@@ -37,8 +37,6 @@ Rectangle {
    Component {
       id: moduleSelectionPage
 
-
-
       Row {
          width: parent.width
          height: parent.height
@@ -56,7 +54,7 @@ Rectangle {
 
             delegate: CategoryItem {
                name: model.name
-               imagePath: model.imagePath
+               imageUrl: model.imageUrl
                isSelected: model.name === selectedCategoryName
                onClicked: {
                   selectedCategoryName = name
@@ -120,8 +118,6 @@ Rectangle {
          }
       }
    }
-
-   // Невидимый GridView, чтобы определить maxCardHeight заранее
 
 }
 

@@ -4,7 +4,7 @@ Rectangle {
 
     id: root
     property string name
-    property string imagePath
+    property string imageUrl
     property bool isSelected: false
 
     signal clicked(string name)
@@ -50,7 +50,7 @@ Rectangle {
         Image {
             width: 50
             height: 50
-            source: root.imagePath
+            source: root.imageUrl
             fillMode: Image.PreserveAspectCrop
         }
 

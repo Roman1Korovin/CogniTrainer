@@ -7,8 +7,8 @@
 #include "ModuleInterface.h"
 
 // Класс сканирует указанную директорию на наличие плагинов(модулей) и загружает их
-ModuleLoader::ModuleLoader(const QString& modulePath)
-    : m_modulesPath(modulePath) {}
+ModuleLoader::ModuleLoader(const QString& moduleUrl)
+    : m_modulesUrl(moduleUrl) {}
 
 ModuleLoader::~ModuleLoader()
 {
@@ -23,7 +23,7 @@ QVector<ModuleInterface*> ModuleLoader::loadModules()
 {
     QVector<ModuleInterface*> modules;
 
-    QDir dir(m_modulesPath);
+    QDir dir(m_modulesUrl);
 
     //фильтруем по расширения для Win и Linux/mac
     QStringList filter =

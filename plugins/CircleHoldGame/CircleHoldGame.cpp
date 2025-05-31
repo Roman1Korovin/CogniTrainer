@@ -47,7 +47,7 @@ QUrl CircleHoldGame::iconUrl() const {
 }
 
 // Путь к иконке стрелки "назад"
-QUrl CircleHoldGame::iconArrowPath() const {
+QUrl CircleHoldGame::iconArrowUrl() const {
     return QUrl("qrc:/assets/lefttArrow.png");
 }
 

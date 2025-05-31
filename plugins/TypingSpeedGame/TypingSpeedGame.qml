@@ -76,7 +76,7 @@ Item {
 
 
                 Image {
-                    source: moduleData && moduleData.iconArrowPath ? moduleData.iconArrowPath : ""
+                    source: moduleData && moduleData.iconArrowUrl ? moduleData.iconArrowUrl : ""
                     width: 40
 
                     fillMode: Image.PreserveAspectFit

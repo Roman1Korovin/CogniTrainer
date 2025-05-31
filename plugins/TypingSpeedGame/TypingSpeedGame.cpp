@@ -70,7 +70,7 @@ QUrl TypingSpeedGame::iconUrl() const
     return QUrl("qrc:/assets/con.png");
 }
 
-QUrl TypingSpeedGame::iconArrowPath() const
+QUrl TypingSpeedGame::iconArrowUrl() const
 {
     return QUrl("qrc:/assets/lefttArrow.png");
 }

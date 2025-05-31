@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ReverseTypingGame.qml</file>
+        <file>ReverseTypingGameSettings.qml</file>
+        <file>data/words.json</file>
+        <file>assets/lefttArrow.png</file>
+    </qresource>
+</RCC>

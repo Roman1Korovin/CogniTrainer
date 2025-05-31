@@ -1,19 +1,16 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Shapes
 
 Item {
     id: root
 
-
-    // Входные параметры
     property var moduleData
     property var stackViewRef
 
-    // Выбранная сложность
-    property int difficulty: (moduleData && typeof moduleData.difficulty === "number") ? moduleData.difficulty : 5
-    property bool endlessMode: (moduleData && typeof moduleData.endlessMode === "boolean") ? moduleData.endlessMode : false
+    property bool endlessMode:  false
+    property int wordDisplayMode: 1
+
     // Верхняя панель
     Rectangle {
         id: topBar
@@ -81,17 +78,19 @@ Item {
     //основной экран
 
     Item {
+        id: mainScreed
         anchors {
             top: topBar.bottom
             left: parent.left
             right: parent.right
             bottom: parent.bottom
         }
+
         Column {
 
             id:column
-
             anchors.centerIn: parent
+
 
             Text {
 
@@ -104,7 +103,7 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.03, 5)
+                height: Math.max((Window.height - 702) * 0.07, 5)
             }
 
             Text {
@@ -114,94 +113,54 @@ Item {
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             }
 
-            Item {
-                width: 1
-                height: Math.max(root.height * 0.07, 5)
-            }
-
-
-            Label {
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: "Выберите уровень сложности"
-                font.weight: Font.DemiBold
-                font.pixelSize: 22
-            }
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.03, 5)
+                height: Math.max((Window.height - 702) * 0.15, 30)
             }
 
-            //набор кнопок для выбора сложности
-            RowLayout {
+            Text{
                 anchors.horizontalCenter: parent.horizontalCenter
 
+                text:"Режим игры"
+                font.pixelSize: 26
+                font.bold: true
+            }
 
-                // Надпись "Легко"
-                Text {
-                    text: "Легко"
+            Item {
+                width: 1
+                height: Math.max((Window.height - 702) * 0.03, 5)
+            }
+
+
+
+            Column {
+
+                RadioButton {
+                    text: "Показывать всё время"
                     font.pixelSize: 22
-                    Layout.alignment: Qt.AlignTop
-                    rightPadding: 15
+                    onClicked: wordDisplayMode = 0
                 }
 
-                //набор radioButton
-                RowLayout {
-
-                    Repeater {
-                        model: 10
-
-                        ColumnLayout {
-                            spacing: -20
-
-                            RadioButton {
-                                id: radioBtn
-                                checked: index + 1 === difficulty
-                                onClicked: difficulty = index + 1
-
-                                indicator: Rectangle {
-                                    implicitWidth: 32
-                                    implicitHeight: 32
-                                    radius: width / 2
-                                    border.width: 2
-                                    border.color: radioBtn.checked ? "blue" : "gray"
-                                    color: radioBtn.checked ? "blue" : "transparent"
-
-                                    Rectangle {
-                                        anchors.centerIn: parent
-                                        width: parent.width * 0.5
-                                        height: parent.height * 0.5
-                                        radius: width / 2
-                                        color: "white"
-                                        visible: radioBtn.checked
-                                    }
-                                }
-                            }
-
-                            Label {
-                                text: "  "+(index + 1).toString()
-                                font.pixelSize: 20
-                                horizontalAlignment: Text.AlignHCenter
-                            }
-                        }
-                    }
+                RadioButton {
+                    text: "Показывать 3 секунды"
+                    font.pixelSize: 22
+                    checked: true
+                    onClicked: wordDisplayMode = 1
                 }
 
-                // Надпись "Сложно"
-                Text {
-                    leftPadding: -10
-                    text: "Сложно"
+                RadioButton {
+                    text: "Только аудиопроизношение"
                     font.pixelSize: 22
-                    Layout.alignment: Qt.AlignTop
-
+                    onClicked: wordDisplayMode = 2
                 }
             }
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.015, 5)
-
+                height: Math.max((Window.height - 702) * 0.05, 5)
             }
+
             CheckBox {
                 id: endlessCheckBox
                 text: "Бесконечный режим"
@@ -214,11 +173,12 @@ Item {
                 }
             }
 
+
             Item {
                 width: 1
-                height: Math.max(root.height * 0.05, 5)
-
+                height: Math.max((Window.height - 702) * 0.1, 5)
             }
+
 
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -229,23 +189,21 @@ Item {
 
                 Layout.alignment: Qt.AlignHCenter
                 onClicked: {
-                    if (moduleData && typeof moduleData.setDifficulty === "function") {
-                        moduleData.difficulty = difficulty
-                        moduleData.endlessMode = endlessMode
+                    if (moduleData) {
                         stackViewRef.push(moduleData.qmlComponentUrl, {
                                               moduleData: moduleData,
-                                              stackViewRef: stackViewRef
+                                              stackViewRef: stackViewRef,
+                                              wordDisplayMode: wordDisplayMode,
+                                              endlessMode : endlessMode
                                           })
                     } else {
-                        console.warn("Ошибка: moduleData или setDifficulty не определены")
+                        console.warn("Ошибка: moduleDataне определены")
                     }
                 }
             }
 
-            Item {
-                width: 1
-                height: Math.max(root.height * 0.1, 5)
-            }
+
         }
     }
 }
+

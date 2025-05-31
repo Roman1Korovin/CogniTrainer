@@ -8,7 +8,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 COMPONENTS Quick QuickControls2 REQUIRED)
+find_package(Qt6 COMPONENTS Quick QuickControls2 TextToSpeech REQUIRED)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
@@ -52,6 +52,7 @@ set_target_properties(appCogniTrainer PROPERTIES
 target_link_libraries(appCogniTrainer
     PRIVATE Qt6::Quick
     Qt6::QuickControls2
+    Qt6::TextToSpeech
 )
 
 include(GNUInstallDirs)
@@ -64,7 +65,4 @@ install(TARGETS appCogniTrainer
 add_subdirectory(plugins/TypingSpeedGame)
 add_subdirectory(plugins/CircleClickGame)
 add_subdirectory(plugins/CircleHoldGame)
-
-
-
-
+add_subdirectory(plugins/ReverseTypingGame)
