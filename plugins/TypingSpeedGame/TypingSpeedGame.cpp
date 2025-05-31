@@ -72,7 +72,7 @@ QUrl TypingSpeedGame::iconUrl() const
 
 QUrl TypingSpeedGame::iconArrowUrl() const
 {
-    return QUrl("qrc:/assets/lefttArrow.png");
+    return QUrl("qrc:/assets/leftArrow.png");
 }
 
 QStringList TypingSpeedGame::sentences() const {

@@ -1,19 +1,17 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Shapes
 
 Item {
     id: root
 
-
-    // Входные параметры
     property var moduleData
     property var stackViewRef
 
-    // Выбранная сложность
-    property int difficulty: (moduleData && typeof moduleData.difficulty === "number") ? moduleData.difficulty : 5
-    property bool endlessMode: (moduleData && typeof moduleData.endlessMode === "boolean") ? moduleData.endlessMode : false
+    property int difficultyMode: 4
+    property bool endlessMode:  false
+
+
 
     // Верхняя панель
     Rectangle {
@@ -82,30 +80,30 @@ Item {
     //основной экран
 
     Item {
+        id: mainScreed
         anchors {
             top: topBar.bottom
             left: parent.left
             right: parent.right
             bottom: parent.bottom
         }
+
         Column {
 
             id:column
-
             anchors.centerIn: parent
 
-            Text {
 
+            Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Инструкция"
                 font.pixelSize: 30
                 font.bold: true
-
             }
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.03, 5)
+                height: Math.max((Window.height - 702) * 0.07, 15)
             }
 
             Text {
@@ -115,23 +113,25 @@ Item {
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             }
 
+
             Item {
                 width: 1
-                height: Math.max(root.height * 0.07, 5)
+                height: Math.max((Window.height - 702) * 0.15, 20)
             }
 
-
-            Label {
+            Label{
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "Выберите уровень сложности"
+                text:"Выберите кол-во элементов последовательности"
                 font.weight: Font.DemiBold
                 font.pixelSize: 22
             }
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.03, 5)
+                height: Math.max((Window.height - 702) * 0.07, 15)
             }
+
+
 
             //набор кнопок для выбора сложности
             RowLayout {
@@ -150,15 +150,15 @@ Item {
                 RowLayout {
 
                     Repeater {
-                        model: 10
+                        model: 8
 
                         ColumnLayout {
                             spacing: -20
 
                             RadioButton {
                                 id: radioBtn
-                                checked: index + 1 === difficulty
-                                onClicked: difficulty = index + 1
+                                checked: index + 1 === difficultyMode
+                                onClicked: difficultyMode = index + 1
 
                                 indicator: Rectangle {
                                     implicitWidth: 32
@@ -215,11 +215,12 @@ Item {
                 }
             }
 
+
             Item {
                 width: 1
-                height: Math.max(root.height * 0.05, 5)
-
+                height: Math.max((Window.height - 702) * 0.1, 5)
             }
+
 
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -230,22 +231,17 @@ Item {
 
                 Layout.alignment: Qt.AlignHCenter
                 onClicked: {
-                    if (moduleData && typeof moduleData.setDifficulty === "function") {
-                        moduleData.difficulty = difficulty
-                        moduleData.endlessMode = endlessMode
+                    if (moduleData) {
                         stackViewRef.push(moduleData.qmlComponentUrl, {
                                               moduleData: moduleData,
-                                              stackViewRef: stackViewRef
+                                              stackViewRef: stackViewRef,
+                                              endlessMode : endlessMode,
+                                              difficultyMode : difficultyMode
                                           })
                     } else {
-                        console.warn("Ошибка: moduleData или setDifficulty не определены")
+                        console.warn("Ошибка: moduleDataне определены")
                     }
                 }
-            }
-
-            Item {
-                width: 1
-                height: Math.max(root.height * 0.1, 5)
             }
         }
     }

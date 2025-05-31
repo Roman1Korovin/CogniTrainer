@@ -549,7 +549,7 @@ Item {
 
     Timer {
         id: updateTimer
-        interval: 100  // 1 секунда
+        interval: 100
         running: false
         repeat: true
         onTriggered: {

@@ -59,7 +59,7 @@ QVector<ModuleInterface*> ModuleLoader::loadModules()
                     delete loader;
                     continue;
                 }
-                for (int var = 0; var < 2; ++var) {
+                for (int var = 0; var < 1; ++var) {
                     modules.append(module);
                 }
                 //добавляем модуль в вектор

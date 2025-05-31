@@ -2,7 +2,7 @@
     <qresource prefix="/">
         <file>TypingSpeedGame.qml</file>
         <file>TypingSpeedGameSettings.qml</file>
-        <file>assets/lefttArrow.png</file>
+        <file>assets/leftArrow.png</file>
         <file>data/sentences.json</file>
     </qresource>
 </RCC>

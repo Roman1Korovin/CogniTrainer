@@ -3,6 +3,6 @@
         <file>CircleClickGame.qml</file>
         <file>CircleClickGameSettings.qml</file>
         <file>assets/CircleGameIcon.png</file>
-        <file>assets/lefttArrow.png</file>
+        <file>assets/leftArrow.png</file>
     </qresource>
 </RCC>

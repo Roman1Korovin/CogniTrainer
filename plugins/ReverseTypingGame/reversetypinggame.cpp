@@ -69,7 +69,7 @@ QUrl ReverseTypingGame::iconUrl() const
 
 QUrl ReverseTypingGame::iconArrowUrl() const
 {
-    return QUrl("qrc:/assets/lefttArrow.png");
+    return QUrl("qrc:/assets/leftArrow.png");
 }
 
 QString ReverseTypingGame::currentWord() const

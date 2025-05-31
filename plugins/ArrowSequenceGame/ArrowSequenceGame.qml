@@ -1,57 +1,53 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Controls.Material
-import QtTextToSpeech
+import QtQuick.Window
 
 Item {
     id: root
-
+    focus: true
+    Keys.forwardTo: []
     property var moduleData
     property var stackViewRef
-    property bool endlessMode
-    property int wordDisplayMode  // 0 = всё время, 1 = 3 секунды, 2 = аудио
-    property string currentWord: ""
-    property string userInput: ""
 
+
+
+    property var directions: ["left", "up", "right", "down"]
+    property var currentSequence: []
     property int round: 0
-    property int targetRound: 5
+    property int targetRound: 10
+    property int inputIndex: 0
 
-    property real startTime : 0
-    property real averageWordTime : 0
-    property real trainingTime: 0
+    property double trainingTime: 0
+    property double startTime: 0
+    property double avgRoundTime: 0
 
-    property bool showWord: true
+    property bool errorFlash: false
+    property bool successFlash: false
 
-    property bool hasError: false
+    property int difficultyMode
+    property bool endlessMode: false
 
-    Timer {
-        id: hideTimer
-        interval: 3000
-        repeat: false
-        onTriggered: showWord = false
+    property int difficultyLength: {
+        switch (difficultyMode) {
+        case 1: return 3
+        case 2: return 4
+        case 3: return 5
+        case 4: return 6
+        case 5: return 8
+        case 6: return 10
+        case 7: return 12
+        case 8: return 15
+
+        default: return 3
+        }
     }
-
 
     Component.onCompleted: {
-
         countdownTimer.start()
+
     }
 
-    function initParameters() {
-
-
-        round = 0
-        startTime = Date.now()
-        trainingTime = 0
-        averageWordTime = 0
-
-        mainScreen.visible = true
-        textField.focus = true
-
-        updateTimer.start()
-        loadNextWord()
-    }
 
     Timer {
         id: updateTimer
@@ -66,11 +62,18 @@ Item {
         }
     }
 
+    Timer {
+        id: errorFlashResetTimer
+        interval: 300
+        running: false
+        repeat: false
+        onTriggered: errorFlash = false
+    }
 
     Timer {
         id: countdownTimer
 
-        interval: 1
+        interval: 1000
         repeat: true
         running: false
         onTriggered: {
@@ -78,8 +81,11 @@ Item {
             if (countdownOverlay.countdownValue < 0) {
                 countdownTimer.stop();
                 countdownOverlay.visible = false;
+                mainScreen.visible = true
 
-                initParameters()
+                updateTimer.start()
+                startTime = Date.now()
+                startRound()
             }
         }
     }
@@ -109,25 +115,100 @@ Item {
     }
 
 
-    function loadNextWord() {
-        if (moduleData && typeof moduleData.nextWord === "function") {
-            currentWord = moduleData.nextWord()
-            console.log("Получил слово: "+ currentWord)
 
-            if (wordDisplayMode === 0) {
-                showWord = true
-            } else if (wordDisplayMode === 1) {
-                hideTimer.start()
-                showWord = true
+    function generateSequence() {
+        let result = []
+        for (let i = 0; i < difficultyLength; i++) {
+            result.push(directions[Math.floor(Math.random() * 4)])
+        }
+        return result
+    }
 
-            }else if (wordDisplayMode === 2)
-            {
-                showWord = false
-                speech.say(currentWord)
+    function startRound() {
+        currentSequence = generateSequence()
+        inputIndex = 0
+    }
+
+
+
+    function endGame() {
+        updateTimer.stop()
+        avgRoundTime = trainingTime / round
+        gameOverOverlay.visible = true
+
+    }
+
+    function resetParams() {
+        gameOverOverlay.visible = false
+        round = 0
+        trainingTime = 0
+        avgRoundTime = 0
+        countdownOverlay.countdownValue = 3
+        countdownOverlay.visible = true
+        mainScreen.visible = false
+        countdownTimer.start()
+
+    }
+
+    function processInput(dir) {
+        if (currentSequence[inputIndex] === dir) {
+            inputIndex++
+            if (inputIndex === currentSequence.length) {
+                successFlash = true
+
+                Qt.createQmlObject(`
+                                   import QtQuick 2.0
+                                   Timer {
+                                   interval: 500
+                                   repeat: false
+                                   onTriggered: {
+                                   successFlash = false
+                                   round++
+                                   if (!endlessMode && targetRound <= round) {
+                                   endGame()
+                                   } else {
+                                   startRound()
+                                   }
+                                   }
+                                   }
+                                   `, parent, "SuccessTimer").start()
             }
+
+        } else {
+            inputIndex = 0 // сброс при ошибке
+            errorFlash = true
+            errorFlashResetTimer.restart()
         }
     }
 
+    Keys.onPressed: (event) => {
+                        const ch = event.text.toLowerCase()
+
+                        switch (event.key) {
+                            case Qt.Key_Left:
+                            case Qt.Key_Up:
+                            case Qt.Key_Right:
+                            case Qt.Key_Down:
+                            // для стрелок используем key
+                            break
+                            default:
+                            switch (ch) {
+                                case "a": case "ф":
+                                processInput("left")
+                                break
+                                case "w": case "ц":
+                                processInput("up")
+                                break
+                                case "d": case "в":
+                                processInput("right")
+                                break
+                                case "s": case "ы":
+                                processInput("down")
+                                break
+                            }
+                            break
+                        }
+                    }
 
     // Верхняя панель
     Rectangle {
@@ -212,12 +293,6 @@ Item {
 
             }
 
-
-            Text {
-                text: !endlessMode ? "Осталось слов: " + (targetRound - round) : ""
-                font.pixelSize: 26
-                color: "black"
-            }
         }
 
         Item {
@@ -253,95 +328,83 @@ Item {
     }
 
     //основной экран
-
-    TextToSpeech {
-        id: speech
-
-        locale: Qt.locale("ru_RU")
-    }
-
     Column {
         id: mainScreen
         visible: false
-        spacing: 100
         anchors.centerIn: parent
+        spacing: 40
+
 
         Text {
             text: "Раунд: " + (round + 1) + (endlessMode ? "" : " / " + targetRound)
-            font.pixelSize: 28
-            horizontalAlignment: Text.AlignHCenter
-        }
-
-        Text {
-            id: wordDisplay
-            text: currentWord
-            anchors.horizontalCenter:  parent.horizontalCenter
-            font.pixelSize: 50
-            font.bold: true
-            visible: true
-
-            opacity: showWord ? 1 : 0
-        }
-
-        TextField {
-            id: textField
-            width: 500
-
-            font.pixelSize: 20
-            text: userInput
-
-            placeholderText: "Введите слово"
-
-
-            onTextChanged: {
-                userInput = text
-                hasError = false
-            }
-            onActiveFocusChanged: {
-                if (!activeFocus) {
-                    hasError = false
-                }
-            }
-            Material.accent: hasError? "red" : "gray"
-
-        }
-
-        Button {
-            text: "Проверить"
-            width:300
-            font.pixelSize: 20
             anchors.horizontalCenter: parent.horizontalCenter
-            onClicked: {
-                if (moduleData && typeof moduleData.checkAnswer === "function") {
-                    const correct = moduleData.checkAnswer(userInput)
-                    if (correct){
+            font.pixelSize: 26
+            font.weight: Font.DemiBold
 
-                        round++
-                        userInput = ""
-                        hasError = false
+        }
 
+        Item {
+            width: 1
+            height: 30
+        }
 
+        Row {
+            spacing: 20
+            Repeater {
+                model: currentSequence.length
+                Rectangle {
+                    width: 64
+                    height: 64
+                    radius: 8
+                    border.width: 1
+                    border.color: "#ccc"
 
-                        hideTimer.stop()
-                        hideTimer.start()
+                    color: {
+                        if (errorFlash) return "red"
+                        else if (successFlash) return "lightgreen"
+                        else if (index < inputIndex) return "lightgreen"
+                        else return "#f0f0f0"
+                    }
+                    scale: (errorFlash || successFlash) ? 1.3 : 1.0
+                    transformOrigin: Item.Center
 
-                        //конец тренировки
-                        if (round === targetRound && !endlessMode) {
-
-                            endGame()
-                            return
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: errorFlash ? 200 : 0
                         }
+                    }
 
-                        loadNextWord()
+                    Behavior on scale {
+                        NumberAnimation {
+                            duration: 200
+                            easing.type: Easing.OutQuad
+                        }
+                    }
 
+                    Image {
+                        anchors.centerIn: parent
+                        source: moduleData.iconArrowUrl
+                        width: 40
+                        fillMode: Image.PreserveAspectFit
 
-
-                    } else {
-                        hasError = true
-                        textField.focus = true
+                        rotation: {
+                            switch (currentSequence[index]) {
+                            case "left": return 0
+                            case "up": return 90
+                            case "right": return 180
+                            case "down": return -90
+                            }
+                        }
                     }
                 }
             }
+        }
+
+        Text {
+            text: "Управление: ← ↑ → ↓ или WASD"
+            font.pixelSize: 20
+            color: "#777"
+            anchors.horizontalCenter: parent.horizontalCenter
         }
     }
 
@@ -382,7 +445,7 @@ Item {
                     spacing: 8
 
                     Text {
-                        text: endlessMode ? "Слов пройдено: " + round: ""
+                        text: "Раундов пройдено: " + round
                         font.pixelSize: 18
                         color: "black"
                     }
@@ -393,7 +456,7 @@ Item {
 
                     }
                     Text {
-                        text: round != 0 ?"Среднее время на слово: " + averageWordTime.toFixed(2) + " сек" : ""
+                        text: round != 0 ?"Среднее время раунда: " + avgRoundTime.toFixed(2) + " сек" : ""
                         font.pixelSize: 18
                         color: "black"
 
@@ -426,28 +489,5 @@ Item {
                 }
             }
         }
-    }
-
-    function endGame()
-    {
-        averageWordTime = trainingTime/ round
-
-        gameOverOverlay.visible = true
-        updateTimer.stop()
-    }
-
-    function resetParams()
-    {
-        gameOverOverlay.visible = false
-        countdownOverlay.countdownValue = 3
-        countdownOverlay.visible = true
-        mainScreen.visible = false
-
-
-        round = 0
-        trainingTime = 0
-        averageWordTime = 0
-
-        countdownTimer.restart()
     }
 }

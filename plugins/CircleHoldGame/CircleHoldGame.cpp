@@ -48,7 +48,7 @@ QUrl CircleHoldGame::iconUrl() const {
 
 // Путь к иконке стрелки "назад"
 QUrl CircleHoldGame::iconArrowUrl() const {
-    return QUrl("qrc:/assets/lefttArrow.png");
+    return QUrl("qrc:/assets/leftArrow.png");
 }
 
 // Геттер сложности
