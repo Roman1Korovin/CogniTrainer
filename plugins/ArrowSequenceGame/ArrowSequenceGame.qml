@@ -182,33 +182,39 @@ Item {
     }
 
     Keys.onPressed: (event) => {
-                        const ch = event.text.toLowerCase()
+        const ch = event.text.toLowerCase()
 
-                        switch (event.key) {
-                            case Qt.Key_Left:
-                            case Qt.Key_Up:
-                            case Qt.Key_Right:
-                            case Qt.Key_Down:
-                            // для стрелок используем key
-                            break
-                            default:
-                            switch (ch) {
-                                case "a": case "ф":
-                                processInput("left")
-                                break
-                                case "w": case "ц":
-                                processInput("up")
-                                break
-                                case "d": case "в":
-                                processInput("right")
-                                break
-                                case "s": case "ы":
-                                processInput("down")
-                                break
-                            }
-                            break
-                        }
-                    }
+        switch (event.key) {
+            case Qt.Key_Left:
+                processInput("left")
+                break
+            case Qt.Key_Up:
+                processInput("up")
+                break
+            case Qt.Key_Right:
+                processInput("right")
+                break
+            case Qt.Key_Down:
+                processInput("down")
+                break
+            default:
+                switch (ch) {
+                    case "a": case "ф":
+                        processInput("left")
+                        break
+                    case "w": case "ц":
+                        processInput("up")
+                        break
+                    case "d": case "в":
+                        processInput("right")
+                        break
+                    case "s": case "ы":
+                        processInput("down")
+                        break
+                }
+                break
+        }
+    }
 
     // Верхняя панель
     Rectangle {
