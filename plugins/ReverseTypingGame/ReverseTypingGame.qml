@@ -70,7 +70,7 @@ Item {
     Timer {
         id: countdownTimer
 
-        interval: 1
+        interval: 1000
         repeat: true
         running: false
         onTriggered: {
@@ -263,7 +263,7 @@ Item {
     Column {
         id: mainScreen
         visible: false
-        spacing: 100
+        spacing: 80
         anchors.centerIn: parent
 
         Text {
@@ -320,10 +320,7 @@ Item {
                         userInput = ""
                         hasError = false
 
-
-
                         hideTimer.stop()
-                        hideTimer.start()
 
                         //конец тренировки
                         if (round === targetRound && !endlessMode) {
