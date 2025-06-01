@@ -1,4 +1,6 @@
 import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 Rectangle {
 
@@ -9,30 +11,45 @@ Rectangle {
 
     signal clicked(string name)
 
-    width: 200
+    width: 400
     height: 120
-    topRightRadius: 30
+    radius: 25
 
-    border.color: "#cccccc"
-    border.width: 1
+    border.color: Material.theme === Material.Dark ? "white" : "black"
+    border.width: 2
 
     anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
 
-    //цвет в зависимости от того выюран ли элемент
-    property color baseColor: isSelected ? "#A0522D" : "#ffe066"
+    //цвет в зависимости от темы и того выюран ли элемент
+    property color baseColor: isSelected
+        ? (Material.theme === Material.Dark ? "#4073ad" : "#5288c4")  // цвет при выборе, разный для тем
+        : (Material.theme === Material.Dark ? "#2c3e50" : "#C9E9FF")  // базовый цвет по теме
+
+
 
     //изменения цветов при наведении и удерживании
     color: {
-        if (isSelected)
+        if (isSelected) {
             return baseColor;
-        else if (buttonMouseArea.containsPress)
-            return Qt.lighter(baseColor, 1.2);
-        else if(buttonMouseArea.containsMouse)
-            return Qt.darker(baseColor, 1.1);
-        else{
-        return baseColor;
         }
+
+        // Тема тёмная
+        if (Material.theme === Material.Dark) {
+            if (buttonMouseArea.containsPress)
+                return Qt.lighter(baseColor, 1.2); // светлее при нажатии
+            else if (buttonMouseArea.containsMouse)
+                return Qt.darker(baseColor, 1.1);  // темнее при наведении
+        } else {
+            // Тема светлая
+            if (buttonMouseArea.containsPress)
+                return Qt.darker(baseColor, 1.1);  // темнее при нажатии
+            else if (buttonMouseArea.containsMouse)
+                return Qt.lighter(baseColor, 1.05); // светлее при наведении
+        }
+
+        return baseColor;
     }
+
 
 
     MouseArea {
@@ -47,26 +64,33 @@ Rectangle {
 
         onClicked: root.clicked(root.name)
 
-        Image {
-            width: 50
-            height: 50
-            source: root.imageUrl
-            fillMode: Image.PreserveAspectCrop
-        }
+        RowLayout{
+
+            anchors.fill: parent
+            anchors.rightMargin: 10
+            Layout.alignment: Qt.AlignVCenter
+            Image {
+
+                id:image
+                source: root.imageUrl
+                Layout.preferredHeight: parent.height
+                Layout.preferredWidth: Layout.preferredHeight-4
+                Layout.leftMargin: 2
 
 
-        Text {
-            text: root.name
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+                Layout.alignment: Qt.AlignVCenter
+                fillMode: Image.PreserveAspectFit
+                mipmap: true
+            }
 
 
-            font.pixelSize: 18
-            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-            width: parent.width
-            font.bold: true
+            Label {
+                text: root.name
+                Layout.fillWidth: true
+                horizontalAlignment: Text.AlignHCenter
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                font.bold: true
+            }
         }
     }
 }

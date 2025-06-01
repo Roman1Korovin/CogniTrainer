@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
-    QQuickStyle::setStyle("Material");
+
 
 
     //защита от неудачной загрузки qml

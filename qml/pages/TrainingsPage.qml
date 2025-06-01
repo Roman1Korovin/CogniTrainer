@@ -7,6 +7,10 @@ Rectangle {
    width: parent.width
    height: parent.height
 
+
+   color: Material.background
+
+
    property string selectedCategoryName: ""
    property var selectedTrainingUrl
    property int maxCardHeight: 0
@@ -16,7 +20,6 @@ Rectangle {
          selectedCategoryName = categoryManager.categories[0].name
          selectedTrainingUrl = filteredModules[0].qmlComponentUrl;
       }
-
    }
 
 
@@ -43,10 +46,21 @@ Rectangle {
 
 
          //Список категорий в левой части
-         ListView {
-            id: categoryList
-            width: parent.width * 0.25
+         Frame{
+
+            width: 460
             height: parent.height
+
+            background: Rectangle {
+                    color: Material.theme === Material.Dark ? Qt.darker(Material.background, 1.3) : Qt.darker(Material.background, 1.05)
+                }
+
+         ListView {
+
+            id: categoryList
+            anchors.fill: parent
+
+
             model: categoryManager ? categoryManager.categories : []
             spacing: 20
             topMargin: 30
@@ -68,24 +82,26 @@ Rectangle {
             }
 
          }
+         }
 
          // разделитель
-         Rectangle {
+         Frame {
+            id: separator
             width: 2
             height: parent.height
-            color: "#cccccc"
+
          }
 
          //список тренировок в правой части
          GridView {
             id: trainingGrid
-            width: parent.width * 0.75
+            width: parent.width - categoryList.width - separator.width
             height: parent.height
-            cellWidth: 260 + 16
+            cellWidth: 400 + 16
             cellHeight: maxCardHeight > 0 ? maxCardHeight + 16 : 120 + 16
             topMargin: 30
             leftMargin: 30
-            rightMargin: 10
+            rightMargin: 30
             model: filteredModules
             clip: true
 

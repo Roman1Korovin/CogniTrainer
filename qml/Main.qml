@@ -3,8 +3,13 @@ import QtQuick.Controls
 import "pages"
 import "components"
 
-Window {
+ApplicationWindow {
     id: mainWindow
+
+    Material.theme: !Material.theme
+
+    Material.background: Material.theme === Material.Light ? "#e3f0ff" : "#17222e"
+
     Component.onCompleted: {
            width = Screen.width * 0.8
            height = Screen.height * 0.8
@@ -15,6 +20,7 @@ Window {
     minimumWidth: 1248
     visible: true
     title: "Cognitive Trainer"
+
 
     property string currentTab: "trainings"
 

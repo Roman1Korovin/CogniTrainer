@@ -1,4 +1,6 @@
 import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 Rectangle {
 
@@ -11,22 +13,38 @@ Rectangle {
     property int sharedMaxHeight:0
     signal heightReported(int h)
 
-    width: 260
+    width: 400
     height: sharedMaxHeight > implicitHeight ? sharedMaxHeight : implicitHeight
     radius: 12
-    border.color: "#cccccc"
-    border.width: 1
+    border.color: Material.theme === Material.Dark ? "white" : "black"
+    border.width: 2
 
 
-    property color baseColor: "#ffe066"
+    //цвет в зависимости от темы и того выюран ли элемент
+    property color baseColor: Material.theme === Material.Dark ? "#2c3e50" : "#C9E9FF"  // цвет при выборе, разный для тем
 
-    color: if(buttonMouseArea.containsPress) {
-               return Qt.lighter(root.baseColor,1.2)
-           } else if (buttonMouseArea.containsMouse) {
-               return Qt.darker(root.baseColor,1.1)
-           } else {
-               return root.baseColor
-           }
+
+    //изменения цветов при наведении и удерживании
+    color: {
+        // Тема тёмная
+        if (Material.theme === Material.Dark) {
+            if (buttonMouseArea.containsPress)
+                return Qt.lighter(baseColor, 1.2); // светлее при нажатии
+            else if (buttonMouseArea.containsMouse)
+                return Qt.darker(baseColor, 1.1);  // темнее при наведении
+        } else {
+            // Тема светлая
+            if (buttonMouseArea.containsPress)
+                return Qt.darker(baseColor, 1.1);  // темнее при нажатии
+            else if (buttonMouseArea.containsMouse)
+                return Qt.lighter(baseColor, 1.05); // светлее при наведении
+        }
+        return baseColor;
+    }
+
+
+
+
 
     // Размеры подстраиваются под содержимое
     implicitHeight: contentItem.implicitHeight + 24
@@ -38,19 +56,19 @@ Rectangle {
         anchors.fill: parent
         spacing: 8
 
-        Text {
+        Label {
             text: modelData.name
-            font.pixelSize: 18
+            font.pixelSize: 20
             font.bold: true
-            color: "#333"
+
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             width: parent.width
         }
 
-        Text {
+        Label {
             text: modelData.description
-            font.pixelSize: 14
-            color: "#666"
+            font.pixelSize: 15
+            color: Material.theme === Material.Dark ? "#ccc" : "#666"
             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             width: parent.width
         }

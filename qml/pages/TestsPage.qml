@@ -1,15 +1,12 @@
 import QtQuick
 import QtQuick.Controls
 
-Rectangle {
+Frame {
     width: parent.width
     height: parent.height
-    color: "transparent"
 
-    Text {
+    Label {
         anchors.centerIn: parent
         text: "Раздел Тесты"
-        font.pixelSize: 24
-        color: "#555"
     }
 }

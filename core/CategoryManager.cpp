@@ -4,10 +4,10 @@
 
 CategoryManager::CategoryManager(QObject* parent) : QObject(parent) {
 
-    m_categories.append(new Category("Реакция", "qrc:/assets/backgrounds//ReactionTrainer.png", this));
-    m_categories.append(new Category("Память", ":/icons/logic.png", this));
-    m_categories.append(new Category("Внимание", ":/icons/memory.png", this));
-    m_categories.append(new Category("Письмо и ввод", ":/icons/memory.png", this));
+    m_categories.append(new Category("Реакция", "qrc:/assets/icons/ReactionIcon.png", this));
+    m_categories.append(new Category("Память", "qrc:/assets/icons/MemoryIcon.png", this));
+    m_categories.append(new Category("Внимание", "qrc:/assets/icons/AttentionIcon.png", this));
+    m_categories.append(new Category("Письмо и ввод", "qrc:/assets/icons/KeyboardIcon.png", this));
 
 }
 

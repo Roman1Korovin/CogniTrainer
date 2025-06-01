@@ -40,6 +40,7 @@ qt_add_qml_module(appCogniTrainer
         core/ModuleLoader.h core/ModuleLoader.cpp
         core/Category.h
         core/CategoryManager.h core/CategoryManager.cpp
+    RESOURCES application.qrc
 )
 
 set_target_properties(appCogniTrainer PROPERTIES
