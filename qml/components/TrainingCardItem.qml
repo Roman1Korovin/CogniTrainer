@@ -7,21 +7,21 @@ Rectangle {
     id: root
     property string name
     property string description
-
+    property string iconUrl
     signal clicked(string name)
 
     property int sharedMaxHeight:0
     signal heightReported(int h)
 
-    width: 400
-    height: sharedMaxHeight > implicitHeight ? sharedMaxHeight : implicitHeight
+    width: 350
+    height: 525
     radius: 12
-    border.color: Material.theme === Material.Dark ? "white" : "black"
-    border.width: 2
+
 
 
     //цвет в зависимости от темы и того выюран ли элемент
-    property color baseColor: Material.theme === Material.Dark ? "#2c3e50" : "#C9E9FF"  // цвет при выборе, разный для тем
+    property color baseColor: Material.theme === Material.Dark ? "#32475c" : "#C9E9FF"  // цвет при выборе, разный для тем
+
 
 
     //изменения цветов при наведении и удерживании
@@ -43,11 +43,37 @@ Rectangle {
     }
 
 
+    Image {
+
+        anchors {
+            left:parent.left
+            right: parent.right
+            top: parent.top
+            bottom: parent.bottom
+        }
+        anchors.margins: 3
+
+        source: Material.theme === Material.Dark
+            ? "qrc:/assets/backgrounds/DarkFrame.png"
+            : "qrc:/assets/backgrounds/LightFrame.png"
+
+    }
+
+
+    Image {
+
+        anchors.bottom: parent.bottom
+        source: iconUrl
+
+        fillMode: Image.PreserveAspectFit
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottomMargin: 30
+        width: 255
+    }
 
 
 
-    // Размеры подстраиваются под содержимое
-    implicitHeight: contentItem.implicitHeight + 24
+
 
     // Содержимое
     Column {
@@ -58,19 +84,48 @@ Rectangle {
 
         Label {
             text: modelData.name
-            font.pixelSize: 20
+            font.pixelSize: 24
             font.bold: true
 
-            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+
+            height: 65
             width: parent.width
+            horizontalAlignment: Text.AlignHCenter
+            leftPadding: 30
+            rightPadding: 30
+            topPadding: 10
+
+            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+
         }
 
-        Label {
-            text: modelData.description
-            font.pixelSize: 15
-            color: Material.theme === Material.Dark ? "#ccc" : "#666"
-            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+        Flickable {
             width: parent.width
+            height: 145
+            contentHeight: textItem.paintedHeight
+            clip: true
+
+
+            ScrollBar.vertical: ScrollBar {
+                id: scroll
+                        anchors.right: parent.right
+                        width: 0
+                        policy: textItem.paintedHeight > parent.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+
+            }
+
+            Label {
+                id: textItem
+
+                width: parent.width
+                horizontalAlignment: Text.AlignJustify
+                leftPadding: 8
+                rightPadding: 8
+                text: modelData.description
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                font.pixelSize: 18
+                color: Material.theme === Material.Dark ? "#ccc" : "#666"
+            }
         }
     }
 
@@ -82,8 +137,5 @@ Rectangle {
         onClicked: root.clicked(root.name)
     }
 
-    Component.onCompleted: {
-        heightReported(root.height)
-    }
 }
 

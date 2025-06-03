@@ -6,9 +6,9 @@ import "components"
 ApplicationWindow {
     id: mainWindow
 
-    Material.theme: !Material.theme
+    Material.theme: Material.theme
 
-    Material.background: Material.theme === Material.Light ? "#e3f0ff" : "#17222e"
+    Material.background: Material.theme === Material.Light ? "#fffbf5" : "#17222e"
 
     Component.onCompleted: {
            width = Screen.width * 0.8

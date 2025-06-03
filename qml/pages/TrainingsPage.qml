@@ -13,7 +13,6 @@ Rectangle {
 
    property string selectedCategoryName: ""
    property var selectedTrainingUrl
-   property int maxCardHeight: 0
 
    Component.onCompleted: {
       if (filteredModules.length > 0) {
@@ -63,7 +62,7 @@ Rectangle {
 
             model: categoryManager ? categoryManager.categories : []
             spacing: 20
-            topMargin: 30
+            topMargin: 20
             clip: true
 
             delegate: CategoryItem {
@@ -97,8 +96,8 @@ Rectangle {
             id: trainingGrid
             width: parent.width - categoryList.width - separator.width
             height: parent.height
-            cellWidth: 400 + 16
-            cellHeight: maxCardHeight > 0 ? maxCardHeight + 16 : 120 + 16
+            cellWidth: 350 + 20
+            cellHeight:  525 + 20
             topMargin: 30
             leftMargin: 30
             rightMargin: 30
@@ -107,15 +106,8 @@ Rectangle {
 
             delegate: TrainingCardItem {
                name: modelData.name
+               iconUrl: modelData.iconUrl
                description: modelData.description
-
-               onHeightReported: function(h) {
-                  if (h > maxCardHeight) {
-                     maxCardHeight = h;
-                  }
-               }
-
-               sharedMaxHeight: maxCardHeight
 
                onClicked: {
                   console.log("Открываю тренировку: " + modelData.qmlSettingsUrl)
