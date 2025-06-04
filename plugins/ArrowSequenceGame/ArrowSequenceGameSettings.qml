@@ -129,7 +129,7 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max((Window.height - 702) * 0.15, 20)
+                height: Math.max((Window.height - 702) * 0.15, 40)
             }
 
             Label{
@@ -213,8 +213,7 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.015, 5)
-
+                height: Math.max(root.height * 0.015, 10)
             }
 
             CheckBox {
@@ -244,7 +243,7 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max((Window.height - 702) * 0.1, 5)
+                height: Math.max((Window.height - 702) * 0.1, 10)
             }
 
 

@@ -119,7 +119,7 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.03, 5)
+                height: Math.max((Window.height - 702) * 0.07, 15)
             }
 
             Label {
@@ -127,11 +127,12 @@ Item {
 
                 font.pixelSize: 22
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                   horizontalAlignment: Text.AlignJustify
             }
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.07, 5)
+                height: Math.max((Window.height - 702) * 0.15, 40)
             }
 
 
@@ -144,7 +145,7 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.03, 5)
+                height: Math.max((Window.height - 702) * 0.07, 15)
             }
 
             //набор кнопок для выбора сложности
@@ -213,7 +214,7 @@ Item {
             }
             Item {
                 width: 1
-                height: Math.max(root.height * 0.015, 5)
+                height: Math.max(root.height * 0.015, 10)
 
             }
             CheckBox {
@@ -230,7 +231,7 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.05, 5)
+                height: Math.max((Window.height - 702) * 0.1, 10)
 
             }
 
@@ -256,10 +257,6 @@ Item {
                 }
             }
 
-            Item {
-                width: 1
-                height: Math.max(root.height * 0.1, 5)
-            }
         }
     }
 }

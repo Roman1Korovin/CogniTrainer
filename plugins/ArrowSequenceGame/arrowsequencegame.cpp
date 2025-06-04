@@ -11,7 +11,7 @@ QString ArrowSequenceGame::name() const
 
 QString ArrowSequenceGame::description() const
 {
-    return "Запоминайте и воспроизводите последовательность стрелок. "
+    return "Правильно и быстро введи последовательность стрелок. "
            "Тренирует внимание, память и координацию.";
 }
 

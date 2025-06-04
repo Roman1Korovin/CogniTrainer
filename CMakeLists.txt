@@ -68,4 +68,4 @@ add_subdirectory(plugins/CircleClickGame)
 add_subdirectory(plugins/CircleHoldGame)
 add_subdirectory(plugins/ReverseTypingGame)
 add_subdirectory(plugins/ArrowSequenceGame)
-
+add_subdirectory(plugins/ReactionClickGame)

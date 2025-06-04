@@ -13,7 +13,7 @@ Item {
     // Параметры круга
 
     property bool cursorInside: false
-    property real trainingTime: 10
+    property real trainingTime: 30
     property real remainingTime: trainingTime
     property real lastUpdateTime: 0
 

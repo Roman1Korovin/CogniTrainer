@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ReactionClickGame.qml</file>
+        <file>ReactionClickGameSettings.qml</file>
+        <file>assets/leftArrowDark.png</file>
+        <file>assets/leftArrowLight.png</file>
+        <file>assets/ReactionClickIcon.png</file>
+    </qresource>
+</RCC>

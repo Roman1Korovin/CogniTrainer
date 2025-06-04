@@ -119,7 +119,7 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.03, 5)
+                height: Math.max((Window.height - 702) * 0.07, 15)
             }
 
             Label {
@@ -131,7 +131,7 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.07, 5)
+                height: Math.max((Window.height - 702) * 0.15, 40)
             }
 
 
@@ -144,8 +144,9 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.03, 5)
+                height: Math.max((Window.height - 702) * 0.07, 15)
             }
+
 
             //набор кнопок для выбора сложности
             RowLayout {
@@ -214,9 +215,9 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.015, 5)
-
+                height: Math.max(root.height * 0.015, 10)
             }
+
             CheckBox {
                 id: endlessCheckBox
                 text: "Бесконечный режим"
@@ -231,8 +232,7 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.05, 5)
-
+                height: Math.max((Window.height - 702) * 0.1, 10)
             }
 
             Button {
@@ -255,11 +255,6 @@ Item {
                         console.warn("Ошибка: moduleData или setDifficulty не определены")
                     }
                 }
-            }
-
-            Item {
-                width: 1
-                height: Math.max(root.height * 0.1, 5)
             }
         }
     }

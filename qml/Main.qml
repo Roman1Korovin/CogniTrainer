@@ -6,7 +6,7 @@ import "components"
 ApplicationWindow {
     id: mainWindow
 
-    Material.theme: Material.theme
+    Material.theme: !Material.theme
 
     Material.background: Material.theme === Material.Light ? "#fffbf5" : "#17222e"
 

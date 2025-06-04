@@ -2,15 +2,16 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Shapes
+import QtQuick.Controls.Material
 
 Item {
     id: root
+    anchors.fill: parent
 
-
-    // Входные параметры
     property var moduleData
     property var stackViewRef
 
+    property bool endlessMode: (moduleData && typeof moduleData.endlessMode === "boolean") ? moduleData.endlessMode : false
 
     // Верхняя панель
     Rectangle {
@@ -21,18 +22,17 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
 
-
         // Нижняя граница
-           Rectangle {
-               height: 2
-               anchors {
-                   bottom: parent.bottom
-                   left: parent.left
-                   right: parent.right
-               }
-               color: "grey"
-               z: 10
-           }
+        Rectangle {
+            height: 2
+            anchors {
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            color: "grey"
+            z: 10
+        }
 
         MouseArea {
 
@@ -54,7 +54,7 @@ Item {
                            (backArea.pressed ? Qt.darker("#32475c" ,1.2) : backArea.containsMouse ? Qt.darker("#32475c",1.1) : "#32475c") :
                            (backArea.pressed ? Qt.darker("white",1.2) : backArea.containsMouse ? Qt.darker("white",1.1) : "white")
                 radius: 8
-                border.color:  "#a0a0a0"
+                border.color:  "grey"
                 border.width: 2
 
             }
@@ -92,30 +92,30 @@ Item {
     //основной экран
 
     Item {
+        id: mainScreed
         anchors {
             top: topBar.bottom
             left: parent.left
             right: parent.right
             bottom: parent.bottom
         }
+
         Column {
 
             id:column
-
             anchors.centerIn: parent
 
-            Label {
 
+            Label {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Инструкция"
                 font.pixelSize: 30
                 font.bold: true
-
             }
 
             Item {
                 width: 1
-                height: 40
+                height: Math.max((Window.height - 702) * 0.07, 15)
             }
 
             Label {
@@ -125,37 +125,48 @@ Item {
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             }
 
+
             Item {
                 width: 1
-                height: Math.max((Window.height - 702) * 0.5, 120)
+                height: Math.max((Window.height - 702) * 0.3, 50)
             }
 
+
+            CheckBox {
+                id: endlessCheckBox
+                text: "Бесконечный режим"
+                font.pixelSize: 22
+                checked: endlessMode
+
+                Layout.alignment: Qt.AlignHCenter
+                onCheckedChanged: {
+                    endlessMode = checked
+                }
+            }
+
+
+            Item {
+                width: 1
+                height: Math.max((Window.height - 702) * 0.1, 10)
+            }
 
 
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
-                width:300
                 text: "Продолжить"
+                width:300
                 font.pixelSize: 20
-
-
                 Layout.alignment: Qt.AlignHCenter
                 onClicked: {
-                    if (moduleData) {
-                        stackViewRef.push(moduleData.qmlComponentUrl, {
-                                              moduleData: moduleData,
-                                              stackViewRef: stackViewRef
-                                          })
-                    } else {
-                        console.warn("Ошибка: moduleDataне определены")
-                    }
-                }
-            }
+                    moduleData.endlessMode = endlessMode
+                    stackViewRef.push(moduleData.qmlComponentUrl, {
+                                          moduleData: moduleData,
+                                          stackViewRef: stackViewRef
+                                      })
 
-            Item {
-                width: 1
-                height: Math.max(root.height * 0.1, 5)
+                }
             }
         }
     }
 }
+
