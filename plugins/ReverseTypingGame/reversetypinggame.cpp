@@ -64,14 +64,16 @@ QString ReverseTypingGame::category() const
 
 QUrl ReverseTypingGame::iconUrl() const
 {
-    return QUrl("qrc:/assets/reverse_icon.png");
+    return QUrl("qrc:/assets/ReverseTypingIcon.png");
 }
 
-QUrl ReverseTypingGame::iconArrowUrl() const
-{
-    return QUrl("qrc:/assets/leftArrow.png");
+QUrl ReverseTypingGame::iconArrowDarkUrl() const{
+    return QUrl("qrc:/assets/leftArrowDark.png");
 }
 
+QUrl ReverseTypingGame::iconArrowLightUrl() const{
+    return QUrl("qrc:/assets/leftArrowLight.png");
+}
 QString ReverseTypingGame::currentWord() const
 {
     return m_currentWord;

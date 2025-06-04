@@ -32,14 +32,24 @@ Item {
     // Верхняя панель
     Rectangle {
         id: topBar
-        height: 65
-        color: "#f0f0f0"
+        height: 75
+        color: Material.theme === Material.Dark ? Qt.darker(Material.background, 1.3) : Qt.darker(Material.background, 1.05)
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        border.color: "#cccccc"
 
 
+        // Нижняя граница
+           Rectangle {
+               height: 2
+               anchors {
+                   bottom: parent.bottom
+                   left: parent.left
+                   right: parent.right
+               }
+               color: "grey"
+               z: 10
+           }
 
         MouseArea {
 
@@ -57,10 +67,12 @@ Item {
             Rectangle {
 
                 anchors.fill: parent
-                color: backArea.pressed ? Qt.darker("white",1.2) : backArea.containsMouse ? Qt.darker("white",1.1) : "white"
+                color: Material.theme === Material.Dark ?
+                           (backArea.pressed ? Qt.darker("#32475c" ,1.2) : backArea.containsMouse ? Qt.darker("#32475c",1.1) : "#32475c") :
+                           (backArea.pressed ? Qt.darker("white",1.2) : backArea.containsMouse ? Qt.darker("white",1.1) : "white")
                 radius: 8
                 border.color:  "#a0a0a0"
-                border.width: 1
+                border.width: 2
 
             }
 
@@ -76,7 +88,7 @@ Item {
 
 
                 Image {
-                    source: moduleData && moduleData.iconArrowUrl ? moduleData.iconArrowUrl : ""
+                    source: Material.theme === Material.Dark ?moduleData.iconArrowLightUrl : moduleData.iconArrowDarkUrl
                     width: 40
 
                     fillMode: Image.PreserveAspectFit
@@ -84,10 +96,9 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                Text {
+                Label {
                     text: moduleData && moduleData.name ? moduleData.name : ""
                     font.pixelSize: 26
-                    color: "black"
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
@@ -104,16 +115,14 @@ Item {
             spacing: 50
 
 
-            Text {
+            Label {
                 text: "Скорость: " + spm.toFixed(1) + " сим/мин"
                 font.pixelSize: 26
-                color: "black"
             }
 
-            Text {
+            Label {
                 text: "Точность: " + accuracy.toFixed(1) + "%"
                 font.pixelSize: 26
-                color: "black"
 
             }
         }
@@ -133,7 +142,7 @@ Item {
             id:column
             anchors.centerIn: parent
 
-            Text {
+            Label {
                 id: displayText
                 width: contentArea.width * 0.5
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -150,10 +159,18 @@ Item {
                         var style = ""
 
                         if (stateList[i] === 1) {
-                            style += "background-color:#ccffcc;"
+                            if (Material.theme === Material.Light)
+                                style += "background-color:#ccffcc;"
+                            else
+                                style += "background-color:#0f5e0f;"
+
                         } else if (stateList[i] === 2) {
-                            style += "background-color:#ffcccc;"
+                            if (Material.theme === Material.Light)
+                                style += "background-color:#ffcccc;"
+                            else
+                                style += "background-color:#5e1010;"
                         }
+
 
                         if (i === currentIndex) {
                             style += "text-decoration: underline;"
@@ -177,7 +194,7 @@ Item {
 
             Button {
                 text: "Перезапустить"
-                width: 150
+                width: 300
 
                 anchors.horizontalCenter: parent.horizontalCenter
                 onClicked: {
@@ -199,8 +216,8 @@ Item {
             height: 300
             radius: 12
             anchors.centerIn: parent
-            color: "#ffffff"
-            border.color: "#cccccc"
+            color: Material.theme === Material.Light ? "white" : "#2c3e50"
+            border.color: Material.theme === Material.Light ? "#cccccc" : "#34495e"
             border.width: 1
 
             ColumnLayout {
@@ -208,11 +225,10 @@ Item {
                 anchors.margins: 16
                 spacing: 16
 
-                Text {
+                Label {
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
                     text: "Тренировка\nзавершена!"
                     font.pixelSize: 26
-                    color: "black"
                 }
 
                 Item {
@@ -223,16 +239,14 @@ Item {
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     spacing: 20
 
-                    Text {
+                    Label {
                         text: "Скорость: " + spm.toFixed(1) + " символов в минуту"
                         font.pixelSize: 18
-                        color: "black"
 
                     }
-                    Text {
+                    Label {
                         text: "Точность: " + accuracy.toFixed(1) + "%"
                         font.pixelSize: 18
-                        color: "black"
 
                     }
                 }
@@ -248,13 +262,14 @@ Item {
                     Button {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
                         text: "Сыграть снова"
-                        width: 150
+                        width: 300
                         onClicked: {
                             resetParams()
                         }
                     }
                     Button {
                         text: "Выйти к настройкам"
+                        width: 300
 
                         onClicked: {
                             stackViewRef.pop()

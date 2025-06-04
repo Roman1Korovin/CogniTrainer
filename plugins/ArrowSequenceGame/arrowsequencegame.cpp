@@ -40,10 +40,13 @@ QString ArrowSequenceGame::category() const
 
 QUrl ArrowSequenceGame::iconUrl() const
 {
-    return QUrl("");
+    return QUrl("qrc:/assets/ArrowSequenceIcon.png");
 }
 
-QUrl ArrowSequenceGame::iconArrowUrl() const
-{
-    return QUrl("qrc:/assets/leftArrow.png");
+QUrl ArrowSequenceGame::iconArrowDarkUrl() const{
+    return QUrl("qrc:/assets/leftArrowDark.png");
+}
+
+QUrl ArrowSequenceGame::iconArrowLightUrl() const{
+    return QUrl("qrc:/assets/leftArrowLight.png");
 }

@@ -15,12 +15,24 @@ Item {
     // Верхняя панель
     Rectangle {
         id: topBar
-        height: 65
-        color: "#f0f0f0"
+        height: 75
+        color: Material.theme === Material.Dark ? Qt.darker(Material.background, 1.3) : Qt.darker(Material.background, 1.05)
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        border.color: "#cccccc"
+
+
+        // Нижняя граница
+           Rectangle {
+               height: 2
+               anchors {
+                   bottom: parent.bottom
+                   left: parent.left
+                   right: parent.right
+               }
+               color: "grey"
+               z: 10
+           }
 
         MouseArea {
 
@@ -38,10 +50,12 @@ Item {
             Rectangle {
 
                 anchors.fill: parent
-                color: backArea.pressed ? Qt.darker("white",1.2) : backArea.containsMouse ? Qt.darker("white",1.1) : "white"
+                color: Material.theme === Material.Dark ?
+                           (backArea.pressed ? Qt.darker("#32475c" ,1.2) : backArea.containsMouse ? Qt.darker("#32475c",1.1) : "#32475c") :
+                           (backArea.pressed ? Qt.darker("white",1.2) : backArea.containsMouse ? Qt.darker("white",1.1) : "white")
                 radius: 8
                 border.color:  "#a0a0a0"
-                border.width: 1
+                border.width: 2
 
             }
 
@@ -57,7 +71,7 @@ Item {
 
 
                 Image {
-                    source: moduleData && moduleData.iconArrowUrl ? moduleData.iconArrowUrl : ""
+                    source: Material.theme === Material.Dark ?moduleData.iconArrowLightUrl : moduleData.iconArrowDarkUrl
                     width: 40
 
                     fillMode: Image.PreserveAspectFit
@@ -65,10 +79,9 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                Text {
+                Label {
                     text: moduleData && moduleData.name ? moduleData.name : ""
                     font.pixelSize: 26
-                    color: "black"
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
@@ -91,7 +104,7 @@ Item {
 
             anchors.centerIn: parent
 
-            Text {
+            Label {
 
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Инструкция"
@@ -105,7 +118,7 @@ Item {
                 height: Math.max(root.height * 0.03, 5)
             }
 
-            Text {
+            Label {
                 text: moduleData && moduleData.manual ? moduleData.manual : ""
 
                 font.pixelSize: 22

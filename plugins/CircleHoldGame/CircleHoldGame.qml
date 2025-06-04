@@ -67,19 +67,27 @@ Item {
         circle.setRandomTargetAngle()
     }
 
-    Rectangle {
-        anchors.fill: parent
-        color: "#ffffff"
-
-
+    //верхняя панель
         Rectangle {
             id: topBar
-            height: 65
-            color: "#f0f0f0"
+            height: 75
+            width: parent.width
             anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            border.color: "#cccccc"
+
+            color: Material.theme === Material.Dark ? Qt.darker(Material.background, 1.3) : Qt.darker(Material.background, 1.05)
+
+            // Нижняя граница
+            Rectangle {
+                height: 2
+                anchors {
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: parent.right
+                }
+                color: "grey"
+                z: 10
+            }
+
 
             MouseArea {
                 id: backArea
@@ -94,10 +102,12 @@ Item {
 
                 Rectangle {
                     anchors.fill: parent
-                    color: backArea.pressed ? Qt.darker("white", 1.2) : backArea.containsMouse ? Qt.darker("white", 1.1) : "white"
+                    color: Material.theme === Material.Dark ?
+                               (backArea.pressed ? Qt.darker(Material.background ,1.2) : backArea.containsMouse ? Qt.darker("#32475c",1.1) : "#32475c") :
+                               (backArea.pressed ? Qt.darker("white",1.2) : backArea.containsMouse ? Qt.darker("white",1.1) : "white")
                     radius: 8
-                    border.color: "#a0a0a0"
-                    border.width: 1
+                    border.color: "grey"
+                    border.width: 2
                 }
 
                 Row {
@@ -109,17 +119,16 @@ Item {
                     Layout.alignment: Qt.AlignVCenter
 
                     Image {
-                        source: moduleData?.iconArrowUrl || ""
+                        source: Material.theme === Material.Dark ?moduleData.iconArrowLightUrl : moduleData.iconArrowDarkUrl
                         width: 40
                         fillMode: Image.PreserveAspectFit
                         mipmap: true
                         anchors.verticalCenter: parent.verticalCenter
                     }
 
-                    Text {
+                   Label {
                         text: moduleData?.name || ""
                         font.pixelSize: 26
-                        color: "black"
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }
@@ -134,34 +143,45 @@ Item {
                 anchors.topMargin: 20
                 spacing: 50
 
-                Text {
+                Label {
                     text: !endlessMode
                           ? "Осталось: " + Math.max(0, (trainingTime - elapsedTime)).toFixed(0) + " сек"
                           : ""
-                    color: "#333"
                     font.pixelSize: 26
                 }
-                Text {
+                Label {
                     text: "Точность: " + accuracy.toFixed(1) + "%"
                     font.pixelSize: 26
-                    color: "#333"
 
                 }
             }
 
 
-
             RowLayout{
-                anchors.centerIn: parent
+                anchors.horizontalCenter: parent.horizontalCenter
                 Item {
                     width: 60
                     height: 60
                     visible: endlessMode && !gameOverOverlay.visible && !countdownOverlay.visible
 
+
+                    MouseArea {
+                        id: pauseMouseArea
+                        anchors.fill: parent
+                        onClicked: root.togglePause()
+                        cursorShape: Qt.PointingHandCursor
+                    }
+
                     Rectangle {
+
                         anchors.fill: parent
                         radius: width / 2
-                        color: "#666666"
+                        color: Material.theme === Material.Dark ?
+                                   (pauseMouseArea.pressed ? Qt.darker("#32475c",1.2) : pauseMouseArea.containsMouse ? Qt.darker("#32475c",1.1) : "#32475c") :
+                                   (pauseMouseArea.pressed ? Qt.darker("#666",1.2) : pauseMouseArea.containsMouse ? Qt.darker("#666",1.1) : "#666")
+
+                        border.color:  "grey"
+                        border.width:  1
                     }
 
                     // Левая палочка
@@ -186,13 +206,6 @@ Item {
                         anchors.leftMargin: 2
                     }
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: root.togglePause()
-                        cursorShape: Qt.PointingHandCursor
-                    }
-
-                    Layout.alignment: Qt.AlignVCenter
                 }
 
 
@@ -201,10 +214,22 @@ Item {
                     height: 60
                     visible: endlessMode && !gameOverOverlay.visible && !countdownOverlay.visible
 
+                    MouseArea {
+                        id: endMouseArea
+                        anchors.fill: parent
+                        onClicked: root.endGame()
+                        cursorShape: Qt.PointingHandCursor
+                    }
+
                     Rectangle {
+
                         anchors.fill: parent
                         radius: width / 2
-                        color: "#666666"
+                        color: Material.theme === Material.Dark ?
+                                   (endMouseArea.pressed ? Qt.darker("#32475c",1.2) : endMouseArea.containsMouse ? Qt.darker("#32475c",1.1) : "#32475c") :
+                                   (endMouseArea.pressed ? Qt.darker("#666",1.2) : endMouseArea.containsMouse ? Qt.darker("#666",1.1) : "#666")
+                        border.color:  "grey"
+                        border.width:  1
                     }
 
                     Rectangle {
@@ -214,18 +239,11 @@ Item {
                         radius: 3
                         anchors.centerIn: parent
                     }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: root.endGame()
-                        cursorShape: Qt.PointingHandCursor
-                    }
-
-                    Layout.alignment: Qt.AlignVCenter
                 }
             }
         }
 
+        //основнйо экран
         Rectangle {
             id: field
             anchors {
@@ -234,7 +252,7 @@ Item {
                 right: parent.right
                 bottom: parent.bottom
             }
-            color: "white"
+            color: Material.background
             clip: true
 
 
@@ -362,9 +380,8 @@ Item {
 
             }
 
-
         }
-    }
+
     Rectangle {
         id: gameOverOverlay
         visible: false
@@ -377,8 +394,8 @@ Item {
             height: 300
             radius: 12
             anchors.centerIn: parent
-            color: "#ffffff"
-            border.color: "#cccccc"
+            color: Material.theme === Material.Light ? "white" : "#2c3e50"
+            border.color: Material.theme === Material.Light ? "#cccccc" : "#34495e"
             border.width: 1
 
             ColumnLayout {
@@ -386,25 +403,22 @@ Item {
                 spacing: 16
                 anchors.margins: 16
 
-                Text {
+                Label {
                     text: "Тренировка\nзавершена!"
                     font.pixelSize: 26
-                    color: "black"
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
                 }
                 Item {
                     Layout.fillHeight: true // занимает все свободное пространство, сдвигая остальные элементы
                 }
-                Text {
+                Label {
                     text: "Время в круге: " + heldDuration.toFixed(1) + " сек"
                     font.pixelSize: 20
-                    color: "black"
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 }
-                Text {
+                Label {
                     text: "Процент времени в круге: " + accuracy.toFixed(1)
                     font.pixelSize: 20
-                    color: "black"
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 }
                 Item {
@@ -415,6 +429,8 @@ Item {
                     spacing:50
                     Button {
                         text: "Сыграть снова"
+                        width:300
+
                         onClicked: {
                             heldDuration = 0
                             accuracy = 0
@@ -430,6 +446,8 @@ Item {
                     }
                     Button {
                         text: "Выйти к настройкам"
+                        width:300
+
                         onClicked: {
                             stackViewRef.pop()
                         }

@@ -3,6 +3,8 @@
         <file>ReverseTypingGame.qml</file>
         <file>ReverseTypingGameSettings.qml</file>
         <file>data/words.json</file>
-        <file>assets/leftArrow.png</file>
+        <file>assets/ReverseTypingIcon.png</file>
+        <file>assets/leftArrowDark.png</file>
+        <file>assets/leftArrowLight.png</file>
     </qresource>
 </RCC>

@@ -43,9 +43,14 @@ QUrl CircleClickGame::iconUrl() const {
     return QUrl("qrc:/assets/CircleClickGameIcon.png");
 }
 
-QUrl CircleClickGame::iconArrowUrl() const{
-    return QUrl("qrc:/assets/leftArrow.png");
+QUrl CircleClickGame::iconArrowDarkUrl() const{
+    return QUrl("qrc:/assets/leftArrowDark.png");
 }
+
+QUrl CircleClickGame::iconArrowLightUrl() const{
+    return QUrl("qrc:/assets/leftArrowLight.png");
+}
+
 
 int CircleClickGame::difficulty() const
 {

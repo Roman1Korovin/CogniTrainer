@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>assets/leftArrow.png</file>
         <file>CircleHoldGame.qml</file>
         <file>CircleHoldGameSettings.qml</file>
+        <file>assets/CircleHoldGameIcon.png</file>
     </qresource>
 </RCC>

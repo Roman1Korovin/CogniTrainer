@@ -11,7 +11,8 @@ class CircleHoldGame : public BaseModule
 
     Q_PROPERTY(int difficulty READ difficulty WRITE setDifficulty NOTIFY difficultyChanged)
     Q_PROPERTY(bool endlessMode READ endlessMode WRITE setEndlessMode NOTIFY endlessModeChanged)
-    Q_PROPERTY(QUrl iconArrowUrl READ iconArrowUrl CONSTANT)
+    Q_PROPERTY(QUrl iconArrowDarkUrl READ iconArrowDarkUrl CONSTANT)
+    Q_PROPERTY(QUrl iconArrowLightUrl READ iconArrowLightUrl CONSTANT)
 
 public:
     explicit CircleHoldGame(QObject *parent = nullptr);
@@ -23,7 +24,8 @@ public:
     QUrl qmlSettingsUrl() const override;
     QString category() const override;
     QUrl iconUrl() const override;
-    QUrl iconArrowUrl() const;
+    QUrl iconArrowDarkUrl() const;
+    QUrl iconArrowLightUrl() const;
 
     Q_INVOKABLE int difficulty() const;
     Q_INVOKABLE bool endlessMode() const;

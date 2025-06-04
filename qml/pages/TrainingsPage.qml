@@ -28,6 +28,9 @@ Rectangle {
 
 
 
+
+
+
    StackView {
 
       id: stackView
@@ -35,13 +38,17 @@ Rectangle {
       initialItem: moduleSelectionPage
    }
 
+
    // Экран выбора модуля
    Component {
       id: moduleSelectionPage
 
+
       Row {
          width: parent.width
          height: parent.height
+
+
 
 
          //Список категорий в левой части
@@ -53,6 +60,8 @@ Rectangle {
             background: Rectangle {
                     color: Material.theme === Material.Dark ? Qt.darker(Material.background, 1.3) : Qt.darker(Material.background, 1.05)
                 }
+
+
 
          ListView {
 
@@ -87,15 +96,21 @@ Rectangle {
          Frame {
             id: separator
             width: 2
-            height: parent.height
+            anchors.top: parent.top
+            anchors.topMargin: -10
+            anchors.bottom: parent.bottom
+            z:1
 
          }
+
+
 
          //список тренировок в правой части
          GridView {
             id: trainingGrid
             width: parent.width - categoryList.width - separator.width
-            height: parent.height
+            height: parent.height+10
+            y:-10
             cellWidth: 350 + 20
             cellHeight:  525 + 20
             topMargin: 30
@@ -103,6 +118,9 @@ Rectangle {
             rightMargin: 30
             model: filteredModules
             clip: true
+            z:1
+
+
 
             delegate: TrainingCardItem {
                name: modelData.name
@@ -117,13 +135,36 @@ Rectangle {
                                  })
                }
             }
+            Rectangle {
+               id: gradientShadow
 
+               anchors.top: parent.top
+               height: 10
+               width: trainingGrid.width
+
+                gradient: Material.theme === Material.Light ? lightGradient : darkGradient
+
+                    Gradient {
+                        id: lightGradient
+                        GradientStop { position: 0.0; color: "#121314" }
+                        GradientStop { position: 1.0; color: backgroundColor }
+                    }
+
+                    Gradient {
+                        id: darkGradient
+                        GradientStop { position: 0.0; color: "#121212" }
+                        GradientStop { position: 1.0; color: backgroundColor }
+                    }
+
+            }
 
             ScrollBar.vertical: ScrollBar {
                anchors.right: parent.right
                width: 12
             }
          }
+
+
       }
    }
 

@@ -6,11 +6,14 @@ Rectangle {
     height: 60
     color: "#2c3e50"
 
+
+
     property string currentTab
 
     signal trainingsClicked()
     signal testsClicked()
     signal settingsClicked()
+
 
 
 

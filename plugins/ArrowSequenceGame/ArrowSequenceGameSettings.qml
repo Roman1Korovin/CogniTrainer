@@ -10,18 +10,30 @@ Item {
 
     property int difficultyMode: 4
     property bool endlessMode:  false
+    property bool blindMode: false
 
 
 
     // Верхняя панель
     Rectangle {
         id: topBar
-        height: 65
-        color: "#f0f0f0"
+        height: 75
+        color: Material.theme === Material.Dark ? Qt.darker(Material.background, 1.3) : Qt.darker(Material.background, 1.05)
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        border.color: "#cccccc"
+
+        // Нижняя граница
+           Rectangle {
+               height: 2
+               anchors {
+                   bottom: parent.bottom
+                   left: parent.left
+                   right: parent.right
+               }
+               color: "grey"
+               z: 10
+           }
 
         MouseArea {
 
@@ -39,10 +51,12 @@ Item {
             Rectangle {
 
                 anchors.fill: parent
-                color: backArea.pressed ? Qt.darker("white",1.2) : backArea.containsMouse ? Qt.darker("white",1.1) : "white"
+                color: Material.theme === Material.Dark ?
+                           (backArea.pressed ? Qt.darker("#32475c" ,1.2) : backArea.containsMouse ? Qt.darker("#32475c",1.1) : "#32475c") :
+                           (backArea.pressed ? Qt.darker("white",1.2) : backArea.containsMouse ? Qt.darker("white",1.1) : "white")
                 radius: 8
-                border.color:  "#a0a0a0"
-                border.width: 1
+                border.color:  "grey"
+                border.width: 2
 
             }
 
@@ -58,7 +72,7 @@ Item {
 
 
                 Image {
-                    source: moduleData && moduleData.iconArrowUrl ? moduleData.iconArrowUrl : ""
+                    source: Material.theme === Material.Dark ?moduleData.iconArrowLightUrl : moduleData.iconArrowDarkUrl
                     width: 40
 
                     fillMode: Image.PreserveAspectFit
@@ -66,10 +80,9 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                Text {
+                Label {
                     text: moduleData && moduleData.name ? moduleData.name : ""
                     font.pixelSize: 26
-                    color: "black"
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
@@ -94,7 +107,7 @@ Item {
             anchors.centerIn: parent
 
 
-            Text {
+           Label {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Инструкция"
                 font.pixelSize: 30
@@ -106,7 +119,7 @@ Item {
                 height: Math.max((Window.height - 702) * 0.07, 15)
             }
 
-            Text {
+            Label {
                 text: moduleData && moduleData.manual ? moduleData.manual : ""
 
                 font.pixelSize: 22
@@ -139,7 +152,7 @@ Item {
 
 
                 // Надпись "Легко"
-                Text {
+                Label {
                     text: "Легко"
                     font.pixelSize: 22
                     Layout.alignment: Qt.AlignTop
@@ -150,7 +163,7 @@ Item {
                 RowLayout {
 
                     Repeater {
-                        model: 8
+                        model: 13
 
                         ColumnLayout {
                             spacing: -20
@@ -180,7 +193,7 @@ Item {
                             }
 
                             Label {
-                                text: "  "+(index + 1).toString()
+                                text: index > 6 ?" "+(index + 3).toString() : "  "+(index + 3).toString()
                                 font.pixelSize: 20
                                 horizontalAlignment: Text.AlignHCenter
                             }
@@ -189,7 +202,7 @@ Item {
                 }
 
                 // Надпись "Сложно"
-                Text {
+                Label {
                     leftPadding: -10
                     text: "Сложно"
                     font.pixelSize: 22
@@ -203,6 +216,19 @@ Item {
                 height: Math.max(root.height * 0.015, 5)
 
             }
+
+            CheckBox {
+                id: blindCheckBox
+                text: "Режим вслепую"
+                font.pixelSize: 22
+                checked: blindMode
+
+                Layout.alignment: Qt.AlignHCenter
+                onCheckedChanged: {
+                    blindMode = checked
+                }
+            }
+
             CheckBox {
                 id: endlessCheckBox
                 text: "Бесконечный режим"
@@ -236,6 +262,7 @@ Item {
                                               moduleData: moduleData,
                                               stackViewRef: stackViewRef,
                                               endlessMode : endlessMode,
+                                              blindMode : blindMode,
                                               difficultyMode : difficultyMode
                                           })
                     } else {

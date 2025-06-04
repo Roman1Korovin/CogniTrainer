@@ -46,11 +46,13 @@ QUrl CircleHoldGame::iconUrl() const {
     return QUrl("qrc:/assets/CircleHoldGameIcon.png");
 }
 
-// Путь к иконке стрелки "назад"
-QUrl CircleHoldGame::iconArrowUrl() const {
-    return QUrl("qrc:/assets/leftArrow.png");
+QUrl CircleHoldGame::iconArrowDarkUrl() const{
+    return QUrl("qrc:/assets/leftArrowDark.png");
 }
 
+QUrl CircleHoldGame::iconArrowLightUrl() const{
+    return QUrl("qrc:/assets/leftArrowLight.png");
+}
 // Геттер сложности
 int CircleHoldGame::difficulty() const {
     return m_difficulty;

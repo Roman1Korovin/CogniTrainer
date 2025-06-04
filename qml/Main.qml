@@ -10,6 +10,8 @@ ApplicationWindow {
 
     Material.background: Material.theme === Material.Light ? "#fffbf5" : "#17222e"
 
+    property color backgroundColor: Material.theme === Material.Light ? "#fffbf5" : "#17222e"
+
     Component.onCompleted: {
            width = Screen.width * 0.8
            height = Screen.height * 0.8
@@ -57,11 +59,37 @@ ApplicationWindow {
         }
     }
 
+
+    Rectangle {
+       id: gradientShadow
+        anchors {
+            top: appHeader.bottom
+            left: parent.left
+            right: parent.right
+        }
+        height: 10
+        gradient: Material.theme === Material.Light ? lightGradient : darkGradient
+
+            Gradient {
+                id: lightGradient
+                GradientStop { position: 0.0; color: "#121314" }
+                GradientStop { position: 1.0; color: Qt.darker(backgroundColor, 1.05) }
+            }
+
+            Gradient {
+                id: darkGradient
+                GradientStop { position: 0.0; color: "#121212" }
+                GradientStop { position: 1.0; color: Qt.darker(backgroundColor, 1.2) }
+            }
+
+
+    }
+
     // Контейнер для основной части экрана
     Loader {
         id:pageLoader
         anchors {
-            top:appHeader.bottom
+            top:gradientShadow.bottom
             left: parent.left
             right: parent.right
             bottom: parent.bottom

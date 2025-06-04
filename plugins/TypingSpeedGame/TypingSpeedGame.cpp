@@ -67,12 +67,15 @@ QString TypingSpeedGame::category() const
 
 QUrl TypingSpeedGame::iconUrl() const
 {
-    return QUrl("qrc:/assets/con.png");
+    return QUrl("qrc:/assets/TypingSpeedIcon.png");
 }
 
-QUrl TypingSpeedGame::iconArrowUrl() const
-{
-    return QUrl("qrc:/assets/leftArrow.png");
+QUrl TypingSpeedGame::iconArrowDarkUrl() const{
+    return QUrl("qrc:/assets/leftArrowDark.png");
+}
+
+QUrl TypingSpeedGame::iconArrowLightUrl() const{
+    return QUrl("qrc:/assets/leftArrowLight.png");
 }
 
 QStringList TypingSpeedGame::sentences() const {

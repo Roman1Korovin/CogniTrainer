@@ -132,14 +132,24 @@ Item {
     // Верхняя панель
     Rectangle {
         id: topBar
-        height: 65
-        color: "#f0f0f0"
+        height: 75
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        border.color: "#cccccc"
+        color: Material.theme === Material.Dark ? Qt.darker(Material.background, 1.3) : Qt.darker(Material.background, 1.05)
 
 
+        // Нижняя граница
+        Rectangle {
+            height: 2
+            anchors {
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            color: "grey"
+            z: 10
+        }
 
         MouseArea {
 
@@ -157,10 +167,12 @@ Item {
             Rectangle {
 
                 anchors.fill: parent
-                color: backArea.pressed ? Qt.darker("white",1.2) : backArea.containsMouse ? Qt.darker("white",1.1) : "white"
+                color: Material.theme === Material.Dark ?
+                           (backArea.pressed ? Qt.darker("#32475c",1.2) : backArea.containsMouse ? Qt.darker("#32475c",1.1) : "#32475c") :
+                           (backArea.pressed ? Qt.darker("white",1.2) : backArea.containsMouse ? Qt.darker("white",1.1) : "white")
                 radius: 8
                 border.color:  "#a0a0a0"
-                border.width: 1
+                border.width: 2
 
             }
 
@@ -176,7 +188,7 @@ Item {
 
 
                 Image {
-                    source: moduleData && moduleData.iconArrowUrl ? moduleData.iconArrowUrl : ""
+                    source: Material.theme === Material.Dark ?moduleData.iconArrowLightUrl : moduleData.iconArrowDarkUrl
                     width: 40
 
                     fillMode: Image.PreserveAspectFit
@@ -184,10 +196,9 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                Text {
+                Label {
                     text: moduleData && moduleData.name ? moduleData.name : ""
                     font.pixelSize: 26
-                    color: "black"
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
@@ -205,18 +216,9 @@ Item {
 
 
 
-            Text {
+            Label {
                 text: "Время тренировки: " + trainingTime.toFixed(0) + " сек"
                 font.pixelSize: 26
-                color: "black"
-
-            }
-
-
-            Text {
-                text: !endlessMode ? "Осталось слов: " + (targetRound - round) : ""
-                font.pixelSize: 26
-                color: "black"
             }
         }
 
@@ -224,13 +226,24 @@ Item {
             width: 60
             height: 60
 
-            anchors.centerIn: parent
-            visible: endlessMode && !gameOverOverlay.visible
+            anchors.horizontalCenter: parent.horizontalCenter
+            visible: endlessMode && !gameOverOverlay.visible && !countdownOverlay.visible
+
+            MouseArea {
+                    id: endMouseArea
+                    anchors.fill: parent
+                    onClicked: root.endGame()
+                    cursorShape: Qt.PointingHandCursor
+                }
 
             Rectangle {
                 anchors.fill: parent
                 radius: width / 2
-                color: "#666666"
+                color: Material.theme === Material.Dark ?
+                           (endMouseArea.pressed ? Qt.darker("#32475c",1.2) : endMouseArea.containsMouse ? Qt.darker("#32475c",1.1) : "#32475c") :
+                           (endMouseArea.pressed ? Qt.darker("#666",1.2) : endMouseArea.containsMouse ? Qt.darker("#666",1.1) : "#666")
+                border.color:  "grey"
+                border.width:  1
             }
 
             Rectangle {
@@ -240,14 +253,6 @@ Item {
                 radius: 3
                 anchors.centerIn: parent
             }
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: root.endGame()
-                cursorShape: Qt.PointingHandCursor
-            }
-
-            Layout.alignment: Qt.AlignVCenter
         }
 
     }
@@ -266,13 +271,13 @@ Item {
         spacing: 80
         anchors.centerIn: parent
 
-        Text {
+        Label {
             text: "Раунд: " + (round + 1) + (endlessMode ? "" : " / " + targetRound)
             font.pixelSize: 28
             horizontalAlignment: Text.AlignHCenter
         }
 
-        Text {
+        Label {
             id: wordDisplay
             text: currentWord
             anchors.horizontalCenter:  parent.horizontalCenter
@@ -354,8 +359,8 @@ Item {
             height: 300
             radius: 12
             anchors.centerIn: parent
-            color: "#ffffff"
-            border.color: "#cccccc"
+            color: Material.theme === Material.Light ? "white" : "#2c3e50"
+            border.color: Material.theme === Material.Light ? "#cccccc" : "#34495e"
             border.width: 1
 
             ColumnLayout {
@@ -363,11 +368,10 @@ Item {
                 anchors.margins: 16
                 spacing: 16
 
-                Text {
+                Label {
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
                     text: "Тренировка\nзавершена!"
                     font.pixelSize: 26
-                    color: "black"
                 }
 
                 Item {
@@ -378,22 +382,19 @@ Item {
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                     spacing: 8
 
-                    Text {
+                    Label {
                         text: endlessMode ? "Слов пройдено: " + round: ""
                         font.pixelSize: 18
                         color: "black"
                     }
-                    Text {
+                    Label {
                         text: "Время тренировки: " + trainingTime.toFixed(2) + " сек"
                         font.pixelSize: 18
-                        color: "black"
 
                     }
-                    Text {
+                    Label {
                         text: round != 0 ?"Среднее время на слово: " + averageWordTime.toFixed(2) + " сек" : ""
                         font.pixelSize: 18
-                        color: "black"
-
                     }
                 }
 
@@ -408,13 +409,14 @@ Item {
                     Button {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
                         text: "Сыграть снова"
-                        width: 150
+                        width:300
                         onClicked: {
                             resetParams()
                         }
                     }
                     Button {
                         text: "Выйти к настройкам"
+                        width:300
 
                         onClicked: {
                             stackViewRef.pop()

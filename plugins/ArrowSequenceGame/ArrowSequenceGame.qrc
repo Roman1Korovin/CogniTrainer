@@ -2,6 +2,6 @@
     <qresource prefix="/">
         <file>ArrowSequenceGame.qml</file>
         <file>ArrowSequenceGameSettings.qml</file>
-        <file>assets/leftArrow.png</file>
+        <file>assets/ArrowSequenceIcon.png</file>
     </qresource>
 </RCC>
