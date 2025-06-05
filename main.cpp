@@ -13,7 +13,9 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-
+    QCoreApplication::setOrganizationName("MyCompany");
+    QCoreApplication::setOrganizationDomain("mycompany.com");
+    QCoreApplication::setApplicationName("CognitiveApp");
 
     //защита от неудачной загрузки qml
     QObject::connect(

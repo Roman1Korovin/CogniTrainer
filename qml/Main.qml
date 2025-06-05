@@ -1,14 +1,35 @@
 import QtQuick
 import QtQuick.Controls
+import Qt.labs.settings
 import "pages"
 import "components"
 
 ApplicationWindow {
     id: mainWindow
 
-    Material.theme: !Material.theme
 
-    Material.background: Material.theme === Material.Light ? "#fffbf5" : "#17222e"
+    Settings {
+            id: appSettings
+        }
+
+        // Читаем тему из настроек один раз при старте
+        property int savedTheme: Material.Light
+
+
+        function getBoolSetting(key, defaultValue) {
+            let raw = appSettings.value(key, defaultValue)
+            return raw === true || raw === "true"
+        }
+
+
+        // Реактивно меняем фон под тему
+        Material.background: Material.theme === Material.Light ? "fffbf5" : "#17222e"
+        Material.accent: Material.Blue
+
+
+    //Material.theme: !Material.theme
+
+    //background: Material.theme === Material.Light ? "#fffbf5" : "#17222e"
 
     property color backgroundColor: Material.theme === Material.Light ? "#fffbf5" : "#17222e"
 
@@ -17,6 +38,9 @@ ApplicationWindow {
            height = Screen.height * 0.8
            x = (Screen.width - width) / 2
            y = (Screen.height - height) / 2
+
+        var themeStr = appSettings.value("theme", "light")
+        Material.theme = themeStr === "dark" ? Material.Dark : Material.Light
        }
     minimumHeight: 702
     minimumWidth: 1248
@@ -130,6 +154,7 @@ ApplicationWindow {
     Component {
         id: settingsComponent
         SettingsPage {
+            appSettingsRef: appSettings
             width: parent.width
             height: parent.height
         }

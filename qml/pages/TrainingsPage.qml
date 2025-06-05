@@ -109,7 +109,7 @@ Rectangle {
             cellWidth: 350 + 20
             cellHeight:  525 + 20
 
-            topMargin: 30
+            topMargin: 40
             leftMargin: 30
             rightMargin: 30
             model: filteredModules
