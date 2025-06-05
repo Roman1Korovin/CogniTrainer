@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>FindAnotherColorGame.qml</file>
+        <file>FindAnotherColorGameSettings.qml</file>
+        <file>assets/FindAnotherColorIcon.png</file>
+        <file>assets/leftArrowDark.png</file>
+        <file>assets/leftArrowLight.png</file>
+    </qresource>
+</RCC>

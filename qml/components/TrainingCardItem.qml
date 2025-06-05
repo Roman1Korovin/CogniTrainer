@@ -68,7 +68,7 @@ Rectangle {
         fillMode: Image.PreserveAspectFit
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottomMargin: 30
-        width: 255
+        width: 280
     }
 
 

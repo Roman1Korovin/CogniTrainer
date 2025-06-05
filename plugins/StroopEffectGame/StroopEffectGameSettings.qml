@@ -1,6 +1,8 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Shapes 1.15
+import QtQuick.Controls.Material 2.15
 
 Item {
     id: root
@@ -8,11 +10,8 @@ Item {
     property var moduleData
     property var stackViewRef
 
-    property int difficultyMode: 4
-    property bool endlessMode:  false
-    property bool blindMode: false
-
-
+    property int difficulty: (moduleData && typeof moduleData.difficulty === "number") ? moduleData.difficulty : 5
+    property bool endlessMode: (moduleData && typeof moduleData.endlessMode === "boolean") ? moduleData.endlessMode : false
 
     // Верхняя панель
     Rectangle {
@@ -22,6 +21,7 @@ Item {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+
 
         // Нижняя граница
            Rectangle {
@@ -34,6 +34,7 @@ Item {
                color: "grey"
                z: 10
            }
+
 
         MouseArea {
 
@@ -54,6 +55,7 @@ Item {
                 color: Material.theme === Material.Dark ?
                            (backArea.pressed ? Qt.darker("#32475c" ,1.2) : backArea.containsMouse ? Qt.darker("#32475c",1.1) : "#32475c") :
                            (backArea.pressed ? Qt.darker("white",1.2) : backArea.containsMouse ? Qt.darker("white",1.1) : "white")
+
                 radius: 8
                 border.color:  "grey"
                 border.width: 2
@@ -74,7 +76,6 @@ Item {
                 Image {
                     source: Material.theme === Material.Dark ?moduleData.iconArrowLightUrl : moduleData.iconArrowDarkUrl
                     width: 40
-
                     fillMode: Image.PreserveAspectFit
                     mipmap: true
                     anchors.verticalCenter: parent.verticalCenter
@@ -93,25 +94,25 @@ Item {
     //основной экран
 
     Item {
-        id: mainScreed
         anchors {
             top: topBar.bottom
             left: parent.left
             right: parent.right
             bottom: parent.bottom
         }
-
         Column {
 
             id:column
+
             anchors.centerIn: parent
 
+            Label {
 
-           Label {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Инструкция"
                 font.pixelSize: 30
                 font.bold: true
+
             }
 
             Item {
@@ -126,24 +127,23 @@ Item {
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             }
 
-
             Item {
                 width: 1
-                height: Math.max((Window.height - 702) * 0.15, 30)
+                height: Math.max((Window.height - 702) * 0.15, 40)
             }
 
-            Label{
+
+            Label {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text:"Выберите кол-во элементов последовательности"
+                text: "Выберите уровень сложности"
                 font.weight: Font.DemiBold
                 font.pixelSize: 22
             }
 
             Item {
                 width: 1
-                height: Math.max((Window.height - 702) * 0.07, 10)
+                height: Math.max((Window.height - 702) * 0.07, 15)
             }
-
 
 
             //набор кнопок для выбора сложности
@@ -163,15 +163,15 @@ Item {
                 RowLayout {
 
                     Repeater {
-                        model: 13
+                        model: 10
 
                         ColumnLayout {
                             spacing: -20
 
                             RadioButton {
                                 id: radioBtn
-                                checked: index + 1 === difficultyMode
-                                onClicked: difficultyMode = index + 1
+                                checked: index + 1 === difficulty
+                                onClicked: difficulty = index + 1
 
                                 indicator: Rectangle {
                                     implicitWidth: 32
@@ -193,7 +193,7 @@ Item {
                             }
 
                             Label {
-                                text: index > 6 ?" "+(index + 3).toString() : "  "+(index + 3).toString()
+                                text: "  "+(index + 1).toString()
                                 font.pixelSize: 20
                                 horizontalAlignment: Text.AlignHCenter
                             }
@@ -213,19 +213,7 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.015, 5)
-            }
-
-            CheckBox {
-                id: blindCheckBox
-                text: "Режим вслепую"
-                font.pixelSize: 22
-                checked: blindMode
-
-                Layout.alignment: Qt.AlignHCenter
-                onCheckedChanged: {
-                    blindMode = checked
-                }
+                height: Math.max(root.height * 0.015, 10)
             }
 
             CheckBox {
@@ -240,12 +228,10 @@ Item {
                 }
             }
 
-
             Item {
                 width: 1
-                height: Math.max((Window.height - 702) * 0.1, 0)
+                height: Math.max((Window.height - 702) * 0.1, 10)
             }
-
 
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -256,16 +242,15 @@ Item {
 
                 Layout.alignment: Qt.AlignHCenter
                 onClicked: {
-                    if (moduleData) {
+                    if (moduleData && typeof moduleData.setDifficulty === "function") {
+                        moduleData.setDifficulty(difficulty)
+                        moduleData.endlessMode = endlessMode
                         stackViewRef.push(moduleData.qmlComponentUrl, {
                                               moduleData: moduleData,
-                                              stackViewRef: stackViewRef,
-                                              endlessMode : endlessMode,
-                                              blindMode : blindMode,
-                                              difficultyMode : difficultyMode
+                                              stackViewRef: stackViewRef
                                           })
                     } else {
-                        console.warn("Ошибка: moduleDataне определены")
+                        console.warn("Ошибка: moduleData или setDifficulty не определены")
                     }
                 }
             }

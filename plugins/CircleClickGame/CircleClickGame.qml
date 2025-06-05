@@ -117,6 +117,8 @@ Item {
 
 
         RowLayout{
+            anchors.top: parent.top
+            anchors.topMargin: 5
             anchors.horizontalCenter: parent.horizontalCenter
 
 
@@ -280,7 +282,7 @@ Item {
             border.width: 1
 
             ColumnLayout {
-                anchors.centerIn: parent
+                anchors.fill: parent
                 spacing: 16
                 anchors.margins: 16
 

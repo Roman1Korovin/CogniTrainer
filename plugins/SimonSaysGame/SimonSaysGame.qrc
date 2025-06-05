@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>SimonSaysGameSettings.qml</file>
+        <file>SimonSaysGame.qml</file>
+        <file>assets/leftArrowDark.png</file>
+        <file>assets/leftArrowLight.png</file>
+        <file>assets/SimonSaysIcon.png</file>
+        <file>SimonButton.qml</file>
+    </qresource>
+</RCC>

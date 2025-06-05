@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>FindPairGameSettings.qml</file>
+        <file>FindPairGame.qml</file>
+        <file>assets/leftArrowDark.png</file>
+        <file>assets/leftArrowLight.png</file>
+        <file>assets/FindPairIcon.png</file>
+        <file>CardComponent.qml</file>
+    </qresource>
+</RCC>

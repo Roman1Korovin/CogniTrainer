@@ -227,7 +227,7 @@ Item {
 
                 Label {
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-                    text: "Тренировка\nзавершена!"
+                    text: "Тренировка завершена!"
                     font.pixelSize: 26
                 }
 
@@ -237,7 +237,7 @@ Item {
 
                 ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                    spacing: 20
+                    spacing: 8
 
                     Label {
                         text: "Скорость: " + spm.toFixed(1) + " символов в минуту"

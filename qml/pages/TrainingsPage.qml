@@ -28,9 +28,6 @@ Rectangle {
 
 
 
-
-
-
    StackView {
 
       id: stackView
@@ -45,10 +42,7 @@ Rectangle {
 
 
       Row {
-         width: parent.width
-         height: parent.height
-
-
+         anchors.fill: parent
 
 
          //Список категорий в левой части
@@ -58,38 +52,38 @@ Rectangle {
             height: parent.height
 
             background: Rectangle {
-                    color: Material.theme === Material.Dark ? Qt.darker(Material.background, 1.3) : Qt.darker(Material.background, 1.05)
-                }
+               color: Material.theme === Material.Dark ? Qt.darker(Material.background, 1.3) : Qt.darker(Material.background, 1.05)
+            }
 
 
 
-         ListView {
+            ListView {
 
-            id: categoryList
-            anchors.fill: parent
+               id: categoryList
+               anchors.fill: parent
 
 
-            model: categoryManager ? categoryManager.categories : []
-            spacing: 20
-            topMargin: 20
-            clip: true
+               model: categoryManager ? categoryManager.categories : []
+               spacing: 20
+               topMargin: 20
+               clip: true
 
-            delegate: CategoryItem {
-               name: model.name
-               imageUrl: model.imageUrl
-               isSelected: model.name === selectedCategoryName
-               onClicked: {
-                  selectedCategoryName = name
-                  selectedTrainingUrl = null
+               delegate: CategoryItem {
+                  name: model.name
+                  imageUrl: model.imageUrl
+                  isSelected: model.name === selectedCategoryName
+                  onClicked: {
+                     selectedCategoryName = name
+                     selectedTrainingUrl = null
+                  }
                }
-            }
 
-            ScrollBar.vertical: ScrollBar {
-               anchors.right: parent.right
-               width: 12
-            }
+               ScrollBar.vertical: ScrollBar {
+                  anchors.right: parent.right
+                  width: 12
+               }
 
-         }
+            }
          }
 
          // разделитель
@@ -111,8 +105,10 @@ Rectangle {
             width: parent.width - categoryList.width - separator.width
             height: parent.height+10
             y:-10
+
             cellWidth: 350 + 20
             cellHeight:  525 + 20
+
             topMargin: 30
             leftMargin: 30
             rightMargin: 30
@@ -142,32 +138,37 @@ Rectangle {
                height: 10
                width: trainingGrid.width
 
-                gradient: Material.theme === Material.Light ? lightGradient : darkGradient
+               gradient: Material.theme === Material.Light ? lightGradient : darkGradient
 
-                    Gradient {
-                        id: lightGradient
-                        GradientStop { position: 0.0; color: "#121314" }
-                        GradientStop { position: 1.0; color: backgroundColor }
-                    }
+               Gradient {
+                  id: lightGradient
+                  GradientStop { position: 0.0; color: "#121314" }
+                  GradientStop { position: 1.0; color: backgroundColor }
+               }
 
-                    Gradient {
-                        id: darkGradient
-                        GradientStop { position: 0.0; color: "#121212" }
-                        GradientStop { position: 1.0; color: backgroundColor }
-                    }
+               Gradient {
+                  id: darkGradient
+                  GradientStop { position: 0.0; color: "#121212" }
+                  GradientStop { position: 1.0; color: backgroundColor }
+               }
 
             }
 
             ScrollBar.vertical: ScrollBar {
-               anchors.right: parent.right
-               width: 12
+                anchors.right: parent.right
+                width: 12
+                policy: ScrollBar.AlwaysOn  // <-- всегда виден
+
+                contentItem: Rectangle {
+                    implicitWidth: 12
+                    implicitHeight: 100
+                    radius: 6
+                    color: "#888"
+                }
             }
          }
-
-
       }
    }
-
 }
 
 

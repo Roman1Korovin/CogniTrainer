@@ -226,7 +226,10 @@ Item {
             width: 60
             height: 60
 
+            anchors.top: parent.top
+            anchors.topMargin: 5
             anchors.horizontalCenter: parent.horizontalCenter
+
             visible: endlessMode && !gameOverOverlay.visible && !countdownOverlay.visible
 
             MouseArea {
@@ -385,7 +388,6 @@ Item {
                     Label {
                         text: endlessMode ? "Слов пройдено: " + round: ""
                         font.pixelSize: 18
-                        color: "black"
                     }
                     Label {
                         text: "Время тренировки: " + trainingTime.toFixed(2) + " сек"

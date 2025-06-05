@@ -158,6 +158,8 @@ Item {
 
 
             RowLayout{
+                anchors.top: parent.top
+                anchors.topMargin: 5
                 anchors.horizontalCenter: parent.horizontalCenter
                 Item {
                     width: 60
@@ -382,80 +384,87 @@ Item {
 
         }
 
-    Rectangle {
-        id: gameOverOverlay
-        visible: false
-        anchors.fill: parent
-        color: Qt.rgba(0, 0, 0, 0.6)
-        z: 1000
-
         Rectangle {
-            width: 800
-            height: 300
-            radius: 12
-            anchors.centerIn: parent
-            color: Material.theme === Material.Light ? "white" : "#2c3e50"
-            border.color: Material.theme === Material.Light ? "#cccccc" : "#34495e"
-            border.width: 1
+            id: gameOverOverlay
+            visible: false
+            anchors.fill: parent
+            color: Qt.rgba(0, 0, 0, 0.6)
+            z: 1000
 
-            ColumnLayout {
+            Rectangle {
+                width: 800
+                height: 300
+                radius: 12
                 anchors.centerIn: parent
-                spacing: 16
-                anchors.margins: 16
+                color: Material.theme === Material.Light ? "white" : "#2c3e50"
+                border.color: Material.theme === Material.Light ? "#cccccc" : "#34495e"
+                border.width: 1
 
-                Label {
-                    text: "Тренировка\nзавершена!"
-                    font.pixelSize: 26
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-                }
-                Item {
-                    Layout.fillHeight: true // занимает все свободное пространство, сдвигая остальные элементы
-                }
-                Label {
-                    text: "Время в круге: " + heldDuration.toFixed(1) + " сек"
-                    font.pixelSize: 20
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                }
-                Label {
-                    text: "Процент времени в круге: " + accuracy.toFixed(1)
-                    font.pixelSize: 20
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                }
-                Item {
-                    Layout.fillHeight: true
-                }
-                Row{
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing:50
-                    Button {
-                        text: "Сыграть снова"
-                        width:300
+                ColumnLayout {
+                    anchors.fill: parent
+                    spacing: 16
+                    anchors.margins: 16
 
-                        onClicked: {
-                            heldDuration = 0
-                            accuracy = 0
-                            startTime = 0
-                            elapsedTime = 0
-                            circle.setRandomPosition()
-                            circle.setRandomTargetAngle()
-                            gameOverOverlay.visible = false
-                            countdownTimer.start()
-                            countdownOverlay.countdownValue = 3
-                            countdownOverlay.visible = true
+                    Label {
+                        text: "Тренировка завершена!"
+                        font.pixelSize: 26
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                    }
+                    Item {
+                        Layout.fillHeight: true // занимает все свободное пространство, сдвигая остальные элементы
+                    }
+
+                    ColumnLayout {
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        spacing: 8
+                        Label {
+                            text: "Время в круге: " + heldDuration.toFixed(1) + " сек"
+                            font.pixelSize: 20
+                            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                        }
+                        Label {
+                            text: "Процент времени в круге: " + accuracy.toFixed(1)
+                            font.pixelSize: 20
+                            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         }
                     }
-                    Button {
-                        text: "Выйти к настройкам"
-                        width:300
 
-                        onClicked: {
-                            stackViewRef.pop()
+                    Item {
+                        Layout.fillHeight: true // занимает все свободное пространство, сдвигая остальные элементы
+                    }
+
+                    Row{
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        spacing:50
+                        Button {
+                            text: "Сыграть снова"
+                            width:300
+
+                            onClicked: {
+                                heldDuration = 0
+                                accuracy = 0
+                                startTime = 0
+                                elapsedTime = 0
+                                circle.setRandomPosition()
+                                circle.setRandomTargetAngle()
+                                gameOverOverlay.visible = false
+                                countdownTimer.start()
+                                countdownOverlay.countdownValue = 3
+                                countdownOverlay.visible = true
+                            }
+                        }
+                        Button {
+                            text: "Выйти к настройкам"
+                            width:300
+
+                            onClicked: {
+                                stackViewRef.pop()
+                            }
                         }
                     }
                 }
             }
         }
-    }
     Item {
         id: countdownOverlay
         anchors.fill: parent
@@ -607,7 +616,6 @@ Item {
         }
         paused = !paused;
     }
-
 }
 
 

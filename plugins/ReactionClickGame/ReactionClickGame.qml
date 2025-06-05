@@ -137,6 +137,8 @@ Item {
 
 
         RowLayout{
+            anchors.top: parent.top
+            anchors.topMargin: 5
             anchors.horizontalCenter: parent.horizontalCenter
 
 
@@ -301,7 +303,7 @@ Item {
             border.width: 1
 
             ColumnLayout {
-                anchors.centerIn: parent
+                anchors.fill: parent
                 spacing: 16
                 anchors.margins: 16
 
@@ -311,28 +313,41 @@ Item {
 
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
                 }
-
-                Label {
-                    text: "Среднее время: " + (root.clickCount > 0
-                        ? Math.round(root.totalReactionTime / root.clickCount) + " мс"
-                        : "—")
-                    font.pixelSize: 20
-
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                Item {
+                    Layout.fillHeight: true // занимает все свободное пространство, сдвигая остальные элементы
                 }
 
-                Label {
-                    text: "Лучшее время: " + (root.bestReactionTime < 999999
-                        ? Math.round(root.bestReactionTime) + " мс"
-                        : "—")
-                    font.pixelSize: 20
+                ColumnLayout {
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                    spacing: 8
+
+
+                    Label {
+                        text: "Среднее время: " + (root.clickCount > 0
+                                                   ? Math.round(root.totalReactionTime / root.clickCount) + " мс"
+                                                   : "—")
+                        font.pixelSize: 20
+
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                    }
+
+                    Label {
+                        text: "Лучшее время: " + (root.bestReactionTime < 999999
+                                                  ? Math.round(root.bestReactionTime) + " мс"
+                                                  : "—")
+                        font.pixelSize: 20
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                    }
+
+                    Label {
+                        text: "Фальстарты: " + root.falseStarts
+                        font.pixelSize: 20
+                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                    }
                 }
 
-                Label {
-                    text: "Фальстарты: " + root.falseStarts
-                    font.pixelSize: 20
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+                Item {
+                    Layout.fillHeight: true // занимает все свободное пространство, сдвигая остальные элементы
                 }
 
                 Row{

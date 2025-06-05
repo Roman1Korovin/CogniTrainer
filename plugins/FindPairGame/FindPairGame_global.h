@@ -1,0 +1,12 @@
+#ifndef FINDPAIRGAME_GLOBAL_H
+#define FINDPAIRGAME_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(FINDPAIRGAME_LIBRARY)
+#define FINDPAIRGAME_EXPORT Q_DECL_EXPORT
+#else
+#define FINDPAIRGAME_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // FINDPAIRGAME_GLOBAL_H

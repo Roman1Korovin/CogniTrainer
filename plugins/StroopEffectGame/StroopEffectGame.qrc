@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>StroopEffectGame.qml</file>
+        <file>StroopEffectGameSettings.qml</file>
+        <file>assets/leftArrowDark.png</file>
+        <file>assets/leftArrowLight.png</file>
+        <file>assets/StroopEffectIcon.png</file>
+    </qresource>
+</RCC>

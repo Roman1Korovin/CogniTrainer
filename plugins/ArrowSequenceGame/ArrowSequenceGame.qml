@@ -321,7 +321,10 @@ Item {
             width: 60
             height: 60
 
+            anchors.top: parent.top
+            anchors.topMargin: 5
             anchors.horizontalCenter: parent.horizontalCenter
+
             visible: endlessMode && !gameOverOverlay.visible && !countdownOverlay.visible
 
             MouseArea {
@@ -458,7 +461,7 @@ Item {
 
                 Label {
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-                    text: "Тренировка\nзавершена!"
+                    text: "Тренировка завершена!"
                     font.pixelSize: 26
                 }
 

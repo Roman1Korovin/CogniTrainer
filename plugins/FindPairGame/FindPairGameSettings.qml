@@ -1,17 +1,44 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Shapes
+
 
 Item {
     id: root
 
+    // Входные параметры
     property var moduleData
     property var stackViewRef
 
-    property int difficultyMode: 4
-    property bool endlessMode:  false
-    property bool blindMode: false
+    // Выбранная сложность
+    property int difficulty: (moduleData && typeof moduleData.difficulty === "number") ? moduleData.difficulty : 1
 
+
+    property int gridColumns: {
+        switch (difficulty) {
+            case 1: return 3;
+            case 2: return 4;
+            case 3: return 4;
+            case 4: return 4;
+            case 5: return 5;
+            case 6: return 6;
+            case 7: return 8;
+            default: return 4;
+        }
+    }
+    property int gridRows: {
+        switch (difficulty) {
+            case 1: return 2;
+            case 2: return 2;
+            case 3: return 3;
+            case 4: return 4;
+            case 5: return 4;
+            case 6: return 5;
+            case 7: return 5;
+            default: return 4;
+        }
+    }
 
 
     // Верхняя панель
@@ -23,17 +50,19 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
 
+
         // Нижняя граница
-           Rectangle {
-               height: 2
-               anchors {
-                   bottom: parent.bottom
-                   left: parent.left
-                   right: parent.right
-               }
-               color: "grey"
-               z: 10
-           }
+        Rectangle {
+            height: 2
+            anchors {
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            color: "grey"
+            z: 10
+        }
+
 
         MouseArea {
 
@@ -54,6 +83,7 @@ Item {
                 color: Material.theme === Material.Dark ?
                            (backArea.pressed ? Qt.darker("#32475c" ,1.2) : backArea.containsMouse ? Qt.darker("#32475c",1.1) : "#32475c") :
                            (backArea.pressed ? Qt.darker("white",1.2) : backArea.containsMouse ? Qt.darker("white",1.1) : "white")
+
                 radius: 8
                 border.color:  "grey"
                 border.width: 2
@@ -74,7 +104,6 @@ Item {
                 Image {
                     source: Material.theme === Material.Dark ?moduleData.iconArrowLightUrl : moduleData.iconArrowDarkUrl
                     width: 40
-
                     fillMode: Image.PreserveAspectFit
                     mipmap: true
                     anchors.verticalCenter: parent.verticalCenter
@@ -93,25 +122,25 @@ Item {
     //основной экран
 
     Item {
-        id: mainScreed
         anchors {
             top: topBar.bottom
             left: parent.left
             right: parent.right
             bottom: parent.bottom
         }
-
         Column {
 
             id:column
+
             anchors.centerIn: parent
 
+            Label {
 
-           Label {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Инструкция"
                 font.pixelSize: 30
                 font.bold: true
+
             }
 
             Item {
@@ -124,27 +153,26 @@ Item {
 
                 font.pixelSize: 22
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                   horizontalAlignment: Text.AlignJustify
             }
-
 
             Item {
                 width: 1
-                height: Math.max((Window.height - 702) * 0.15, 30)
+                height: Math.max((Window.height - 702) * 0.15, 40)
             }
 
-            Label{
+
+            Label {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text:"Выберите кол-во элементов последовательности"
+                text: "Выберите уровень сложности"
                 font.weight: Font.DemiBold
                 font.pixelSize: 22
             }
 
             Item {
                 width: 1
-                height: Math.max((Window.height - 702) * 0.07, 10)
+                height: Math.max((Window.height - 702) * 0.07, 15)
             }
-
-
 
             //набор кнопок для выбора сложности
             RowLayout {
@@ -163,15 +191,15 @@ Item {
                 RowLayout {
 
                     Repeater {
-                        model: 13
+                        model: 7
 
                         ColumnLayout {
                             spacing: -20
 
                             RadioButton {
                                 id: radioBtn
-                                checked: index + 1 === difficultyMode
-                                onClicked: difficultyMode = index + 1
+                                checked: index + 1 === difficulty
+                                onClicked: difficulty = index + 1
 
                                 indicator: Rectangle {
                                     implicitWidth: 32
@@ -193,7 +221,7 @@ Item {
                             }
 
                             Label {
-                                text: index > 6 ?" "+(index + 3).toString() : "  "+(index + 3).toString()
+                                text: "  "+(index + 1).toString()
                                 font.pixelSize: 20
                                 horizontalAlignment: Text.AlignHCenter
                             }
@@ -213,62 +241,43 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max(root.height * 0.015, 5)
+                height: Math.max((Window.height - 702) * 0.1, 10)
             }
 
-            CheckBox {
-                id: blindCheckBox
-                text: "Режим вслепую"
+            Label{
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "Размер игрового поля будет состоять из " + gridRows+ " рядов и " +gridColumns +" столбцов."
                 font.pixelSize: 22
-                checked: blindMode
-
-                Layout.alignment: Qt.AlignHCenter
-                onCheckedChanged: {
-                    blindMode = checked
-                }
-            }
-
-            CheckBox {
-                id: endlessCheckBox
-                text: "Бесконечный режим"
-                font.pixelSize: 22
-                checked: endlessMode
-
-                Layout.alignment: Qt.AlignHCenter
-                onCheckedChanged: {
-                    endlessMode = checked
-                }
             }
 
 
             Item {
                 width: 1
-                height: Math.max((Window.height - 702) * 0.1, 0)
+                height: Math.max((Window.height - 702) * 0.1, 10)
             }
 
-
             Button {
-                anchors.horizontalCenter: parent.horizontalCenter
                 width:300
+                anchors.horizontalCenter: parent.horizontalCenter
                 text: "Продолжить"
                 font.pixelSize: 20
-
-
                 Layout.alignment: Qt.AlignHCenter
+
                 onClicked: {
-                    if (moduleData) {
+                    if (moduleData && typeof moduleData.setDifficulty === "function") {
+                        moduleData.setDifficulty(difficulty)
                         stackViewRef.push(moduleData.qmlComponentUrl, {
+                                              gridColumns: gridColumns,
+                                              gridRows: gridRows,
                                               moduleData: moduleData,
-                                              stackViewRef: stackViewRef,
-                                              endlessMode : endlessMode,
-                                              blindMode : blindMode,
-                                              difficultyMode : difficultyMode
+                                              stackViewRef: stackViewRef
                                           })
                     } else {
-                        console.warn("Ошибка: moduleDataне определены")
+                        console.warn("Ошибка: moduleData или setDifficulty не определены")
                     }
                 }
             }
+
         }
     }
 }

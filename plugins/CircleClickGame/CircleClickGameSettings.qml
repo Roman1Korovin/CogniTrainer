@@ -214,7 +214,7 @@ Item {
             }
             Item {
                 width: 1
-                height: Math.max(root.height * 0.015, 10)
+                height: Math.max((Window.height - 702) * 0.1, 10)
 
             }
             CheckBox {
