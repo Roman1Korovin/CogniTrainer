@@ -46,14 +46,13 @@ Rectangle {
 
 
          //Список категорий в левой части
-         Frame{
+         Rectangle{
 
             width: 460
             height: parent.height
 
-            background: Rectangle {
-               color: Material.theme === Material.Dark ? Qt.darker(Material.background, 1.3) : Qt.darker(Material.background, 1.05)
-            }
+            color: Material.theme === Material.Dark ? Qt.darker(Material.background, 1.3) : Qt.darker(Material.background, 1.05)
+
 
 
 
@@ -151,20 +150,25 @@ Rectangle {
                   GradientStop { position: 0.0; color: "#121212" }
                   GradientStop { position: 1.0; color: backgroundColor }
                }
-
             }
 
             ScrollBar.vertical: ScrollBar {
-                anchors.right: parent.right
-                width: 12
-                policy: ScrollBar.AlwaysOn  // <-- всегда виден
+               id: vbar
 
-                contentItem: Rectangle {
-                    implicitWidth: 12
-                    implicitHeight: 100
-                    radius: 6
-                    color: "#888"
-                }
+
+               policy: trainingGrid.contentHeight > trainingGrid.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+
+               anchors.top: parent.top
+               anchors.right: parent.right
+               anchors.bottom: parent.bottom
+               width: 16
+
+               contentItem: Rectangle {
+                      radius: width / 2
+                      color: vbar.pressed ? Qt.darker("#5c646c",1.3) : "#5c646c"
+                      implicitWidth: 12
+                      implicitHeight: 100
+                  }
             }
          }
       }

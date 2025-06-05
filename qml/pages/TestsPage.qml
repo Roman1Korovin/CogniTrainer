@@ -60,9 +60,24 @@ Rectangle {
                        }
                    }
 
+
                    ScrollBar.vertical: ScrollBar {
-                       anchors.right: parent.right
-                       width: 12
+                      id: vbar
+
+
+                      policy: trainingGrid.contentHeight > trainingGrid.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+
+                      anchors.top: parent.top
+                      anchors.right: parent.right
+                      anchors.bottom: parent.bottom
+                      width: 16
+
+                      contentItem: Rectangle {
+                             radius: width / 2    // закругление по пол-ширины — полностью круглые края
+                             color: vbar.pressed ? "#3b4451" : "#5c646c"
+                             implicitWidth: 12
+                             implicitHeight: 100
+                         }
                    }
                }
            }
