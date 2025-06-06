@@ -54,8 +54,6 @@ QUrl FindAnotherColorGame::iconArrowLightUrl() const{
 }
 
 
-
-
 int FindAnotherColorGame::difficulty() const
 {
     return m_difficulty;

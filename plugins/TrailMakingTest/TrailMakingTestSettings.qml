@@ -15,6 +15,9 @@ Item {
     property int difficulty: (moduleData && typeof moduleData.difficulty === "number") ? moduleData.difficulty : 5
     property bool endlessMode: (moduleData && typeof moduleData.endlessMode === "boolean") ? moduleData.endlessMode : false
 
+    property bool isAgeValid: true
+    property int age: 60
+
     // Верхняя панель
     Rectangle {
         id: topBar
@@ -44,6 +47,7 @@ Item {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.margins: 10
+            anchors.topMargin: 15
             width: row.implicitWidth
             height: row.implicitHeight+10
             hoverEnabled: true
@@ -109,12 +113,10 @@ Item {
             anchors.centerIn: parent
 
             Label {
-
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Инструкция"
                 font.pixelSize: 30
                 font.bold: true
-
             }
 
             Item {
@@ -137,7 +139,7 @@ Item {
 
             Label {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "Выберите уровень сложности"
+                text: "Укажите свой возраст"
                 font.weight: Font.DemiBold
                 font.pixelSize: 22
             }
@@ -147,113 +149,97 @@ Item {
                 height: Math.max((Window.height - 702) * 0.07, 15)
             }
 
+            //поле для ввода
 
-            //набор кнопок для выбора сложности
             RowLayout {
+                spacing: 10
                 anchors.horizontalCenter: parent.horizontalCenter
 
-
-                // Надпись "Легко"
-                Label {
-                    text: "Легко"
-                    font.pixelSize: 22
-                    Layout.alignment: Qt.AlignTop
-                    rightPadding: 15
-                }
-
-                //набор radioButton
-                RowLayout {
-
-                    Repeater {
-                        model: 10
-
-                        ColumnLayout {
-                            spacing: -20
-
-                            RadioButton {
-                                id: radioBtn
-                                checked: index + 1 === difficulty
-                                onClicked: difficulty = index + 1
-
-                                indicator: Rectangle {
-                                    implicitWidth: 32
-                                    implicitHeight: 32
-                                    radius: width / 2
-                                    border.width: 2
-                                    border.color: radioBtn.checked ? "blue" : "gray"
-                                    color: radioBtn.checked ? "blue" : "transparent"
-
-                                    Rectangle {
-                                        anchors.centerIn: parent
-                                        width: parent.width * 0.5
-                                        height: parent.height * 0.5
-                                        radius: width / 2
-                                        color: "white"
-                                        visible: radioBtn.checked
-                                    }
-                                }
-                            }
-
-                            Label {
-                                text: "  "+(index + 1).toString()
-                                font.pixelSize: 20
-                                horizontalAlignment: Text.AlignHCenter
-                            }
+                // Кнопка уменьшения возраста
+                Button {
+                    text: "-"
+                    enabled: age !==6
+                    onClicked: {
+                        if (age > 6)
+                        {
+                            age--
+                            ageField.text = age.toString()
                         }
                     }
                 }
 
-                // Надпись "Сложно"
-                Label {
-                    leftPadding: -10
-                    text: "Сложно"
-                    font.pixelSize: 22
-                    Layout.alignment: Qt.AlignTop
+                // Поле для ввода возраста
+                TextField {
+                    id: ageField
+                    width: 80
+                    height: 40
+                    font.pixelSize: 20
 
+                    horizontalAlignment: TextInput.AlignHCenter
+                    verticalAlignment: TextInput.AlignVCenter
+                    inputMethodHints: Qt.ImhDigitsOnly
+                    validator: IntValidator { bottom: 0; top: 90 }
+
+                    text: age.toString()
+
+                    onTextChanged:  {
+                        const parsed = parseInt(text)
+                        if (!isNaN(parsed) && parsed >= 6 && parsed <= 90) {
+                            isAgeValid = true
+                            age = parsed
+                        } else {
+                            isAgeValid = false
+                        }
+                    }
+
+                    onEditingFinished: {
+                        if (text === "") {
+                            age = 40
+                            text = "40"
+                        }
+                    }
+                }
+
+
+                // Кнопка увеличения возраста
+                Button {
+                    text: "+"
+                    enabled: age !==90
+                    onClicked: {
+                        if (age < 90)
+                        {
+                            age++
+                            ageField.text = age.toString()
+                        }
+                    }
                 }
             }
 
 
-            Item {
-                width: 1
-                height: Math.max((Window.height - 702) * 0.07, 10)
-            }
-
-            CheckBox {
-                id: endlessCheckBox
-                text: "Бесконечный режим"
-                font.pixelSize: 22
-                checked: endlessMode
-
-                Layout.alignment: Qt.AlignHCenter
-                onCheckedChanged: {
-                    endlessMode = checked
-                }
-            }
 
             Item {
                 width: 1
-                height: Math.max((Window.height - 702) * 0.1, 10)
+                height: Math.max((Window.height - 702) * 0.2, 50)
             }
 
             Button {
+                id: confirmButton
                 anchors.horizontalCenter: parent.horizontalCenter
                 width:300
                 text: "Продолжить"
                 font.pixelSize: 20
-
+                enabled: isAgeValid
 
                 Layout.alignment: Qt.AlignHCenter
                 onClicked: {
-                    if (moduleData && typeof moduleData.setDifficulty === "function") {
-                        moduleData.difficulty = difficulty
-                        moduleData.endlessMode = endlessMode
+                    if (moduleData && typeof moduleData.setAge === "function") {
+                        moduleData.setAge(age)
                         stackViewRef.push(moduleData.qmlComponentUrl, {
                                               moduleData: moduleData,
                                               stackViewRef: stackViewRef
                                           })
                     } else {
-                        console.warn("Ошибка: moduleData или setDifficulty не определены")
+                        console.warn("Ошибка: moduleData или setAge+ не определены")
                     }
                 }
             }

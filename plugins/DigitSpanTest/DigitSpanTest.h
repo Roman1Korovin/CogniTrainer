@@ -1,20 +1,22 @@
-#ifndef TYPINGSPEEDGAME_H
-#define TYPINGSPEEDGAME_H
+#ifndef DIGITSPANTEST_H
+#define DIGITSPANTEST_H
 
 #include "../../core/BaseModule.h"
 
-class TypingSpeedGame : public BaseModule
+class DigitSpanTest : public BaseModule
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID ModuleInterface_iid)
     Q_INTERFACES(ModuleInterface)
 
+    Q_PROPERTY(int age READ age WRITE setAge NOTIFY ageChanged)
     Q_PROPERTY(QUrl iconArrowDarkUrl READ iconArrowDarkUrl CONSTANT)
     Q_PROPERTY(QUrl iconArrowLightUrl READ iconArrowLightUrl CONSTANT)
-    Q_PROPERTY(QStringList sentences READ sentences NOTIFY sentencesChanged)
+
 
 public:
-    explicit TypingSpeedGame(QObject *parent = nullptr);
+
+    explicit DigitSpanTest(QObject *parent = nullptr);
 
     QString name() const override;
     QString description() const override;
@@ -25,13 +27,18 @@ public:
     QUrl iconUrl() const override;
     QUrl iconArrowDarkUrl() const;
     QUrl iconArrowLightUrl() const;
-    QStringList sentences() const;
+
+    Q_INVOKABLE int age() const;
+
+
+public slots:
+    void setAge(int value);
+
 signals:
-    void sentencesChanged();
+    void ageChanged();
 
 private:
-    QStringList m_sentences;
-
+    int m_age;
 };
 
-#endif // TYPINGSPEEDGAME_H
+#endif // DIGITSPANTEST_H

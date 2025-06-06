@@ -5,14 +5,15 @@ import "../components"
 Rectangle {
    id:  root
    width: parent.width
-   height: parent.height
+   height: parent.height+10
+   y:-10
 
 
    color: Material.background
 
 
    property var filteredModules: moduleList.filter(function(module) {
-           return module.category === "Реакция"; // временно, потом заменить на "Тест"
+           return module.category === "Тест";
        })
 
    StackView {
@@ -40,7 +41,7 @@ Rectangle {
                    height: parent.height
                    cellWidth: 350 + 20
                    cellHeight: 525 + 20
-                   topMargin: 30
+                   topMargin: 40
                    leftMargin: 30
                    rightMargin: 30
                    model: filteredModules
@@ -60,6 +61,27 @@ Rectangle {
                        }
                    }
 
+                   Rectangle {
+                      id: gradientShadow
+
+                      anchors.top: parent.top
+                      height: 10
+                      width: trainingGrid.width
+
+                      gradient: Material.theme === Material.Light ? lightGradient : darkGradient
+
+                      Gradient {
+                         id: lightGradient
+                         GradientStop { position: 0.0; color: "#121314" }
+                         GradientStop { position: 1.0; color: backgroundColor }
+                      }
+
+                      Gradient {
+                         id: darkGradient
+                         GradientStop { position: 0.0; color: "#121212" }
+                         GradientStop { position: 1.0; color: backgroundColor }
+                      }
+                   }
 
                    ScrollBar.vertical: ScrollBar {
                       id: vbar

@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/DigitSpanIcon.png</file>
+        <file>assets/leftArrowDark.png</file>
+        <file>assets/leftArrowLight.png</file>
+        <file>DigitSpanTest.qml</file>
+        <file>DigitSpanTestSettings.qml</file>
+    </qresource>
+</RCC>

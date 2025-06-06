@@ -1,20 +1,21 @@
-#ifndef TYPINGSPEEDGAME_H
-#define TYPINGSPEEDGAME_H
+#ifndef RESTORESEQUENCEGAME_H
+#define RESTORESEQUENCEGAME_H
 
 #include "../../core/BaseModule.h"
 
-class TypingSpeedGame : public BaseModule
+class RestoreSequenceGame : public BaseModule
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID ModuleInterface_iid)
     Q_INTERFACES(ModuleInterface)
 
+    Q_PROPERTY(int difficulty READ difficulty WRITE setDifficulty NOTIFY difficultyChanged)
     Q_PROPERTY(QUrl iconArrowDarkUrl READ iconArrowDarkUrl CONSTANT)
     Q_PROPERTY(QUrl iconArrowLightUrl READ iconArrowLightUrl CONSTANT)
-    Q_PROPERTY(QStringList sentences READ sentences NOTIFY sentencesChanged)
 
 public:
-    explicit TypingSpeedGame(QObject *parent = nullptr);
+
+    explicit RestoreSequenceGame(QObject *parent = nullptr);
 
     QString name() const override;
     QString description() const override;
@@ -25,13 +26,18 @@ public:
     QUrl iconUrl() const override;
     QUrl iconArrowDarkUrl() const;
     QUrl iconArrowLightUrl() const;
-    QStringList sentences() const;
+
+    Q_INVOKABLE int difficulty() const;
+
+
+public slots:
+    void setDifficulty(int value);
+
 signals:
-    void sentencesChanged();
+    void difficultyChanged();
 
 private:
-    QStringList m_sentences;
-
+    int m_difficulty;
 };
 
-#endif // TYPINGSPEEDGAME_H
+#endif

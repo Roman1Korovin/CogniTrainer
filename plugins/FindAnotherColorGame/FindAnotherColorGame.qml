@@ -371,6 +371,7 @@ Item {
 
                 Label {
                     text: "Тренировка окончена!"
+                    font.bold: true
                     font.pixelSize: 26
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
                 }

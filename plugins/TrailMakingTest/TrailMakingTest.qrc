@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>TrailMakingTest.qml</file>
+        <file>TrailMakingTestSettings.qml</file>
+        <file>assets/leftArrowDark.png</file>
+        <file>assets/leftArrowLight.png</file>
+        <file>assets/TrailMakingIcon.png</file>
+    </qresource>
+</RCC>

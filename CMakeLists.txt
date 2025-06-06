@@ -41,8 +41,9 @@ qt_add_qml_module(appCogniTrainer
         core/Category.h
         core/CategoryManager.h core/CategoryManager.cpp
     RESOURCES application.qrc
-    RESOURCES plugins/SimonSaysGame/SimonSaysGame.qrc
-    RESOURCES plugins/FindPairGame/FindPairGame.qrc
+    RESOURCES plugins/DigitSpanTest/DigitSpanTest.qrc
+    RESOURCES plugins/TrailMakingTest/TrailMakingTest.qrc
+
 )
 
 set_target_properties(appCogniTrainer PROPERTIES
@@ -75,3 +76,6 @@ add_subdirectory(plugins/FindAnotherColorGame)
 add_subdirectory(plugins/SimonSaysGame)
 add_subdirectory(plugins/FindPairGame)
 add_subdirectory(plugins/StroopEffectGame)
+add_subdirectory(plugins/RestoreSequenceGame)
+add_subdirectory(plugins/DigitSpanTest)
+add_subdirectory(plugins/TrailMakingTest)

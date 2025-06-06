@@ -31,7 +31,7 @@ Item {
 
     Timer {
         id: previewTimer
-        interval: 3000
+        interval: 6000
         running: false
         repeat: false
         onTriggered: {
@@ -237,6 +237,7 @@ Item {
 
                 Label {
                     text: "Тренировка окончена!"
+                    font.bold: true
                     font.pixelSize: 26
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
                 }

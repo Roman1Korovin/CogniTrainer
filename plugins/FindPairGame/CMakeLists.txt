@@ -16,6 +16,7 @@ add_library(FindPairGame SHARED
   FindPairGame_global.h
   FindPairGame.cpp
   FindPairGame.h
+  FindPairGame.qrc
 )
 
 target_link_libraries(FindPairGame

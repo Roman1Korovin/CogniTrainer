@@ -51,6 +51,7 @@ Rectangle {
             width: 460
             height: parent.height
 
+
             color: Material.theme === Material.Dark ? Qt.darker(Material.background, 1.3) : Qt.darker(Material.background, 1.05)
 
 
@@ -64,7 +65,7 @@ Rectangle {
 
                model: categoryManager ? categoryManager.categories : []
                spacing: 20
-               topMargin: 20
+               topMargin: 30
                clip: true
 
                delegate: CategoryItem {

@@ -91,7 +91,7 @@ Item {
 
             MouseArea {
                 id: backArea
-                anchors.left: parent.left
+                anchors.left: parent.left+
                 anchors.top: parent.top
                 anchors.margins: 10
                 width: row.implicitWidth
@@ -408,6 +408,7 @@ Item {
                     Label {
                         text: "Тренировка завершена!"
                         font.pixelSize: 26
+                        font.bold: true
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
                     }
                     Item {

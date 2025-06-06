@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>RestoreSequenceGame.qml</file>
+        <file>RestoreSequenceGameSettings.qml</file>
+        <file>assets/leftArrowDark.png</file>
+        <file>assets/leftArrowLight.png</file>
+        <file>assets/RestoreSequenceIcon.png</file>
+        <file>Card.qml</file>
+    </qresource>
+</RCC>

@@ -1,19 +1,14 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Shapes
 
 Item {
     id: root
 
-
-    // Входные параметры
     property var moduleData
     property var stackViewRef
 
-    // Выбранная сложность
-    property int difficulty: (moduleData && typeof moduleData.difficulty === "number") ? moduleData.difficulty : 5
-    property bool endlessMode: (moduleData && typeof moduleData.endlessMode === "boolean") ? moduleData.endlessMode : false
+     property int difficulty: (moduleData && typeof moduleData.difficulty === "number") ? moduleData.difficulty : 3
 
     // Верхняя панель
     Rectangle {
@@ -23,7 +18,6 @@ Item {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-
 
         // Нижняя граница
            Rectangle {
@@ -36,7 +30,6 @@ Item {
                color: "grey"
                z: 10
            }
-
 
         MouseArea {
 
@@ -57,9 +50,8 @@ Item {
                 color: Material.theme === Material.Dark ?
                            (backArea.pressed ? Qt.darker("#32475c" ,1.2) : backArea.containsMouse ? Qt.darker("#32475c",1.1) : "#32475c") :
                            (backArea.pressed ? Qt.darker("white",1.2) : backArea.containsMouse ? Qt.darker("white",1.1) : "white")
-
                 radius: 8
-                border.color:  "grey"
+                border.color:  "#a0a0a0"
                 border.width: 2
 
             }
@@ -78,6 +70,7 @@ Item {
                 Image {
                     source: Material.theme === Material.Dark ?moduleData.iconArrowLightUrl : moduleData.iconArrowDarkUrl
                     width: 40
+
                     fillMode: Image.PreserveAspectFit
                     mipmap: true
                     anchors.verticalCenter: parent.verticalCenter
@@ -96,17 +89,19 @@ Item {
     //основной экран
 
     Item {
+        id: mainScreed
         anchors {
             top: topBar.bottom
             left: parent.left
             right: parent.right
             bottom: parent.bottom
         }
+
         Column {
 
             id:column
-
             anchors.centerIn: parent
+
 
             Label {
 
@@ -129,15 +124,15 @@ Item {
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
             }
 
+
             Item {
                 width: 1
-                height: Math.max((Window.height - 702) * 0.15, 40)
+                height: Math.max((Window.height - 702) * 0.3, 50)
             }
-
 
             Label {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "Выберите уровень сложности"
+                text: "Выберите количество элементов последовательности"
                 font.weight: Font.DemiBold
                 font.pixelSize: 22
             }
@@ -146,7 +141,6 @@ Item {
                 width: 1
                 height: Math.max((Window.height - 702) * 0.07, 15)
             }
-
 
             //набор кнопок для выбора сложности
             RowLayout {
@@ -165,7 +159,7 @@ Item {
                 RowLayout {
 
                     Repeater {
-                        model: 10
+                        model: 8
 
                         ColumnLayout {
                             spacing: -20
@@ -195,7 +189,7 @@ Item {
                             }
 
                             Label {
-                                text: "  "+(index + 1).toString()
+                                text: "  "+(index + 3).toString()
                                 font.pixelSize: 20
                                 horizontalAlignment: Text.AlignHCenter
                             }
@@ -213,27 +207,9 @@ Item {
                 }
             }
 
-
             Item {
                 width: 1
-                height: Math.max((Window.height - 702) * 0.07, 10)
-            }
-
-            CheckBox {
-                id: endlessCheckBox
-                text: "Бесконечный режим"
-                font.pixelSize: 22
-                checked: endlessMode
-
-                Layout.alignment: Qt.AlignHCenter
-                onCheckedChanged: {
-                    endlessMode = checked
-                }
-            }
-
-            Item {
-                width: 1
-                height: Math.max((Window.height - 702) * 0.1, 10)
+                height: Math.max((Window.height - 702) * 0.15, 30)
             }
 
             Button {
@@ -246,17 +222,19 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 onClicked: {
                     if (moduleData && typeof moduleData.setDifficulty === "function") {
-                        moduleData.difficulty = difficulty
-                        moduleData.endlessMode = endlessMode
-                        stackViewRef.push(moduleData.qmlComponentUrl, {
-                                              moduleData: moduleData,
-                                              stackViewRef: stackViewRef
-                                          })
+                                       moduleData.setDifficulty(difficulty)
+                                       stackViewRef.push(moduleData.qmlComponentUrl, {
+                                           moduleData: moduleData,
+                                           stackViewRef: stackViewRef
+                                       })
                     } else {
-                        console.warn("Ошибка: moduleData или setDifficulty не определены")
+                        console.warn("Ошибка: moduleDataне определены")
                     }
                 }
             }
+
+
         }
     }
 }
+

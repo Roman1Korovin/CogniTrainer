@@ -158,7 +158,7 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max((Window.height - 702) * 0.15, 40)
+                height: Math.max((Window.height - 702) * 0.2, 40)
             }
 
 
@@ -253,7 +253,7 @@ Item {
 
             Item {
                 width: 1
-                height: Math.max((Window.height - 702) * 0.1, 10)
+                height: Math.max((Window.height - 702) * 0.15, 30)
             }
 
             Button {

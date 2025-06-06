@@ -287,9 +287,9 @@ Item {
                 anchors.margins: 16
 
                 Label {
-                    text: "Тренировка\nзавершена!"
+                    text: "Тренировка завершена!"
                     font.pixelSize: 26
-
+                    font.bold: true
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
                 }
                 Item {
