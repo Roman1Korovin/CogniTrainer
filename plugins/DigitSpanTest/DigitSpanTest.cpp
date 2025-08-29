@@ -8,7 +8,7 @@ DigitSpanTest::DigitSpanTest(QObject *parent)
 
 // Переопределяем метод name
 QString DigitSpanTest::name() const {
-    return "Тест на запоминание цифр";
+    return "Цифровой ряд";
 }
 
 // Переопределяем метод description

@@ -106,8 +106,8 @@ Rectangle {
             height: parent.height+10
             y:-10
 
-            cellWidth: 350 + 20
-            cellHeight:  525 + 20
+            cellWidth: visualImpairment ? (350+30) * 1.3: (350+30)
+            cellHeight: visualImpairment ? (525+30) * 1.3: (525+30)
 
             topMargin: 40
             leftMargin: 30

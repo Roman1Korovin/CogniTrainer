@@ -50,6 +50,7 @@ Page {
             text: "Тема оформления"
             font.bold: true
             Layout.alignment: Qt.AlignHCenter
+            font.pixelSize: visualImpairment ? 20*1.3 : 20
         }
 
         RowLayout {
@@ -80,10 +81,11 @@ Page {
             text: "Режим для слабовидящих"
             font.bold: true
             Layout.alignment: Qt.AlignHCenter
+            font.pixelSize: visualImpairment ? 20*1.3 : 20
 
-            wrapMode: Text.Wrap  // включает перенос строк
+            wrapMode: Text.Wrap
             horizontalAlignment: Text.AlignHCenter
-            Layout.maximumWidth: parent.width * 0.9  // ограничиваем ширину (можно адаптировать)
+            Layout.maximumWidth: parent.width * 0.9
         }
 
         RowLayout {
@@ -93,16 +95,16 @@ Page {
 
 
             Switch {
-                           id: accessibilitySwitch
-                           checked: appSettingsRef.value("accessibilityMode", false) === true ||
-                                    appSettingsRef.value("accessibilityMode", false) === "true"
+                id: accessibilitySwitch
 
-                           onToggled: {
-                               appSettingsRef.setValue("accessibilityMode", checked)
-                               Material.fontScale = checked ? 1.5 : 1.0
-                           }
-                       }
+                checked: visualImpairment
 
+                onCheckedChanged: {
+                    visualImpairment = accessibilitySwitch.checked
+                }
+            }
         }
+
     }
 }
+

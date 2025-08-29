@@ -3,7 +3,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Shapes 1.15
 import QtQuick.Window 2.15
-import QtQuick.Dialogs 6.2
+
 
 Item {
     id: root
@@ -91,7 +91,7 @@ Item {
 
             MouseArea {
                 id: backArea
-                anchors.left: parent.left+
+                anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.margins: 10
                 width: row.implicitWidth
@@ -618,6 +618,3 @@ Item {
         paused = !paused;
     }
 }
-
-
-

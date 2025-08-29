@@ -8,7 +8,7 @@ TrailMakingTest::TrailMakingTest(QObject *parent)
 
 // Переопределяем метод name
 QString TrailMakingTest::name() const {
-    return "Тест на соединение точек";
+    return "Проложи путь";
 }
 
 // Переопределяем метод description

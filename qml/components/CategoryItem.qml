@@ -87,6 +87,7 @@ Rectangle {
             Label {
                 text: root.name
                 Layout.fillWidth: true
+                font.pixelSize: visualImpairment? 24* 1.3 : 24
                 horizontalAlignment: Text.AlignHCenter
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 font.bold: true

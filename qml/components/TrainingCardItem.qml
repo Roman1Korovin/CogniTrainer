@@ -13,8 +13,8 @@ Rectangle {
     property int sharedMaxHeight:0
     signal heightReported(int h)
 
-    width: 350
-    height: 525
+    width: visualImpairment ? 350 * 1.3: 350
+    height: visualImpairment ? 525 * 1.3: 525
     radius: 12
 
 
@@ -68,7 +68,7 @@ Rectangle {
         fillMode: Image.PreserveAspectFit
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottomMargin: 30
-        width: 280
+        width: visualImpairment ? 280 * 1.3: 280
     }
 
 
@@ -84,7 +84,7 @@ Rectangle {
 
         Label {
             text: modelData.name
-            font.pixelSize: 24
+            font.pixelSize: visualImpairment? 24* 1.3 : 24
             font.bold: true
 
 
@@ -99,34 +99,21 @@ Rectangle {
 
         }
 
-        Flickable {
+
+        Label {
+            id: textItem
+
             width: parent.width
-            height: 145
-            contentHeight: textItem.paintedHeight
-            clip: true
-
-
-            ScrollBar.vertical: ScrollBar {
-                id: scroll
-                        anchors.right: parent.right
-                        width: 0
-                        policy: textItem.paintedHeight > parent.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
-
-            }
-
-            Label {
-                id: textItem
-
-                width: parent.width
-                horizontalAlignment: Text.AlignJustify
-                leftPadding: 8
-                rightPadding: 8
-                text: modelData.description
-                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                font.pixelSize: 18
-                color: Material.theme === Material.Dark ? "#ccc" : "#666"
-            }
+            horizontalAlignment: Text.AlignJustify
+            topPadding: visualImpairment? 10: 0
+            leftPadding: 8
+            rightPadding: 8
+            text: modelData.description
+            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+            font.pixelSize: visualImpairment? 20* 1.3 : 20
+            color: Material.theme === Material.Dark ? "#ccc" : "#666"
         }
+
     }
 
     MouseArea {

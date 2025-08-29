@@ -21,14 +21,16 @@ Rectangle {
         id: headerRow
         anchors.fill: parent
         anchors.leftMargin: 20
+
         spacing: 20
 
         Text {
             text: qsTr("CogniTrainer")
             color: "white"
-            font.pixelSize: 28
+            font.pixelSize: visualImpairment? 37* 1.3 : 37
             font.bold: true
             anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: -5
         }
 
         Item {
@@ -53,7 +55,7 @@ Rectangle {
                 text: qsTr("Тренировки")
                 anchors.centerIn: parent
                 color: currentTab === "trainings" ? "#ffcc00" : "white"
-                font.pixelSize: 20
+                font.pixelSize: visualImpairment? 26* 1.3 : 26
                 font.bold: currentTab === "trainings"
             }
         }
@@ -75,7 +77,7 @@ Rectangle {
                 text: qsTr("Тесты")
                 anchors.centerIn: parent
                 color: currentTab === "tests" ? "#ffcc00" : "white"
-                font.pixelSize: 20
+                font.pixelSize: visualImpairment? 26 * 1.3 : 26
                 font.bold: currentTab === "tests"
             }
         }
@@ -96,7 +98,7 @@ Rectangle {
                 text: qsTr("Настройки")
                 anchors.centerIn: parent
                 color: currentTab === "settings" ? "#ffcc00" : "white"
-                font.pixelSize: 20
+                font.pixelSize: visualImpairment? 26 * 1.3 : 26
                 font.bold: currentTab === "settings"
             }
         }

@@ -8,6 +8,8 @@ ApplicationWindow {
     id: mainWindow
 
 
+    property bool visualImpairment: false
+
     Settings {
             id: appSettings
         }

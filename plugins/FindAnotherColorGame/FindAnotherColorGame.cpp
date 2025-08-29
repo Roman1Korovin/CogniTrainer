@@ -8,7 +8,7 @@ FindAnotherColorGame::FindAnotherColorGame(QObject *parent)
 
 // Переопределяем метод name
 QString FindAnotherColorGame::name() const {
-    return "Найди предмет";
+    return "Найди отличие";
 }
 
 // Переопределяем метод description
